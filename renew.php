@@ -183,11 +183,11 @@ if ($renanswer=='1') {
             $title=$value->Title;
             $reqemail=$value->RequesterEMAIL;
             ###Get the Destination Name
-            $GETLISTSQLDEST="SELECT `Name`, `ILL Email` FROM `$cdlcLIB` where loc = '$lenderid'  limit 1";
+            $GETLISTSQLDEST="SELECT `Name`, `ill_email` FROM `$cdlcLIB` where loc = '$lenderid'  limit 1";
             $resultdest=mysqli_query($db, $GETLISTSQLDEST);
             while ($rowdest = mysqli_fetch_assoc($resultdest)) {
                 $destlib=$rowdest["Name"];
-                $destemail=$rowdest["ILL Email"];
+                $destemail=$rowdest["ill_email"];
             }
             #In case the ILL email for the destination library is more than one, break it down to a comma for PHP mail
             $destemailarray = explode(';', $destemail);

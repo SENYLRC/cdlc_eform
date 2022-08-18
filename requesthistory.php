@@ -224,11 +224,13 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $dest=trim($dest);
     #Get the Destination Name
     if (strlen($dest)>2) {
-        $GETLISTSQLDEST="SELECT`Name`,`ILL Email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
+        $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
+         #for testing
+#echo $GETLISTSQLDEST;
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
         while ($rowdest = mysqli_fetch_assoc($resultdest)) {
             $dest=$rowdest["Name"];
-            $destemail=$rowdest["ILL Email"];
+            $destemail=$rowdest["ill_email"];
         }
     } else {
         $dest="Error No Library Selected";

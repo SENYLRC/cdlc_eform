@@ -148,7 +148,7 @@ $GETLISTCOUNT = '1';
          //mysqli_query($db, $sqlupdate2);
                 //no error and everthing is fine
      } else {
-         #Something happen and could not update request, will email the sql to admin
+         #Something happen and could not update request, will_email the sql to admin
          $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
          $headers .= "MIME-Version: 1.0\r\n";
          $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";

@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
             $requesterEMAIL=$row['requesterEMAIL'];
             $destlib=$row['Destination'];
             ###Get the Destination Name
-            $GETLISTSQLDEST="SELECT`Name`, `ILL Email` FROM `$cdlcLIB` where loc like '$destlib'  limit 1";
+            $GETLISTSQLDEST="SELECT`Name`, `ill_email` FROM `$cdlcLIB` where loc like '$destlib'  limit 1";
             $resultdest=mysqli_query($db, $GETLISTSQLDEST);
                 while ($rowdest = mysqli_fetch_assoc($resultdest)) {
                                 $destlib=$rowdest["Name"];
-                                $destemail=$rowdest["ILL Email"];
+                                $destemail=$rowdest["ill_email"];
                         }
           #In case the ILL email for the destination library is more than one, break it down to comma for php mail
           $destemailarray = explode(';', $destemail);

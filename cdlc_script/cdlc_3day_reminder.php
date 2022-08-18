@@ -132,10 +132,10 @@ while ($row = mysqli_fetch_assoc($retval)) {
 
 
     ###Get the Destination
-    $GETLISTSQLDESTEMAIL="SELECT `ILL Email` FROM `$cdlcLIB` where loc LIKE '$destination'  limit 1";
+    $GETLISTSQLDESTEMAIL="SELECT `ill_email` FROM `$cdlcLIB` where loc LIKE '$destination'  limit 1";
     $resultdestemail=mysqli_query($db, $GETLISTSQLDESTEMAIL);
     while ($rowdesteamil = mysqli_fetch_assoc($resultdestemail)) {
-        $destemail=$rowdesteamil["ILL Email"];
+        $destemail=$rowdesteamil["ill_email"];
     }
     $destemailarray = explode(';', $destemail);
     $email_to = implode(',', $destemailarray);
