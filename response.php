@@ -70,8 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
 
                 #######Setting up email notification
                 if($shipmethod=="usps") $shiptxt='US Mail';
-                if($shipmethod=="mhls") $shiptxt='Mid-Hudson Courier';
-                if($shipmethod=="rcls") $shiptxt='RCLS Courier';
+                if($shipmethod=="uhls") $shiptxt='Uppper Hudson Courier';
+                if($shipmethod=="mvls") $shiptxt='MVLS Courier';
+                if($shipmethod=="sals") $shiptxt='SALS Courier';
                 if($shipmethod=="empire") $shiptxt='Empire Delivery';
                 if($shipmethod=="ups") $shiptxt='UPS';
                 if($shipmethod=="fedex") $shiptxt='FedEx';
@@ -126,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
    if ($reqanswer=='1'){
       echo "Please click the submit button to confirm you will fill the request.<br>  Thank You.";
       ?>
-      <br><br><h4>Please note the delivery method, tracking info, special handling, etc)</h4>
+      <br><br><h4>Please note the delivery method, tracking info, special handling, etc</h4>
       <form action="/respond" method="post">
       <input type='hidden' name='num' value= '<?php echo $reqnumb ?>' '>
 	   	<input type='hidden' name='fill' value='1'>
@@ -138,8 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
       <select name="shipmethod">
         <option value=""></option>
          <option value="usps">US Mail</option>
-         <option value="mhls">Mid-Hudson Courier</option>
-         <option value="rcls">RCLS Courier</option>
+         <option value="uhls">Upper Hudson Courier</option>
+         <option value="mvls">MVLS Courier</option>
+         <option value="sals">SALS Courier</option>
          <option value="empire">Empire Delivery</option>
          <option value="ups">UPS</option>
          <option value="fedex">FedEx</option>

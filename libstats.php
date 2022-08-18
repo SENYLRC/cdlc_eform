@@ -119,23 +119,26 @@ $libname =  $row["Name"];
 
 
         #translate system code to text name
-if (strcmp($dessysvar,'MH')==0){
-    $dessysvartxt = "Mid Hudson Library System";
-}else if (strcmp($dessysvar,'RC')==0){
-    $dessysvartxt = "Ramapo Catskill Library System";
-}else if (strcmp($dessysvar,'DU')==0){
-    $dessysvartxt = "Dutchess BOCES";
-}else if (strcmp($dessysvar,'OU')==0){
-    $dessysvartxt = "Orange Ulster BOCES";
-}else if (strcmp($dessysvar,'RB')==0){
-    $dessysvartxt = "Rockland BOCES";
-}else if (strcmp($dessysvar,'SB')==0){
-    $dessysvartxt = "Sullivan BOCES";
-}else if (strcmp($dessysvar,'UB')==0){
-    $dessysvartxt = "Ulster BOCES";
+if (strcmp($dessysvar,'CRB')==0){
+    $dessysvartxt = "Capital Region BOCES";
+}else if (strcmp($dessysvar,'HFM')==0){
+    $dessysvartxt = "Hamilton-Fulton-Montgomery BOCES";
+}else if (strcmp($dessysvar,'MVLS')==0){
+    $dessysvartxt = "Mohawk Valley Library System";
+}else if (strcmp($dessysvar,'Q3S')==0){
+    $dessysvartxt = "Questar III SLS";
+}else if (strcmp($dessysvar,'SALS')==0){
+    $dessysvartxt = "Southern Adirondack Library System";
+}else if (strcmp($dessysvar,'UHLS')==0){
+    $dessysvartxt = "Upper Hudson Library System";
+}else if (strcmp($dessysvar,'WSWHE')==0){
+    $dessysvartxt = "WSWHE BOCES";
 }else{
-   $dessysvartxt = "SENYLRC Group";
+   $dessysvartxt = "CDLC Group";
 }
+
+
+
 
         echo " ". $destnum_rows ." (".$percent_friendly_destnum.") overall requests were made  to <strong> ".$dessysvartxt."</strong><br>";
         #Find which item types were requests

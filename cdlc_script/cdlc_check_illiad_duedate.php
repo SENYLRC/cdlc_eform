@@ -68,7 +68,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $to=$requesterEMAIL;
             // $to = "spalding@cdlc.org";
             $message="eFrom Request ".$reqnumb." ".$reqnumbRequest." from ".$destlib." has a new due date which is ".$dueDate."<br>";
-            $message.="This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Southeastern NY Library Resources Council. If you would like to contact the oth
+            $message.="This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the oth
 er library in this ILL transaction";
             $subject = "Request ".$reqnumb." has a new due date  ";
             #####SEND requester an email to let them know the request will be filled

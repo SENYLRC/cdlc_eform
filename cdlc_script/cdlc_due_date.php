@@ -43,9 +43,12 @@ while ($row = mysqli_fetch_assoc($retval)) {
       $issn<br>
       Call Number: $itemcall <br>
       $article<br><br>
-      <br>";
+      <br>
+      <br><hr style='width:200px;text-align:left;margin-left:0'><Br>
+      This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other
+library in this ILL transaction, email.";
     #######Set email subject for request
-    $subject = "eForm Approching Due Date: for ILL# $illnum";
+    $subject = "eForm Approaching Due Date: for ILL# $illnum";
     $subject = html_entity_decode (  $subject, ENT_QUOTES, 'UTF-8' );
     echo "$subject\n";
     #Set email to me for testing

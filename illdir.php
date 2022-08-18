@@ -70,145 +70,145 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     $GETLIST = mysqli_query($db, $GETLISTSQL);
     $GETLISTCOUNT = mysqli_num_rows($GETLIST);
 }
-  ?>
+?>
   <h3>Search the directory</h3>
   <form action="<?php echo "".$_SERVER['REDIRECT_URL']."?". $_SERVER['QUERY_STRING']."";?>" method="post">
   <B>Library Name:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libname"><br>
   <B>Library System</b> <select name="system">
     <option value=""></option>
-    <option value="DU">Dutchess BOCES</option>
-    <option value="MH">Mid-Hudson Library System</option>
-    <option value="OU">Orange Ulster BOCES</option>
-    <option value="RC">Ramapo Catskill Library System</option>
-    <option value="RB">Rockland BOCES</option>
-    <option value="SE">SENYLRC</option>
-    <option value="SB">Sullivan BOCES</option>
-    <option value="UB">Ulster BOCES</option>
+    <option value="CDLC">Capital District Library Council</option>
+    <option value="CRB">Capital Region BOCES</option>
+    <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
+    <option value="MVLS">Mohawk Valley Library System</option>
+    <option value="Q3S">Questar III SLS</option>
+    <option value="SALS">Southern Adirondack Library System</option>
+    <option value="UHLS">Upper Hudson Library System</option>
+    <option value="WSWHE">WSWHE BOCES</option>
   </select>
   <br>
   <input type="submit" value="Submit">
   </form>
   <?php
-  #List All Libraries
-  echo "$GETLISTCOUNTwhole results<bR>";
-  echo "<div class='illDirTable'>";
-  echo "<div class='illDirTableRow'>";
-  $count = 1;
-  $rowcount =1;
-  while ($row = mysqli_fetch_assoc($GETLIST)) {
-      $libaddress2 = $row["address2"];
-      $libaddress3 = $row["address3"];
-      $libname = $row["Name"];
-      $libphone = $row["phone"];
-      $illemail = $row["ILL Email"];
-      $libparticipant = $row["participant"];
-      $oclc = $row["oclc"];
-      $loc = $row["loc"];
-      $libsuspend = $row["suspend"];
-      $system = $row["system"];
-      if ($system =="CDLC") {
-          $system ="Capital District Library Council";
-      } elseif ($system=="CRB") {
-          $system ="Capital Region BOCES";
-      } elseif ($system=="HFM") {
-          $system ="Hamilton-Fulton-Montgomery BOCES";
-      } elseif ($system=="MVLS") {
-          $system ="Mohawk Valley Library System";
-      } elseif ($system=="Q3S") {
-          $system="Questar III SLS";
-      } elseif ($system=="SALS") {
-          $system="Southern Adirondack Library System";
-      } elseif ($system=="UHLS") {
-          $system="Upper Hudson Library System";
-      } elseif ($system=="WSWHE") {
-          $system="WSWHE BOCES";
-      } else {
-          $system="Unknow";
-      }
-      $book = $row["book"];
-      $journal = $row["journal"];
-      $av = $row["av"];
-      $reference = $row["reference"];
-      $ebook = $row["ebook"];
-      if ($libsuspend=="0") {
-          $libsuspend="Yes";
-      } else {
-          $libsuspend="No";
-      }
-      if ($libparticipant =="1") {
-          $libparticipant ="Yes";
-      } else {
-          $libparticipant ="No";
-      }
-      if ($book =="1") {
-          $book ="Yes";
-      } else {
-          $book ="No";
-      }
-      if ($journal =="1") {
-          $journal ="Yes";
-      } else {
-          $journal ="No";
-      }
-      if ($av =="1") {
-          $av ="Yes";
-      } else {
-          $av ="No";
-      }
-      if ($reference =="1") {
-          $reference ="Yes";
-      } else {
-          $reference ="No";
-      }
-      if ($ebook =="1") {
-          $ebook ="Yes";
-      } else {
-          $ebook ="No";
-      }
+#List All Libraries
+echo "$GETLISTCOUNTwhole results<bR>";
+echo "<div class='illDirTable'>";
+echo "<div class='illDirTableRow'>";
+$count = 1;
+$rowcount =1;
+while ($row = mysqli_fetch_assoc($GETLIST)) {
+    $libaddress2 = $row["address2"];
+    $libaddress3 = $row["address3"];
+    $libname = $row["Name"];
+    $libphone = $row["phone"];
+    $illemail = $row["ILL Email"];
+    $libparticipant = $row["participant"];
+    $oclc = $row["oclc"];
+    $loc = $row["loc"];
+    $libsuspend = $row["suspend"];
+    $system = $row["system"];
+    if ($system =="CDLC") {
+        $system ="Capital District Library Council";
+    } elseif ($system=="CRB") {
+        $system ="Capital Region BOCES";
+    } elseif ($system=="HFM") {
+        $system ="Hamilton-Fulton-Montgomery BOCES";
+    } elseif ($system=="MVLS") {
+        $system ="Mohawk Valley Library System";
+    } elseif ($system=="Q3S") {
+        $system="Questar III SLS";
+    } elseif ($system=="SALS") {
+        $system="Southern Adirondack Library System";
+    } elseif ($system=="UHLS") {
+        $system="Upper Hudson Library System";
+    } elseif ($system=="WSWHE") {
+        $system="WSWHE BOCES";
+    } else {
+        $system="Unknow";
+    }
+    $book = $row["book"];
+    $journal = $row["journal"];
+    $av = $row["av"];
+    $reference = $row["reference"];
+    $ebook = $row["ebook"];
+    if ($libsuspend=="0") {
+        $libsuspend="Yes";
+    } else {
+        $libsuspend="No";
+    }
+    if ($libparticipant =="1") {
+        $libparticipant ="Yes";
+    } else {
+        $libparticipant ="No";
+    }
+    if ($book =="1") {
+        $book ="Yes";
+    } else {
+        $book ="No";
+    }
+    if ($journal =="1") {
+        $journal ="Yes";
+    } else {
+        $journal ="No";
+    }
+    if ($av =="1") {
+        $av ="Yes";
+    } else {
+        $av ="No";
+    }
+    if ($reference =="1") {
+        $reference ="Yes";
+    } else {
+        $reference ="No";
+    }
+    if ($ebook =="1") {
+        $ebook ="Yes";
+    } else {
+        $ebook ="No";
+    }
 
-      echo "<div class='illDirTableCell'>";
-      echo "Name: <strong> $libname</strong><br>";
-      echo "Address: <strong> $libaddress2 </strong><br>";
-      echo "&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong> $libaddress3 </strong><br>";
-      echo "Phone: <strong> $libphone</strong><br>";
-      echo "Library System:<strong> $system</strong><br>";
-      if ($user->uid) {
-          echo "ILL Email(s): <a href='mailto:$illemail' target='_blank'>$illemail</a><br>";
-      }
+    echo "<div class='illDirTableCell'>";
+    echo "Name: <strong> $libname</strong><br>";
+    echo "Address: <strong> $libaddress2 </strong><br>";
+    echo "&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong> $libaddress3 </strong><br>";
+    echo "Phone: <strong> $libphone</strong><br>";
+    echo "Library System:<strong> $system</strong><br>";
+    if ($user->uid) {
+        echo "ILL Email(s): <a href='mailto:$illemail' target='_blank'>$illemail</a><br>";
+    }
 
-      echo "OCLC Symbol: <strong> $oclc</strong><br>";
-      echo "ILL Code: <strong> $loc</strong><br>";
-      echo "Accepting Requests: <strong> $libsuspend </strong>";
-      echo "<br><br>";
-      echo "<button onclick='showHide($count)'>Show loaning options</button>";
-      echo "<span class='loadoptions' id='showhide-$count' style='display: none'>";
-      echo "Loaning Books: <strong>$book</strong><br>";
-      echo "Loaning Journals or Articles: <strong>$journal</strong><br>";
-      echo "Loaning Audio/Video: <strong>$av</strong><br>";
-      echo "Loaning Reference: <strong>$reference</strong><br>";
-      echo "Loaning E-Books: <strong>$ebook</strong><br><br>";
-      echo "</div>"; #end the illDirTableCell
-      if ($count++ % 2 == 0) {
-          echo "</div>"; #end the illDirTableRow
-          if ($rowcount++ % 2 == 0) {
-              echo "<div class='illDirTableRow'>"; #Start the next illDirTableRow
-          } else {
-              echo "<div class='illDirTableRowGrey'>"; #Start the next illDirTableRow
-          }
-          $no++;
-      }
-  }
-  echo "</div>";  #end the illDirTable
-  if (($page > 0) && (($offset +  $rec_limit)<$GETLISTCOUNTwhole)) {
-      $last = $page - 2;
-      echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$last\'>Last 50 Records</a> |";
-      echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$page\'>Next 50 Records</a>";
-  } elseif (($page == 0) && ($GETLISTCOUNTwhole  > $rec_limit)) {
-      echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$page\'>Next 50 Records</a>";
-  } elseif (($left_rec < $rec_limit)  && ($GETLISTCOUNTwhole > $rec_limit)) {
-      $last = $page - 2;
-      echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$last\'>Last 50 Records</a>";
-  }
+    echo "OCLC Symbol: <strong> $oclc</strong><br>";
+    echo "ILL Code: <strong> $loc</strong><br>";
+    echo "Accepting Requests: <strong> $libsuspend </strong>";
+    echo "<br><br>";
+    echo "<button onclick='showHide($count)'>Show loaning options</button>";
+    echo "<span class='loadoptions' id='showhide-$count' style='display: none'>";
+    echo "Loaning Books: <strong>$book</strong><br>";
+    echo "Loaning Journals or Articles: <strong>$journal</strong><br>";
+    echo "Loaning Audio/Video: <strong>$av</strong><br>";
+    echo "Loaning Reference: <strong>$reference</strong><br>";
+    echo "Loaning E-Books: <strong>$ebook</strong><br><br>";
+    echo "</div>"; #end the illDirTableCell
+    if ($count++ % 2 == 0) {
+        echo "</div>"; #end the illDirTableRow
+        if ($rowcount++ % 2 == 0) {
+            echo "<div class='illDirTableRow'>"; #Start the next illDirTableRow
+        } else {
+            echo "<div class='illDirTableRowGrey'>"; #Start the next illDirTableRow
+        }
+        $no++;
+    }
+}
+echo "</div>";  #end the illDirTable
+if (($page > 0) && (($offset +  $rec_limit)<$GETLISTCOUNTwhole)) {
+    $last = $page - 2;
+    echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$last\'>Last 50 Records</a> |";
+    echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$page\'>Next 50 Records</a>";
+} elseif (($page == 0) && ($GETLISTCOUNTwhole  > $rec_limit)) {
+    echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$page\'>Next 50 Records</a>";
+} elseif (($left_rec < $rec_limit)  && ($GETLISTCOUNTwhole > $rec_limit)) {
+    $last = $page - 2;
+    echo "<a href='".$_SERVER['REDIRECT_URL']."?page=$last\'>Last 50 Records</a>";
+}
 
 
 ?>

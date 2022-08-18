@@ -12,10 +12,11 @@
 
 
 #####Connect to database
+    require '/var/www/cdlc_script/cdlc_db.inc';
+
 require '/var/www/cdlc_script/cdlc_function.php';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
-
 # Total library Count
 $TotalLibraryQuery = "SELECT * FROM `$cdlcLIB` ";
 $RetVal = mysqli_query($db, $TotalLibraryQuery);

@@ -19,7 +19,7 @@ if (isset($_GET['loc'])) {
     $filter_illnum="";
 } else {
     if (isset($_REQUEST['loc'])) {
-        $loc = $field_loc_location_code[0]['value'];
+        $loc=$field_loc_location_code ;
         if (isset($_REQUEST['filter_illnum'])) {
             $filter_illnum = $_REQUEST['filter_illnum'];
         }
@@ -36,7 +36,8 @@ if (isset($_GET['loc'])) {
             $filter_days="all";
             $filter_destination="";
         } else {
-            $loc = $field_loc_location_code[0]['value'];
+          $loc=$field_loc_location_code ;
+
             $filter_yes = (isset($_REQUEST['filter_yes']) ? $_REQUEST['filter_yes'] : "");
             $filter_no = (isset($_REQUEST['filter_no']) ? $_REQUEST['filter_no'] : "");
             $filter_noans = (isset($_REQUEST['filter_noans']) ? $_REQUEST['filter_noans'] : "");
@@ -51,7 +52,7 @@ if (isset($_GET['loc'])) {
             $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $_REQUEST['filter_illnum'] : "");
         }
     } else {
-        $loc = $field_loc_location_code[0]['value'];
+        $loc=$field_loc_location_code ;
         $filter_yes="yes";
         $filter_no="yes";
         $filter_noans="yes";

@@ -5,7 +5,7 @@ require '/var/www/cdlc_script/cdlc_function.php';
 
 
 if (isset($_GET['loc'])) {
-    $loc = $field_loc_location_code[0]['value'];
+    $loc=$field_loc_location_code ;
     $filter_yes="yes";
     $filter_no="yes";
     $filter_noans="yes";
@@ -20,7 +20,7 @@ if (isset($_GET['loc'])) {
     $filter_illnum="";
 } else {
     if (isset($_REQUEST['loc'])) {
-        $loc = $field_loc_location_code[0]['value'];
+        $loc=$field_loc_location_code ;
         if (isset($_REQUEST['filter_illnum'])) {
             $filter_illnum = $_REQUEST['filter_illnum'];
         }
@@ -37,7 +37,7 @@ if (isset($_GET['loc'])) {
             $filter_days="all";
             $filter_destination="";
         } else {
-            $loc = $field_loc_location_code[0]['value'];
+            $loc=$field_loc_location_code ;
             $filter_yes = (isset($_REQUEST['filter_yes']) ? $_REQUEST['filter_yes'] : "");
             $filter_no = (isset($_REQUEST['filter_no']) ? $_REQUEST['filter_no'] : "");
             $filter_noans = (isset($_REQUEST['filter_noans']) ? $_REQUEST['filter_noans'] : "");
@@ -51,7 +51,7 @@ if (isset($_GET['loc'])) {
             $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $_REQUEST['filter_illnum'] : "");
         }
     } else {
-        $loc = $field_loc_location_code[0]['value'];
+        $loc=$field_loc_location_code ;
         $filter_yes="yes";
         $filter_no="yes";
         $filter_noans="yes";
@@ -77,7 +77,7 @@ echo "<input type='checkbox' name='filter_expire' value='yes' " . checked($filte
 echo "<input type='checkbox' name='filter_cancel' value='yes' " . checked($filter_cancel) . ">Canceled  ";
 echo "<input type='checkbox' name='filter_recevied' value='yes' " . checked($filter_recevied) . ">Received  ";
 echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filter_return) . ">Return  ";
-echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check In  ";
+echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check-In  ";
 echo "for ";
 echo "<select name='filter_days'>";
 echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
@@ -196,6 +196,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $author = $row["Author"];
     $itype = $row["Itype"];
     $reqnote = $row["reqnote"];
+    $patronnote = $row["patronnote"];
     $lendnote = $row["responderNOTE"];
     $needby = $row["needbydate"];
     $dest = $row["Destination"];
@@ -237,7 +238,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     } else {
         $rowclass="even";
     }
-    $displaynotes=build_notes($reqnote, $lendnote);
+    $displaynotes=build_notes($reqnote, $patronnote, $lendnote);
     $dispalyreturnnotes=build_return_notes($returnnote, $returnmethodtxt);
     $displayrenewnotes= build_renewnotes($renewNote, $renewNoteLender);
     echo "<TR class='$rowclass'><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD><a href='mailto:".$destemail."?Subject=NOTE Request ILL# ".$illNUB."' >$dest</a></TD><TD>$reqp</TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp</TD><TD>$statustxt</TD>";
@@ -257,7 +258,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
         echo "<td>&nbsp</td>";
     }
 
-    if ((strlen($reqnote) > 2) || (strlen($lendnote) > 2)) {
+    if ((strlen($reqnote) > 2) || (strlen($patronnote)>2)|| (strlen($lendnote) > 2)) {
         echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR>";
     }
     if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {

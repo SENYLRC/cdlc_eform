@@ -5,6 +5,6 @@ $dbpass="vUqc6YPCoaOXh04T";
 $dbname="cdlc_eform";
 $cdlcSTAT="CDLC-EFORM-STATS";
 $cdlcLIB="CDLC-EFORM-Library-Data";
-$cdlcILLiadMapping=`CDLC-EFORM-ILLIAD-ADD-MAPPING`;
+$cdlcILLiadMapping="CDLC-EFORM-ILLIAD-ADD-MAPPING";
 #$db = mysql_connect($dbhost, $dbuser, $dbpass, $dbname);
 ?>
