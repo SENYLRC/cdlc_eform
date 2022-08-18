@@ -61,7 +61,7 @@ library in this ILL transaction, email.";
 
     $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
     $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-    mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
+    # for testing mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
 
 
 

@@ -74,7 +74,7 @@ er library in this ILL transaction";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }
     }
     //IF request was finished, mark that in database
@@ -97,7 +97,7 @@ er library in this ILL transaction";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
     }//end if to mark it finished
 
@@ -142,7 +142,7 @@ er library in this ILL transaction";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
 
 
@@ -160,7 +160,7 @@ er library in this ILL transaction";
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
     }//end the cancel check
 }//end while loop of sql results
 
@@ -194,6 +194,6 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
     }//end check for database update
 }//end while loop of sql results

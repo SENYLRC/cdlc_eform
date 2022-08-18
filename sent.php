@@ -228,7 +228,7 @@ foreach ($_POST['libdestination'] as $destination) {
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             #mail has been disabled for development
-            #mail($email_to, $subject, $messagedest, $headers);
+            # for testing mail($email_to, $subject, $messagedest, $headers);
 
             #SEND a copy of EMAIL to the requester with DKIM sig
             $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
@@ -236,7 +236,7 @@ foreach ($_POST['libdestination'] as $destination) {
             $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
         #mail has been disabled for development
-        #mail($email, $subject, $messagereq, $headers);
+        # for testing mail($email, $subject, $messagereq, $headers);
         } else {
             #Something happened, and I could not create a request
             echo "Error: " . $sql . "<br>" . mysqli_error($db);

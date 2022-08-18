@@ -70,9 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             #####SEND request an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($destemail_to, $subject, $message, $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
-            mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
+            #disabled mail for testing
+            # for testing mail($destemail_to, $subject, $message, $headers);
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
         }
     } else {
         echo "Unable to record the answer for ILL request $reqnumb please call SENYLRC to report this error";

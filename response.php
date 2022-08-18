@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
                 #####SEND requester an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
 
 		    ###Sending not filledmessage#########
 	        }else{
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
                 #####SEND requester an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
 
 	    }
        }else{

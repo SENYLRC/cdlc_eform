@@ -82,7 +82,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
         $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br>Due Date: $dueDate<br><br>Shipped via: empire<br> ".
                                      "<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
@@ -93,7 +93,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
     }
 
     //IF request was filled via oclc
@@ -113,7 +113,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
         $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$article
 PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
@@ -123,7 +123,7 @@ PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
     }
 
 
@@ -171,7 +171,7 @@ PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
 
 
@@ -189,7 +189,7 @@ PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
     }
 
     //Reques1t has not been process yet so don't do anything

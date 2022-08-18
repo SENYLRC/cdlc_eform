@@ -73,7 +73,7 @@ if ($renanswer=='1') {
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+            # for testing mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
         } else {
             echo "Was not able to make updates, please contact Southeastern of this error";
         }
@@ -113,7 +113,7 @@ if ($renanswer=='1') {
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+            # for testing mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
         } else {
             echo "Was not able to make updates, please contact Southeastern of this error";
         }
@@ -150,7 +150,7 @@ if ($renanswer=='1') {
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+            # for testing mail($reqemail, $subject, $messagedest, $headers, "-f ill@cdlc.org");
         } else {
             echo "Was not able to receive the item, please contact Southeastern of this error";
         }
@@ -210,7 +210,7 @@ if ($renanswer=='1') {
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            mail($destemail_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+            # for testing mail($destemail_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
         } else {
             #zack email error function here
             echo "Was not able to renew item due to a technical issue, please let Southeastern know this error occurred";
