@@ -69,13 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
 		    if ($resfill=='1'){
 
                 #######Setting up email notification
-                if($shipmethod=="usps") $shiptxt='US Mail';
-                if($shipmethod=="uhls") $shiptxt='Uppper Hudson Courier';
+                if($shipmethod=="crb") $shiptxt='Capital Region BOCES Courier';
+                if($shipmethod=="empire") $shiptxt='Empire Delivery';
+                if($shipmethod=="fedex") $shiptxt='FedEx';
                 if($shipmethod=="mvls") $shiptxt='MVLS Courier';
                 if($shipmethod=="sals") $shiptxt='SALS Courier';
-                if($shipmethod=="empire") $shiptxt='Empire Delivery';
+                if($shipmethod=="usps") $shiptxt='US Mail';
                 if($shipmethod=="ups") $shiptxt='UPS';
-                if($shipmethod=="fedex") $shiptxt='FedEx';
+                if($shipmethod=="uhls") $shiptxt='Uppper Hudson Courier';
                 if($shipmethod=="other") $shiptxt='Other';
                 if($shipmethod=="") $shiptxt='';
                 $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br>Due Date: $duedate<br><br>Shipped via: $shiptxt<br><br>$respnote ".
@@ -138,13 +139,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
     Ship Method:
       <select name="shipmethod">
         <option value=""></option>
-         <option value="usps">US Mail</option>
-         <option value="uhls">Upper Hudson Courier</option>
+         <option value="crb">Capital Region BOCES Courier</option>
+         <option value="empire">Empire Delivery</option>
+         <option value="fedex">FedEx</option>
          <option value="mvls">MVLS Courier</option>
          <option value="sals">SALS Courier</option>
-         <option value="empire">Empire Delivery</option>
+         <option value="crb">US Mail</option>
          <option value="ups">UPS</option>
-         <option value="fedex">FedEx</option>
+         <option value="uhls">Upper Hudson Courier</option>
          <option value="other">Other</option></select><br>
       <input type="submit" value="Submit">
       </form>

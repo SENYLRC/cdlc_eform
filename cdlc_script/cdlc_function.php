@@ -89,6 +89,9 @@ function shipmtotxt($shipmethod)
     if ($shipmethod=="fedex") {
         $shiptxt='FedEx';
     }
+    if ($shipmethod=="crb") {
+        $shiptxt='Capital Region BOCES Courier';
+    }
     if ($shipmethod=="other") {
         $shiptxt='Other';
     }
