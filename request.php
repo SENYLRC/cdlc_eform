@@ -61,7 +61,7 @@ echo "<input type='hidden' name='reqLOCcode' value= ' ".$field_loc_location_code
 echo "<h1>Request Details</h1>";
 echo "Need by date <input type='text' name='needbydate'><br><br>";
 echo "Note <input type='text' size='100' name='reqnote'><br><br>";
-echo "Patron Name or Barcode <input SIZE=100 MAXLENGTH=255 type='text' size='100' name='patronname'><br><br>";
+echo "Patron Name or Barcode <input SIZE=100 MAXLENGTH=255 type='text' size='100' name='patronnote'><br><br>";
 echo "Is this a request for an article?";
 echo "Yes <input type='radio' onclick='javascript:yesnoCheck();' name='yesno' id='yesCheck'>";
 echo "No <input type='radio' onclick='javascript:yesnoCheck();' name='yesno' id='noCheck' checked='checked'><br>";
@@ -156,13 +156,17 @@ foreach ($records->location as $location) { #Locations loop start
         $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); #Sanitizes locations with special characters in them
         $destill=$locationinfo[0]; #Destination ILL Code
         $destpart=$locationinfo[1]; #0=No, 1=Yes
+
         $destemail=$locationinfo[2]; #Destination emails
         $destsuspend=$locationinfo[3]; #0=No, 1=Yes
         $destlibsystem=$locationinfo[4]; #Destination library system
         $destlibname=$locationinfo[5]; #Destination library name
         $destAlias=$locationinfo[6]; #Destination Alias
         $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); #Sanitizes library names with special characters in them
-        $desttypeloan=check_itemtype($destill, $itemtype); #0=No, 1=Yes
+        //only check item type if they are active in the ILL program
+        if ($destpart==1) {
+            $desttypeloan=check_itemtype($destill, $itemtype); #0=No, 1=Yes
+        }
         if (($catalogtype == "Innovative") && ($itemlocation == "ODY Folio")) {
             $desttypeloan=1;
         }
@@ -293,7 +297,7 @@ foreach ($records->location as $location) { #Locations loop start
                 $failmessage = "Library not loaning this material type";
             }
 
-            if (strlen($$destAlias) < 2) {
+            if (strlen($destAlias) < 2) {
                 $destfail = 1;
                 $destlibname = $itemlocation;
                 $destlibsystem = "Unknown";
@@ -368,13 +372,13 @@ foreach ($records->location as $location) { #Locations loop start
             echo "failmessage: $failmessage\n";
             echo "--> \n\n";
             $destfail=0; #0=No, 1=Yes
-            if ($itemavail == 1) {
-                $destfail = 1;
-                $failmessage = "Material unavailable, see source ILS/LMS for details";
-            }
             if ($destpart == 0) {
                 $destfail = 1;
                 $failmessage = "Library not particpating in CaDiLaC";
+            }
+            if ($itemavail == 1) {
+                $destfail = 1;
+                $failmessage = "Material unavailable, see source ILS/LMS for details";
             }
             if (strlen($destemail) < 2) {
                 $destfail = 1;
