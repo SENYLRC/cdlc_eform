@@ -25,7 +25,7 @@ if ( ($_SERVER['REQUEST_METHOD'] == 'POST')   || ( isset($_GET{'page'}))  ) {
  $loc = $_REQUEST["loc"];
  $libname=$_REQUEST["libname"];
 
-if (strlen ($libname) >2){
+if (strlen ($libname) >0){
   $loc = $libname;
 }
 
