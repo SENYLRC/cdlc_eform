@@ -225,8 +225,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     #Get the Destination Name
     if (strlen($dest)>2) {
         $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
-         #for testing
-#echo $GETLISTSQLDEST;
+        #for testing
+        #echo $GETLISTSQLDEST;
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
         while ($rowdest = mysqli_fetch_assoc($resultdest)) {
             $dest=$rowdest["Name"];
@@ -240,7 +240,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     } else {
         $rowclass="even";
     }
-    $displaynotes=build_notes($reqnote, $patronnote, $lendnote);
+    $displaynotes=build_notes($reqnote, $lendnote);
     $dispalyreturnnotes=build_return_notes($returnnote, $returnmethodtxt);
     $displayrenewnotes= build_renewnotes($renewNote, $renewNoteLender);
     echo "<TR class='$rowclass'><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD><a href='mailto:".$destemail."?Subject=NOTE Request ILL# ".$illNUB."' >$dest</a></TD><TD>$reqp</TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp</TD><TD>$statustxt</TD>";
@@ -261,7 +261,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     }
 
     if ((strlen($reqnote) > 2) || (strlen($patronnote)>2)|| (strlen($lendnote) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR>";
+        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR><TR><TD></TD><TD></TD><TD colspan=8>$patronnote</td></tr>";
     }
     if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
         echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$dispalyreturnnotes</TD></TR>";
