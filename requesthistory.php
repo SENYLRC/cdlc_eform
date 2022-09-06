@@ -223,7 +223,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $returnmethodtxt=shipmtotxt($returnmethod);
     $dest=trim($dest);
     #Get the Destination Name
-    if (strlen($dest)>2) {
+    //has to be set to 0 because NYSL is just N
+    if (strlen($dest)>0) {
         $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
         #for testing
         #echo $GETLISTSQLDEST;
