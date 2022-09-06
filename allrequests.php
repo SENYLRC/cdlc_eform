@@ -227,6 +227,7 @@ if ($filter_numresults != "all") {
 
 $GETFULLSQL = $SQLBASE . $SQLDATES . $SQLTITLE . $SQL_LENDER . $SQL_BORROWER . $SQLILL . $SQLSYSTEM . " AND (" . $SQLMIDDLE . ")" . $SQLEND;
 $GETLISTSQL = $SQLBASE . $SQLDATES . $SQLTITLE . $SQL_LENDER . $SQL_BORROWER . $SQLILL . $SQLSYSTEM . " AND (" . $SQLMIDDLE . ")" . $SQLEND . $SQLLIMIT;
+//for testing
 #echo $GETLISTSQL . "</br>";
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETCOUNT = mysqli_query($db, $GETFULLSQL);
@@ -271,14 +272,14 @@ echo "Start Date <input id='startdate' name='filter_startdate' value='$filter_st
 echo "End Date <input id='enddate' name='filter_enddate' value='$filter_enddate'></br>";
 echo "Library System <select name='filter_system'></br>";
 echo "<option " . selected('', $filter_system) . " value=''>All</option>";
-echo "<option " . selected('MH', $filter_system) . " value = 'MH'>Mid Hudson Library System</option>";
-echo "<option " . selected('RC', $filter_system) . " value = 'RC'>Ramapo Catskill Library System</option>";
-echo "<option " . selected('DU', $filter_system) . " value = 'DU'>Dutchess BOCES</option>";
-echo "<option " . selected('OU', $filter_system) . " value = 'OU'>Orange Ulster BOCES</option>";
-echo "<option " . selected('RB', $filter_system) . " value = 'RB'>Rockland BOCES</option>";
-echo "<option " . selected('SB', $filter_system) . "value = 'SB'>Sullivan BOCES</option>";
-echo "<option " . selected('UB', $filter_system) . " value = 'UB'>Ulster BOCES</option>";
-echo "<option " . selected('SE', $filter_system) . " value = 'SE'>Southeastern Group</option>";
+echo "<option " . selected('CDLC', $filter_system) . " value = 'CDLC'>Capital District Library Council</option>";
+echo "<option " . selected('CRB', $filter_system) . " value = 'CRB'>Capital Region BOCES</option>";
+echo "<option " . selected('HFM', $filter_system) . " value = 'HFM'>Hamilton-Fulton-Montgomery BOCES</option>";
+echo "<option " . selected('MVLS', $filter_system) . " value = 'MVLS'>Mohawk Valley Library System</option>";
+echo "<option " . selected('Q3S', $filter_system) . " value = 'Q3S'>Questar III SLS</option>";
+echo "<option " . selected('SALS', $filter_system) . "value = 'SALS'>Southern Adirondack Library System</option>";
+echo "<option " . selected('UHLS', $filter_system) . " value = 'UHLS'>Upper Hudson Library System</option>";
+echo "<option " . selected('WSWHE', $filter_system) . " value = 'WSWHE'>WSWHE BOCES</option>";
 echo "</select></br>";
 echo "Lender <input name='filter_lender' type='text' value='$filter_lender'> ";
 echo "Borrower <input name='filter_borrower' type='text' value='$filter_borrower'></br>";
@@ -341,9 +342,13 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $shiptxt=shipmtotxt($shipmethod);
     $returnmethodtxt=shipmtotxt($returnmethod);
     $dest=trim($dest);
+    //for testing
+    //echo $dest."<br>";
     #Get the Destination Name
-    if (strlen($dest)>2) {
+    if (strlen($dest)>0) {
         $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
+        //for testing
+        //echo $GETLISTSQLDEST."<br>";
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
         while ($rowdest = mysqli_fetch_assoc($resultdest)) {
             $dest=$rowdest["Name"];
