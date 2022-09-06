@@ -217,7 +217,7 @@ if ($pageaction ==3) {
     <B>Street Address:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="address2"><br>
     <B>City State Zip:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="address3"><br>
     <B>OCLC Symbol:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="oclc"><br>
-    <B>LOC Location:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="loc"><br>
+    <B>LOC Location:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="loc"><a target='_blank' href='https://www.loc.gov/marc/organizations/'>(REQUIRED FOR ILL)</a><br>
     <B>Library ILL participant</b><select name="participant">  <option value="1">Yes</option><option value="0">No</option></select><br>
     <B>Suspend ILL</b><select name="suspend">  <option value="0">No</option><option value="1">Yes</option></select><br>
     <B>Library System</b><select name="system">
@@ -335,7 +335,8 @@ if ($pageaction ==3) {
         echo "<a href='".$_SERVER['REDIRECT_URL']."'>Return to main list</a>";
     } else {
         $GETEDITLISTSQL="SELECT * FROM  `$cdlcLIB` WHERE `recnum` ='$librecnumb'";
-        echo $GETEDITLISTSQL;
+        #for testing
+        #echo $GETEDITLISTSQL;
         $GETLIST = mysqli_query($db, $GETEDITLISTSQL);
         $GETLISTCOUNT = '1';
         $row = mysqli_fetch_assoc($GETLIST);
@@ -373,7 +374,7 @@ if ($pageaction ==3) {
     <B>Street Address:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="address2" value="<?php echo $address2?>"><br>
     <B>City State Zip:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="address3" value="<?php echo $address3?>"><br>
     <B>OCLC Symbol:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="oclc" value="<?php echo $oclc?>"><br>
-    <B>LOC Location:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="loc" value="<?php echo $loc?>"><br>
+    <B>LOC Location:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="loc" value="<?php echo $loc?>"><a target='_blank' href='https://www.loc.gov/marc/organizations/'>(REQUIRED FOR ILL)</a><br>
       <B>Library Email Alert</b><select name="$libemailalert">  <option value="1" <?php if ($libemailalert=="1") {
           echo "selected=\"selected\"";
       } ?>>Yes</option><option value="0" <?php if ($libemailalert=="0") {
