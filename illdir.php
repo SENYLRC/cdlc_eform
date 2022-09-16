@@ -13,9 +13,13 @@ if (isset($_REQUEST['action'])) {
 
 if (isset($_REQUEST['libname'])) {
     $libname = $_REQUEST['libname'];
+}else{
+  $libname='';
 }
 if (isset($_REQUEST['system'])) {
     $system = $_REQUEST['system'];
+}else{
+  $system='';
 }
 
 #Connect to database
@@ -27,15 +31,17 @@ mysqli_select_db($db, $dbname);
 if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     #Display the searched results
     $libname = mysqli_real_escape_string($db, $libname);
-    $libemail = mysqli_real_escape_string($db, $libemail);
+    //don't think i need this line 9/16/2022
+    //$libemail = mysqli_real_escape_string($db, $libemail);
     $GETLISTSQL="SELECT * FROM `$cdlcLIB` WHERE `Name` LIKE '%$libname%' and `system` LIKE '%$system%' and participant = '1' ORDER BY Name Asc";
     $retval = mysqli_query($db, $GETLISTSQL);
     $GETLISTCOUNTwhole = mysqli_num_rows($retval);
     $rec_limit = 50;
     $rowpage = mysqli_fetch_array($retval, MYSQLI_NUM);
     $rec_count = $rowpage[0];
-    $GETLIST = mysqli_query($db, $GETLISTSQL1);
-    $GETLISTCOUNT = mysqli_num_rows($GETLIST);
+    //I don't think I need these two lines 9/16/2022
+    //$GETLIST = mysqli_query($db, $GETLISTSQL1);
+    //$GETLISTCOUNT = mysqli_num_rows($GETLIST);
     #echo " $GETLISTCOUNTwhole  results";
     if (isset($_GET{'page'})) {
         $page = $_GET{'page'} + 1;
@@ -195,7 +201,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
         } else {
             echo "<div class='illDirTableRowGrey'>"; #Start the next illDirTableRow
         }
-        $no++;
+        //not sure why this is there 9/16/2022
+        //$no++;
     }
 }
 echo "</div>";  #end the illDirTable
