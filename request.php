@@ -339,7 +339,7 @@ foreach ($records->location as $location) { #Locations loop start
         foreach ($recordssSESLC->d952 as $d952) {
             //$itemavai=$d952['i1'];
             $itemlocation=$d952->sb;
-            $itemcallnum=$d952->s6;
+            $itemcallnum=$d952->so;
             $itemavail=$d952->s7;
             #Remove colon from call numbers
             $seslccall= str_replace(':', '.', $seslccall);
