@@ -14,6 +14,7 @@ $lname=$_REQUEST["lname"];
 $email=$_REQUEST["email"];
 $inst=$_REQUEST["inst"];
 $address=$_REQUEST["address"];
+$address2=$_REQUEST["address2"];
 $caddress=$_REQUEST["caddress"];
 $wphone=$_REQUEST["wphone"];
 
@@ -23,6 +24,7 @@ if (isset($_REQUEST['reqLOCcode'])) {
 if (isset($_REQUEST['bibauthor'])) {
     $author = $_REQUEST['bibauthor'];
 }
+
 if (isset($_REQUEST['bibtitle'])) {
     $title = $_REQUEST['bibtitle'];
 }
@@ -130,6 +132,7 @@ foreach ($_POST['libdestination'] as $destination) {
         $reqLOCcode = mysqli_real_escape_string($db, $reqLOCcode);
         $wphone = mysqli_real_escape_string($db, $wphone);
         $saddress = mysqli_real_escape_string($db, $address);
+        $saddress2 = mysqli_real_escape_string($db, $address2);
         $caddress = mysqli_real_escape_string($db, $caddress);
 
         $destloc = trim($destloc);
@@ -139,8 +142,8 @@ foreach ($_POST['libdestination'] as $destination) {
 
 
 
-        $sql = "INSERT INTO `$cdlcSTAT` (`illNUB`,`Title`,`Author`,`pubdate`,`reqisbn`,`reqissn`,`itype`,`Call Number`,`Location`,`Available`,`article`,`needbydate`,`reqnote`,`patronnote`,`Destination`,`DestSystem`,`Requester lib`,`Requester LOC`,`ReqSystem`,`Requester person`,`requesterEMAIL`,`Timestamp`,`Fill`,`responderNOTE`,`requesterPhone`,`saddress`,`caddress`)
- VALUES ('0','$ititle','$iauthor','$pubdate','$isbn','$issn','$itype','$itemcall','$itemlocation','$itemavail','$article','$needbydate','$reqnote','$patronnote','$destloc','$destsystem','$inst','$reqLOCcode','$reqsystem','$fname $lname','$email','$today','3','','$wphone','$saddress','$caddress')";
+        $sql = "INSERT INTO `$cdlcSTAT` (`illNUB`,`Title`,`Author`,`pubdate`,`reqisbn`,`reqissn`,`itype`,`Call Number`,`Location`,`Available`,`article`,`needbydate`,`reqnote`,`patronnote`,`Destination`,`DestSystem`,`Requester lib`,`Requester LOC`,`ReqSystem`,`Requester person`,`requesterEMAIL`,`Timestamp`,`Fill`,`responderNOTE`,`requesterPhone`,`saddress`,`saddress2`,`caddress`)
+ VALUES ('0','$ititle','$iauthor','$pubdate','$isbn','$issn','$itype','$itemcall','$itemlocation','$itemavail','$article','$needbydate','$reqnote','$patronnote','$destloc','$destsystem','$inst','$reqLOCcode','$reqsystem','$fname $lname','$email','$today','3','','$wphone','$saddress','$saddress2','$caddress')";
          //for testing
         //for testing
       //  echo $sql."<br>";
@@ -185,6 +188,7 @@ foreach ($_POST['libdestination'] as $destination) {
      The title is requested by the following library:<br>
      $inst<br>
      $address<br>
+     $address2<br>
      $caddress<br><br>
      Need by: $needbydate<br>
      Note from requestor: $reqnote<br><br><br>
@@ -209,6 +213,7 @@ foreach ($_POST['libdestination'] as $destination) {
      The title is requested by the following library:<br>
      $inst<br>
      $address<br>
+     $address2<br>
      $caddress<br><br>
      Need by: $needbydate<br>
      Note from requestor: $reqnote<br><br><br>

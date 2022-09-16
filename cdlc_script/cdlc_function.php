@@ -12,6 +12,7 @@ $field_last_name = $user->get('field_last_name')->value;
 $field_your_institution = $user->get('field_your_institution')->value;
 $field_loc_location_code = $user->get('field_loc_location_code')->value;
 $field_street_address = $user->get('field_street_address')->value;
+$field_street_address2 = $user->get('field_street_address2')->value;
 $field_city_state_zip = $user->get('field_city_state_zip')->value;
 $field_work_phone = $user->get('field_work_phone')->value;
 $field_home_library_system = $user->get('field_home_library_system')->value;
@@ -303,6 +304,9 @@ function find_catalog($location)
 }
 function find_locationinfo($locationalias, $locationname)
 {
+    //make sure we tailing white space
+    $locationalias=trim($locationalias);
+    $locationname=trim($locationname);
     $libparticipant='';
     require '/var/www/cdlc_script/cdlc_db.inc';
     $db = mysqli_connect($dbhost, $dbuser, $dbpass);
@@ -316,6 +320,9 @@ function find_locationinfo($locationalias, $locationname)
     }
     #for test list of libraries on request page
     #echo $GETLISTSQL."<br>";
+    #echo $locationalias."<br>";
+    #echo $locationname."<br>";
+
     $result=mysqli_query($db, $GETLISTSQL);
     $row = mysqli_fetch_row($result);
     $libparticipant = $row;
