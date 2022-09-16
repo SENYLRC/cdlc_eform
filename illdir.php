@@ -73,8 +73,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
 ?>
   <h3>Search the directory</h3>
   <form action="<?php echo "".$_SERVER['REDIRECT_URL']."?". $_SERVER['QUERY_STRING']."";?>" method="post">
-  <B>Library Name:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libname"><br>
-  <B>Library System</b> <select name="system">
+  <b>Library Name:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libname"><br>
+  <b>Library System:</b> <select name="system">
     <option value=""></option>
     <option value="CDLC">Capital District Library Council</option>
     <option value="CRB">Capital Region BOCES</option>
@@ -125,11 +125,11 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     } else {
         $system="Unknow";
     }
-    $book = $row["book"];
-    $journal = $row["journal"];
-    $av = $row["av"];
-    $reference = $row["reference"];
-    $ebook = $row["ebook"];
+    $book = $row["book_loan"];
+    $journal = $row["periodical_loan"];
+    $av = $row["av_loan"];
+    $reference = $row["theses_loan"];
+    $ebook = $row["ebook_request"];
     if ($libsuspend=="0") {
         $libsuspend="Yes";
     } else {
@@ -140,27 +140,27 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     } else {
         $libparticipant ="No";
     }
-    if ($book =="1") {
+    if ($book =="Yes") {
         $book ="Yes";
     } else {
         $book ="No";
     }
-    if ($journal =="1") {
+    if ($journal =="Yes") {
         $journal ="Yes";
     } else {
         $journal ="No";
     }
-    if ($av =="1") {
+    if ($av =="Yes") {
         $av ="Yes";
     } else {
         $av ="No";
     }
-    if ($reference =="1") {
+    if ($reference =="Yes") {
         $reference ="Yes";
     } else {
         $reference ="No";
     }
-    if ($ebook =="1") {
+    if ($ebook =="Yes") {
         $ebook ="Yes";
     } else {
         $ebook ="No";
@@ -180,12 +180,12 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "ILL Code: <strong> $loc</strong><br>";
     echo "Accepting Requests: <strong> $libsuspend </strong>";
     echo "<br><br>";
-    echo "<button onclick='showHide($count)'>Show loaning options</button>";
+    echo "<button onclick='showHide($count)'>Show loaning options</button><br><br>";
     echo "<span class='loadoptions' id='showhide-$count' style='display: none'>";
     echo "Loaning Books: <strong>$book</strong><br>";
     echo "Loaning Journals or Articles: <strong>$journal</strong><br>";
     echo "Loaning Audio/Video: <strong>$av</strong><br>";
-    echo "Loaning Reference: <strong>$reference</strong><br>";
+    echo "Loaning Theses: <strong>$reference</strong><br>";
     echo "Loaning E-Books: <strong>$ebook</strong><br><br>";
     echo "</div>"; #end the illDirTableCell
     if ($count++ % 2 == 0) {
