@@ -208,7 +208,7 @@ foreach ($records->location as $location) { #Locations loop start
             $destfail = 2;
             $failmessage = "Library not loaning this material type";
         }
-        if (($destlibsystem == $field_home_library_system[0]['value']) && ($field_filter_own_system[0]['value'] == 1)) {
+        if (($destlibsystem == $field_home_library_system) && ($field_filter_own_system == 1)) {
             $destfail = 1;
             $failmessage = "Library a member of your system, please request through your ILS/LMS";
         }
