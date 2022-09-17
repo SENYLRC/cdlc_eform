@@ -194,6 +194,13 @@ if ($pageaction ==3) {
         $ejournal = mysqli_real_escape_string($db, $ejournal);
         $reference = mysqli_real_escape_string($db, $reference);
         $oclc = mysqli_real_escape_string($db, $oclc);
+        //remove whitespace
+        $libname=trim($libname);
+        $libalias=trim($libalias);
+        $address1=trim($address1);
+        $address2=trim($address2);
+        $address3=trim($address3);
+        $phone=trim($phone);
         $oclc=trim($oclc);
         $loc=trim($loc);
         $libemail=trim($libemail);
@@ -315,6 +322,12 @@ if ($pageaction ==3) {
         $ejournal = mysqli_real_escape_string($db, $ejournal);
         $reference = mysqli_real_escape_string($db, $reference);
         $oclc = mysqli_real_escape_string($db, $oclc);
+        $libname=trim($libname);
+        $libalias=trim($libalias);
+        $address1=trim($address1);
+        $address2=trim($address2);
+        $address3=trim($address3);
+        $phone=trim($phone);
         $oclc=trim($oclc);
         $libilliadurl = mysqli_real_escape_string($db, $libilliadurl);
         $loc=trim($loc);
@@ -592,7 +605,7 @@ if ($pageaction ==3) {
     echo "<br><a href='adminlib'>Clear</a> <input type=Submit value=Update><br>";
     echo "</form>";
     echo "<a href='".$_SERVER['REDIRECT_URL']."?action=1'>Would you like to add a library?</a><br>";
-    echo "<a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending</a><br>";
+    echo "<a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending (hint: for updating system)</a><br>";
     echo "<table><tr><th>Library</th><th>Alias</th><th>Participant</th><th>Suspend</th><th>System</th><th>OCLC</th><th>LOC</th><th>Action</th></tr>";
     while ($row = mysqli_fetch_assoc($GETLIST)) {
         $librecnumb = $row["recnum"];
