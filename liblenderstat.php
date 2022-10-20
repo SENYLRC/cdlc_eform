@@ -29,9 +29,15 @@ if (strlen ($libname) >0){
   $loc = $libname;
 }
 
+$reg = '~(0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])[-/](19|20)\d\d~';
+//checking if date is in the correct format
+ if((!preg_match($reg, $startdated))||(!preg_match($reg, $enddated))) {
+echo "<h1 style=color:red;>Date is not in the correct format of mm/dd/yyyy </h1>";
+}else{
 $loc = mysqli_real_escape_string($db,$loc);
 $startdate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $startdated)));
 $enddate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $enddated)));
+
 
  #Get total requests received
 $GETREQUESTCOUNTSQLL= "SELECT * FROM `$cdlcSTAT` WHERE `Destination` LIKE '$loc'   and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' ";
@@ -223,7 +229,7 @@ if (strcmp($reqsysvar,'CRB')==0){
        }
    echo "<br><hr><br>";
   }
-
+}//end date format check
 
  }else{
 if (isset($_GET['loc'])){  $loc = $_GET['loc'];  }else{$loc='null';}
