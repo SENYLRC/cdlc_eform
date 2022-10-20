@@ -134,7 +134,7 @@ foreach ($_POST['libdestination'] as $destination) {
         $saddress = mysqli_real_escape_string($db, $address);
         $saddress2 = mysqli_real_escape_string($db, $address2);
         $caddress = mysqli_real_escape_string($db, $caddress);
-
+        $itype = trim($itype);
         $destloc = trim($destloc);
         $reqLOCcode = trim($reqLOCcode);
         #The SQL statement to insert for Stats and to recall if needed in the future

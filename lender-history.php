@@ -121,6 +121,8 @@ if (strlen($filter_illnum) > 2) {
 
 if (strlen($filter_destination) > 2) {
     $SQL_Dest_Search="SELECT `loc` FROM `$cdlcLIB`  where `Name` like '%$filter_destination%'";
+    #for testing
+    #echo $SQL_Dest_Search."<br>";
     $PossibleDests=mysqli_query($db, $SQL_Dest_Search);
     while ($rowdest = mysqli_fetch_assoc($PossibleDests)) {
         $destloc=$rowdest["loc"];
