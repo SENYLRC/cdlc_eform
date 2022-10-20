@@ -72,9 +72,7 @@ function getWorkingDays($startDate, $endDate, $holidays)
     return $workingDays;
 }
 
-
-$holidays=array("2022-01-01","2022-01-17","2022-02-12","2022-05-30","2022-06-20","2021-09-07","2021-10-12","2021-10-31","2021-11-11","2021-11-26","2021-11-27","2020-12-27","2021-12-28","2021-12-29","2021
--12-30","2021-12-31");
+$holidays=array("2023-01-01","2023-01-16","2023-02-20","2023-05-29","2023-06-19","2023-07-04","2023-09-04","2023-10-9","2022-11-11","2022-11-24","2021-11-25","2022-12-26","2022-12-27","2022-12-28","2022-12-29","2022-12-30");
 
 
 
@@ -237,8 +235,9 @@ his ILL transaction, email ".$email."
         $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-
-        # for testing mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+        #mail has been sent to meg at CDLC for development
+        $email_to="mwakeman@cdlc.org";
+        mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
 
 
         #####SEND a copy of EMAIL to requester with DKIM sig
@@ -248,7 +247,9 @@ his ILL transaction, email ".$email."
 
         $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
+        #mail has been sent to meg at CDLC for development
+        $email="mwakeman@cdlc.org";
+        mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
 
         $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '2' , `responderNOTE` =  'REMINDER MSG Sent' WHERE `illNUB` = '$illnum'";
         mysqli_query($db, $sqlupdate);

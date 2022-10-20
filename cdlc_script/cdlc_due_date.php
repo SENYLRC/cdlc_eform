@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 #####Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
@@ -61,7 +61,9 @@ library in this ILL transaction, email.";
 
     $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
     $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-    # for testing mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
+    #mail has been sent to meg at CDLC for development
+    $email_to="mwakeman@cdlc.org";
+    mail($email_to, $subject, $messagereq, $headers, "-f ill@cdlc.org");
 
 
 

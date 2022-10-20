@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
 
                 #######Setting up email notification
                 if($shipmethod=="crb") $shiptxt='Capital Region BOCES Courier';
-                if($shipmethod=="empire") $shiptxt='Empire Delivery';
+                if($shipmethod=="empire") $shiptxt='Empire Library Delivery';
                 if($shipmethod=="fedex") $shiptxt='FedEx';
                 if($shipmethod=="mvls") $shiptxt='MVLS Courier';
                 if($shipmethod=="sals") $shiptxt='SALS Courier';
@@ -87,7 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
                 #####SEND requester an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                #mail has been sent to meg at CDLC for development
+                $to="mwakeman@cdlc.org";
+                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
 
 		    ###Sending not filledmessage#########
 	        }else{
@@ -116,7 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
                 #####SEND requester an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                #mail has been sent to meg at CDLC for development
+                $to="mwakeman@cdlc.org";
+                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
 
 	    }
        }else{
@@ -138,9 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
       <input id="datepicker" name="duedate"/><br>
     Ship Method:
       <select name="shipmethod">
-        <option value=""></option>
+          <option value=""></option>
          <option value="crb">Capital Region BOCES Courier</option>
-         <option value="empire">Empire Delivery</option>
+         <option value="empire">Empire Library Delivery</option>
          <option value="fedex">FedEx</option>
          <option value="mvls">MVLS Courier</option>
          <option value="sals">SALS Courier</option>
