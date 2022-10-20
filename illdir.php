@@ -178,7 +178,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong> $libaddress3 </strong><br>";
     echo "Phone: <strong> $libphone</strong><br>";
     echo "Library System:<strong> $system</strong><br>";
-    if ($user->uid) {
+    if ($user_id>0) {
         echo "ILL Email(s): <a href='mailto:$illemail' target='_blank'>$illemail</a><br>";
     }
 
