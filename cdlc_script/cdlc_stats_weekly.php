@@ -85,7 +85,7 @@ $subject = "eform Stats for the week of ".$startdate." to ".$curdate."";
 
 $email_to = "spalding@senylrc.org;ill@cdlc.org";
 
- $headers = "From: SENYLRC SEAL <donotreply@cdlc.org>\r\n" ;
+ $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
  $headers .= "MIME-Version: 1.0\r\n";
  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
