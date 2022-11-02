@@ -249,13 +249,13 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
         #Only show cancel button if request has not been answered
         echo "<TD><a href ='/cancel?num=$illNUB&a=3'>Cancel Request</a></TD></TR> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)<2)) {
-        #Only show the recvied button of the request was filled to start with
+        #Only show the received button of the request was filled to start with
         echo"<td><a class='confirmation' href ='/status?num=$illNUB&a=1'>Received Item</a></td></tr> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)>1)&&(strlen($returnaccount)<1)) {
-        #Only show renew and return if request was recived but not returned
-        echo"<td><a href ='/renew?num=".$illNUB."&a=3'>Request a Renewal</a><br><br><a href ='/status?num=".$illNUB."&a=2'>Return Item</a></td></tr> ";
+        #Only show renew and return if request was received but not returned
+        echo"<td><a href ='/renew?num=".$illNUB."&a=3'>Request Renewal</a><hr><a href ='/status?num=".$illNUB."&a=2'>Return Item</a></td></tr> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)>1)&&($renewAnswer!=0)&&(strlen($returnaccount)<1)) {
-        #Only show renew and return if request was recived but not returned
+        #Only show renew and return if request was received but not returned
         echo"<td><a href ='/status?num=".$illNUB."&a=2'>Return Item</a></td></tr> ";
     } else {
         echo "<td>&nbsp</td>";

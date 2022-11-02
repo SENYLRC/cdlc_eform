@@ -264,7 +264,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "<TR class='$rowclass'><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
     if (($fill == 3) || (strlen($receiveAccount)<1)&&($daysdiff < '30')) {
         #Only show cancel button if request has not been answered and not received.
-        echo "<TD><a href='/respond?num=$illNUB&a=1'>Fill</a><br><br><a href='/respond?num=$illNUB&a=0'>Not Fill</a></TD></TR> ";
+        echo "<TD><a href='/respond?num=$illNUB&a=1'>Fill</a><hr><a href='/respond?num=$illNUB&a=0'>Not Fill</a></TD></TR> ";
     } elseif ((strlen($returnAccount)<2)&&($fill== 1)&&($renewAnswer==0)&&(strlen($renewAccountRequester)>1)&&(strlen($checkinAccount)<2)) {
         #Only show renew if someon requested a renwall
         echo"<td><a href ='/renew?num=".$illNUB."&a=1'>Approve Renewal</a><br><br><a href ='/renew?num=".$illNUB."&a=2'>Deny Renewal</a><br> ";

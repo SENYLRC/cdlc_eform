@@ -183,7 +183,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     }
 
     echo "OCLC Symbol: <strong> $oclc</strong><br>";
-    echo "ILL Code: <strong> $loc</strong><br>";
+    echo "LOC Code: <strong> $loc</strong><br>";
     echo "Accepting Requests: <strong> $libsuspend </strong>";
     echo "<br><br>";
     echo "<button onclick='showHide($count)'>Show loaning options</button><br><br>";
