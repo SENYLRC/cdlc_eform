@@ -309,8 +309,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 echo "</table>";
 ?>
 <select name="bulkaction" id="bulkaction">
-  <option value="4">Fill Requests</option>
-  <option value="5">Don't Fill Request</option>
+  <option value="4">Requests Filled</option>
+  <option value="5">Request Not Filled</option>
   <option value="6">Check Item Back In</option>
 </select>
 <input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
