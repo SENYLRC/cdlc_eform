@@ -187,8 +187,12 @@ $GETLISTSQL = $SQLBASE . $SQL_DESTINATION . $SQL_DAYS . $SQLILL . " AND (" . $SQ
 #echo $GETLISTSQL;
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
+#This is the form to process bulk actions
+?>
+<form action=bulkaction method='post'>
+<?php
 echo "$GETLISTCOUNTwhole results<bR>";
-echo "<table><TR><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Lender Destination & Contact</TH><TH>Borrower</TH><TH>Due Date & Shipping</TH><TH>Timestamp</TH><TH>Status</TH><TH>Action</TH></TR>";
+echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Lender Destination & Contact</TH><TH>Borrower</TH><TH>Due Date & Shipping</TH><TH>Timestamp</TH><TH>Status</TH><TH>Action</TH></TR>";
 $rowtype=1;
 while ($row = mysqli_fetch_assoc($GETLIST)) {
     $illNUB = $row["illNUB"];
@@ -244,7 +248,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $displaynotes=build_notes($reqnote, $lendnote);
     $dispalyreturnnotes=build_return_notes($returnnote, $returnmethodtxt);
     $displayrenewnotes= build_renewnotes($renewNote, $renewNoteLender);
-    echo "<TR class='$rowclass'><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD><a href='mailto:".$destemail."?Subject=NOTE Request ILL# ".$illNUB."' >$dest</a></TD><TD>$reqp</TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp</TD><TD>$statustxt</TD>";
+    echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD><a href='mailto:".$destemail."?Subject=NOTE Request ILL# ".$illNUB."' >$dest</a></TD><TD>$reqp</TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp</TD><TD>$statustxt</TD>";
     if ($fill == 3) {
         #Only show cancel button if request has not been answered
         echo "<TD><a href ='/cancel?num=$illNUB&a=3'>Cancel Request</a></TD></TR> ";
@@ -277,6 +281,15 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 }
 echo "</table>";
 ?>
+<select name="bulkaction" id="bulkaction">
+  <option value="1">Cancel Requests</option>
+  <option value="2">Renew Requests</option>
+  <option value="3">Received Item</option>
+</select>
+<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
+
+</from>
+<?php //end for to process bulk action?>
 <script type="text/javascript">
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {

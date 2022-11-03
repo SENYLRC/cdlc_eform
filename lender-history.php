@@ -36,7 +36,7 @@ if (isset($_GET['loc'])) {
             $filter_days="all";
             $filter_destination="";
         } else {
-          $loc=$field_loc_location_code ;
+            $loc=$field_loc_location_code ;
 
             $filter_yes = (isset($_REQUEST['filter_yes']) ? $_REQUEST['filter_yes'] : "");
             $filter_no = (isset($_REQUEST['filter_no']) ? $_REQUEST['filter_no'] : "");
@@ -198,9 +198,13 @@ $GETLISTSQL = $SQLBASE . $SQL_DESTINATION . $SQL_DAYS . $SQLILL . " AND (" . $SQ
 #echo $GETLISTSQL; #Diagnostic... displays sql string
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
+#This is the form to process bulk actions
+?>
+<form action=bulkaction method='post'>
+<?php
 echo "$GETLISTCOUNTwhole results<bR>";
 
-echo "<table><TR><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower & Contact</TH><TH>Due Date & Shipping</TH><TH>Timestamp & Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
+echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower & Contact</TH><TH>Due Date & Shipping</TH><TH>Timestamp & Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
 $rowtype=1;
 while ($row = mysqli_fetch_assoc($GETLIST)) {
     $illNUB = $row["illNUB"];
@@ -261,7 +265,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $timestamp =     date("Y-m-d", strtotime($timestamp));
     $daysdiff = round(abs(strtotime($now)-strtotime($timestamp))/86400);
 
-    echo "<TR class='$rowclass'><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
+    echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
     if (($fill == 3) || (strlen($receiveAccount)<1)&&($daysdiff < '30')) {
         #Only show cancel button if request has not been answered and not received.
         echo "<TD><a href='/respond?num=$illNUB&a=1'>Fill</a><hr><a href='/respond?num=$illNUB&a=0'>Not Fill</a></TD></TR> ";
@@ -304,6 +308,15 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 }
 echo "</table>";
 ?>
+<select name="bulkaction" id="bulkaction">
+  <option value="4">Fill Requests</option>
+  <option value="5">Don't Fill Request</option>
+  <option value="6">Check Item Back In</option>
+</select>
+<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
+
+</from>
+<?php //end for to process bulk action?>
 <script type="text/javascript">
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
