@@ -95,7 +95,6 @@ if (strlen($issn)>2) {
 #Pull the information of the person making the request
 $reqsystem=$field_home_library_system;
 foreach ($_POST['libdestination'] as $destination) {
-
     list($libcode, $library, $destsystem, $itemavail, $itemcall, $itemlocation, $destemail, $destloc) = explode(":", $destination);
     #UnHTML encodes call numbers that might have strange characters
     $itemcall = htmlspecialchars_decode($itemcall, ENT_QUOTES);
@@ -144,9 +143,9 @@ foreach ($_POST['libdestination'] as $destination) {
 
         $sql = "INSERT INTO `$cdlcSTAT` (`illNUB`,`Title`,`Author`,`pubdate`,`reqisbn`,`reqissn`,`itype`,`Call Number`,`Location`,`Available`,`article`,`needbydate`,`reqnote`,`patronnote`,`Destination`,`DestSystem`,`Requester lib`,`Requester LOC`,`ReqSystem`,`Requester person`,`requesterEMAIL`,`Timestamp`,`Fill`,`responderNOTE`,`requesterPhone`,`saddress`,`saddress2`,`caddress`)
  VALUES ('0','$ititle','$iauthor','$pubdate','$isbn','$issn','$itype','$itemcall','$itemlocation','$itemavail','$article','$needbydate','$reqnote','$patronnote','$destloc','$destsystem','$inst','$reqLOCcode','$reqsystem','$fname $lname','$email','$today','3','','$wphone','$saddress','$saddress2','$caddress')";
-         //for testing
         //for testing
-      //  echo $sql."<br>";
+        //for testing
+        //  echo $sql."<br>";
 
         if (mysqli_query($db, $sql)) {
             //for testing
@@ -196,6 +195,7 @@ foreach ($_POST['libdestination'] as $destination) {
      $fname $lname<br>
      $email<br>
      $wphone<br>";
+            //end of the message to the requester
 
             #Message for the destination library
             $messagedest = "An ILL request ($illnum) has been created for the following: <br><br>
@@ -221,8 +221,9 @@ foreach ($_POST['libdestination'] as $destination) {
      $fname $lname<br>
      $email<br>
      $wphone<br><br>
-     Will you fill this request?  <a href='https://eform.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='https://duenorth.nnyln.org/respond?num=$illnum&a=0' >No</a><br>";
-
+     Will you fill this request?  <a href='https://eform.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='https://eform.cdlc.org/respond?num=$illnum&a=0' >No</a><br>";
+            //end of the message to the destination
+            //start of sending mail
             #Set email subject for request
             $subject = "NEW ILL Request from $inst ILL# $illnum";
 
@@ -234,16 +235,18 @@ foreach ($_POST['libdestination'] as $destination) {
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             #mail has been sent to meg at CDLC for development
             $email_to="mwakeman@cdlc.org";
-             mail($email_to, $subject, $messagedest, $headers);
+            mail($email_to, $subject, $messagedest, $headers);
 
             #SEND a copy of EMAIL to the requester with DKIM sig
             $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        #mail has been sent to meg at CDLC for development
-        $email="mwakeman@cdlc.org";
-         mail($email, $subject, $messagereq, $headers);
+            #mail has been sent to meg at CDLC for development
+            $email="mwakeman@cdlc.org";
+            mail($email, $subject, $messagereq, $headers);
+
+        //end of sending mail
         } else {
             #Something happened, and I could not create a request
             echo "Error: " . $sql . "<br>" . mysqli_error($db);
@@ -252,15 +255,16 @@ foreach ($_POST['libdestination'] as $destination) {
         }#end if for SQL query check
     }//end if the check for POST
 
-
     #This will generate the web page response
-    echo "<br>Details of your request(s):<br>
-Library: <b>$library</b><br>
-Title: <b>$title</b><br>
-Author: <b>$author</b><br>
-Publication Date: <b>$pubdate</b><br><br>
-A copy of this request has also been emailed to the requester $fname $lname at $email.<br>" ;
+    echo "<br>Details of your request(s):<br>";
+    echo "Library: <b>$library</b><br>" ;
+    echo "Title: <b>$title</b><br>" ;
+    echo "Author: <b>$author</b><br>" ;
+    echo "Publication Date: <b>$pubdate</b><br><br>" ;
+    echo "A copy of this request has also been emailed to the requester $fname $lname at $email.<br>" ;
 }//end foreach loop
-#Ask the requester if they would like to make another request
-echo "<br><a href='https://eform.cdlc.org'>Would you like to make another request?<a>";
 mysqli_close($db);
+#Ask the requester if they would like to make another request
+?>
+<br>
+<a href='/'>Would you like to make another request?</a>
