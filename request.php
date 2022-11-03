@@ -31,7 +31,7 @@ $reqserverurl='https://cdlc.indexdata.com/service-proxy/?command=record\\&window
 #Define the CURL command
 $cmd= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc);
 #put in curl command in as html comment for development
-#echo "<!-- my cmd is  $cmd \n-->";
+echo "<!-- my cmd is  $cmd \n-->";
 #Run the CURL to get XML data
 $output = shell_exec($cmd);
 #put xml in html src for development
@@ -42,13 +42,12 @@ $output = shell_exec($cmd);
 
 echo "<p>Please review the details of your request and then select a library to send your request to.</p>";
 echo "<form action='sent' method='post'>";
-echo "<h1>Requester Details</h1>";
-echo "First Name:  " .$field_first_name. "<br>";
-echo "Last Name:  ".$field_last_name. "<Br>";
-echo "E-mail:  ".$email. "<br>";
-echo  "Institution:  ".$field_your_institution ."<br>";
-echo    "Work Phone: ".$field_work_phone ."<br>";
-echo   "Mailing Address:<br>  ".$field_street_address."<br> ".$field_street_address2."<br> ".$field_city_state_zip."<br><br>";
+echo "<h3>Requester Details</h3>";
+echo "<b>Name:</b>  " .$field_first_name. " ".$field_last_name. "<br>";
+echo "<b>E-mail:</b> ".$email. "<br>";
+echo  "<b>Institution:</b>  ".$field_your_institution ."<br>";
+echo  "<b>Work Phone:</b> ".$field_work_phone ."<br>";
+echo  "<b>Mailing Address:</b> <br> ".$field_street_address2."<br>".$field_street_address."<br> ".$field_city_state_zip."<br><br>";
 echo "<input type='hidden' name='fname' value= ' ".$field_first_name ." '>";
 echo "<input type='hidden' name='lname' value= ' ".$field_last_name ." '>";
 echo "<input type='hidden' name='email' value= ' ".$email ."'>";
@@ -59,7 +58,7 @@ echo "<input type='hidden' name='address2' value= ' ".$field_street_address2 ." 
 echo "<input type='hidden' name='caddress' value= ' ".$field_city_state_zip ." '>";
 echo "<input type='hidden' name='wphone' value= ' ".$field_work_phone ." '>";
 echo "<input type='hidden' name='reqLOCcode' value= ' ".$field_loc_location_code ." '>";
-echo "<h1>Request Details</h1>";
+echo "<h3>Request Details</h3>";
 echo "Need by date <input type='text' name='needbydate'><br><br>";
 echo "Note <input type='text' size='100' name='reqnote'><br><br>";
 echo "Patron Name or Barcode <input SIZE=100 MAXLENGTH=255 type='text' size='100' name='patronnote'><br><br>";
