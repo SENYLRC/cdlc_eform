@@ -309,7 +309,6 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 echo "</table>";
 ?>
 <select name="bulkaction" id="bulkaction">
-  <option value="4">Requests Filled</option>
   <option value="5">Request Not Filled</option>
   <option value="6">Check Item Back In</option>
 </select>
