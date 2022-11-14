@@ -71,7 +71,7 @@ if (isset($_GET['loc'])) {
 #Filter options
 echo "<form action='lender-history' method='post'>";
 echo "<input type='hidden' name='loc' value= '$loc'>";
-echo "<p>Display Fill Status: ";
+echo "<p><B>Display Fill Status:</b><br> ";
 echo "<input type='checkbox' name='filter_yes' value='yes' " . checked($filter_yes) . ">Yes  ";
 echo "<input type='checkbox' name='filter_no' value='yes' " . checked($filter_no) . ">No  ";
 echo "<input type='checkbox' name='filter_noans' value='yes' " . checked($filter_noans) . ">No Answer  ";
@@ -201,6 +201,12 @@ $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
 #This is the form to process bulk actions
 ?>
 <form action=bulkaction method='post'>
+<select name="bulkaction" id="bulkaction">
+  <option value="5">Request Not Filled</option>
+  <option value="6">Check Item Back In</option>
+</select>
+<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
+
 <?php
 echo "$GETLISTCOUNTwhole results<bR>";
 
@@ -308,11 +314,6 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 }
 echo "</table>";
 ?>
-<select name="bulkaction" id="bulkaction">
-  <option value="5">Request Not Filled</option>
-  <option value="6">Check Item Back In</option>
-</select>
-<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
 
 </from>
 <?php //end for to process bulk action?>

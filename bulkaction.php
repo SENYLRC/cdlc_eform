@@ -8,7 +8,7 @@
 //5 not fill  (send email)
 //6 check item back in
 
-#####Connect to database
+// Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 require '/var/www/cdlc_script/cdlc_function.php';
 
@@ -27,22 +27,22 @@ if (isset($_POST['bulkaction'])) {
     $ids = array();
     foreach ((array) $_POST['check_list'] as $id) {
         echo "Processing ILL #".$id."<br>";
-        #Get title and request email and destination library
+        // Get title and request email and destination library
         $sqlselect="select requesterEMAIL,Title,Destination from  `$cdlcSTAT` where illNUB='$id'  LIMIT 1 ";
         $result = mysqli_query($db, $sqlselect);
-        $row = mysqli_fetch_array($result) ;
+        $row = mysqli_fetch_array($result);
         $title =$row['Title'];
         $requesterEMAIL=$row['requesterEMAIL'];
         $destlib=$row['Destination'];
 
-        ###Get the Destination Name
+        // Get the Destination Name
         $GETLISTSQLDEST="SELECT`Name`, `ill_email` FROM  `$cdlcLIB`  where loc like '$destlib'  limit 1";
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
         while ($rowdest = mysqli_fetch_assoc($resultdest)) {
             $destlib=$rowdest["Name"];
             $destemail=$rowdest["ill_email"];
         }
-        #In case the ill_email for the destination library is more than one, break it down to a comma for PHP mail
+        // In case the ill_email for the destination library is more than one, break it down to a comma for PHP mail
         $destemailarray = explode(';', $destemail);
         $destemail_to = implode(',', $destemailarray);
 
@@ -54,15 +54,15 @@ if (isset($_POST['bulkaction'])) {
                 $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-                #######Setting up email notification
+                // Setting up email notification
                 $message = "ILL request $id for $title has been canceled ";
 
-                #	$to="spalding@senylrc.org";
+                // $to="spalding@senylrc.org";
                 $subject = "ILL Request Canceled ILL# $id  ";
-                #####SEND request an email to let them know the request will be filled
+                // SEND request an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                #mail has been sent to meg at CDLC for development
+                // mail has been sent to meg at CDLC for development
                 $destemail_to="mwakeman@cdlc.org";
                 mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
@@ -73,24 +73,24 @@ if (isset($_POST['bulkaction'])) {
             if (mysqli_query($db, $sqlupdate)) {
                 echo "ILL #".$id." rewnew request sent<br>";
 
-                ######Message for the destination library
+                // Message for the destination library
                 $messagedest = $field_your_institution." has requested a renewal for ILL# ".$id."<br>Title: ".$title."<br><br>
                 <br>
                 How do you wish to answer the renewal?  <a href='http://eform.cdlc.org/renew?num=$id&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://eform.cdlc.org/renew?num=$id&a=2' >Deny</a>
                 <Br>
                 <hr style='width:200px;text-align:left;margin-left:0'>
                 <br>  This is an automated message from the eForm. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
-                #######Set email subject for renewal
+                // Set email subject for renewal
                 $subject = "eForm Renew Request: from ".$field_your_institution." ILL# $id";
                 $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
-                #####SEND EMAIL to Detestation Library
+                // SEND EMAIL to Detestation Library
                 $email_to = implode(',', $destemailarray);
                 $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                #mail has been sent to meg at CDLC for development
+                // mail has been sent to meg at CDLC for development
                 $destemail_to="mwakeman@cdlc.org";
                 mail($destemail_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
             } else {
@@ -115,13 +115,13 @@ if (isset($_POST['bulkaction'])) {
 
                 $message = "Your ILL request $id for $title will be filled by $destlib ".
                                      "<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
-                #######Setup php email headers
+                // Setup php email headers
                 $to=$requesterEMAIL;
                 $subject = "ILL Request Filled ILL# $id  ";
-                #####SEND requester an email to let them know the request will be filled
+                // SEND requester an email to let them know the request will be filled
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                #mail has been sent to meg at CDLC for development
+                // mail has been sent to meg at CDLC for development
                 $to="mwakeman@cdlc.org";
                 mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
@@ -130,41 +130,40 @@ if (isset($_POST['bulkaction'])) {
         } elseif ($action==5) {
             $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '0'    WHERE `illNUB` = '$reqnumb'";
             if (mysqli_query($db, $sqlupdate)) {
-                if (mysqli_query($db, $sqlupdate)) {
-                    echo "ILL #".$id." has been marked not filled<br>";
-                    $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
-                    $headers .= "MIME-Version: 1.0\r\n";
-                    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-                    $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
-                    $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                    $message = "Your ILL request $id for $title can not be filled by $destlib.<br>".
-                    "<br><br>$respnote<br><br> <a href='http://eform.cdlc.org'>Would you like to try a different library</a>?";
-                    #######Setup php email headers
-                    $to=$requesterEMAIL;
-                    $subject = "ILL Request Not Filled ILL# $id  ";
-                    #####SEND requester an email to let them know the request will be filled
-                    $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
-                    $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                    #mail has been sent to meg at CDLC for development
-                    $to="mwakeman@cdlc.org";
-                    mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
-                } else {
-                    echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
-                }//end if checking mysql
-            } elseif ($action==6) {
-                $sqlupdate = "UPDATE `$cdlcSTAT` SET `checkinTimeStamp` = '$timestamp', `checkinAccount` = '" .$wholename."'  WHERE `illNUB` = '$reqnumb'";
-                if (mysqli_query($db, $sqlupdate)) {
-                    echo "ILL #".$id." has been marked checked in<br>";
-                } else {
-                    echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
-                }//end if checking mysql
+                echo "ILL #".$id." has been marked not filled<br>";
+                $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+                $headers .= "MIME-Version: 1.0\r\n";
+                $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+                $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
+                $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
+                $message = "Your ILL request $id for $title can not be filled by $destlib.<br>".
+                "<br><br>$respnote<br><br> <a href='http://eform.cdlc.org'>Would you like to try a different library</a>?";
+                // Setup php email headers
+                $to=$requesterEMAIL;
+                $subject = "ILL Request Not Filled ILL# $id  ";
+                // SEND requester an email to let them know the request will be filled
+                $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
+                $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
+                // mail has been sent to meg at CDLC for development
+                $to="mwakeman@cdlc.org";
+                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
                 echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
-        } else {
+        } elseif ($action==6) {
+            $sqlupdate = "UPDATE `$cdlcSTAT` SET `checkinTimeStamp` = '$timestamp', `checkinAccount` = '" .$wholename."'  WHERE `illNUB` = '$reqnumb'";
+            if (mysqli_query($db, $sqlupdate)) {
+                echo "ILL #".$id." has been marked checked in<br>";
+            } else {
+                echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
+            }//end if checking mysql
+
+        }else{
             echo "<div style='color: red;'>Unknown action, please report this error to system admin</div><br>";
-        }//end if and elsif looking at actions
-    } //end the foreach loop
+            echo "<div style='color: red;'>Action was ".$action."</div><br>";        
+        }//end if checking for actions
+
+    }//end foreach loop
 } else {
     echo "<div style='color: red;'>Please go back to your profile and submit a bulk action through the interace</div><br>";
 }//end if check if action was posted

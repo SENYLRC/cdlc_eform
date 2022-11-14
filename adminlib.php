@@ -1,5 +1,9 @@
 <?php
-###manage-libraries.php###
+###adminlib.php###
+//start session that is used for export feature
+session_id(YOUR_SESSION_ID);
+session_start();
+
 require '/var/www/cdlc_script/cdlc_function.php';
 
 $firstpass = (isset($_REQUEST['firstpass']) ? "no" : "yes");
@@ -556,7 +560,8 @@ if ($pageaction ==3) {
     $GETLISTCOUNTwhole = mysqli_num_rows($GETCOUNT);
 
     #Foo debugig
-    #echo $GETLISTSQL . "</br>";
+    //echo $GETLISTSQL . "</br>";
+
 
     echo "<form action=".$_SERVER['REDIRECT_URL']." method='post'>";
     echo "<input type='hidden' name='firstpass' value= 'no'>";
@@ -606,7 +611,9 @@ if ($pageaction ==3) {
     echo "</form>";
     echo "<a href='".$_SERVER['REDIRECT_URL']."?action=1'>Would you like to add a library?</a><br>";
     echo "<a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending (hint: for updating system)</a><br>";
+    echo "<a target='_blank' href=/export>Export to CSV</a><br>";
     echo "<table><tr><th>Library</th><th>Alias</th><th>Participant</th><th>Suspend</th><th>System</th><th>OCLC</th><th>LOC</th><th>Action</th></tr>";
+  
     while ($row = mysqli_fetch_assoc($GETLIST)) {
         $librecnumb = $row["recnum"];
         $libname = $row["Name"];
@@ -630,7 +637,9 @@ if ($pageaction ==3) {
         }
         echo " <Tr><Td>$libname</td><td>$libalias</td><td>$libparticipant</td><td>$libsuspend</td><td>$system</td><td>$oclc</td><td>$loc</td> ";
         echo "<td><a href='".$_SERVER['REDIRECT_URL']."?action=2&librecnumb=$librecnumb'>Edit</a>  <a href='".$_SERVER['REDIRECT_URL']."?action=3&librecnumb=$librecnumb''>Delete</a> </td></tr>";
-    }
+    }//end while looping through sql results
+    //store array of all results  in session for export function
+    $_SESSION['query2'] = $GETFULLSQL;
     echo "</table>";
 }
 ?>

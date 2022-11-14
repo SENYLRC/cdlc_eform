@@ -1,5 +1,9 @@
 <?php
-###manage-libraries.php###
+###adminlib_ls.php###
+//start session that is used for export feature
+session_id(YOUR_SESSION_ID);
+session_start();
+
 require '/var/www/cdlc_script/cdlc_function.php';
 
 $firstpass = (isset($_REQUEST['firstpass']) ? "no" : "yes");
@@ -16,12 +20,12 @@ if ($firstpass == "no") {
         $filter_illemailblank = "";
         $filter_illpart = (isset($_REQUEST['filter_illpart']) ? $filter_illpart = $_REQUEST['filter_illpart'] : "");
         $filter_suspend = (isset($_REQUEST['filter_suspend']) ? $filter_suspend = $_REQUEST['filter_suspend'] : "");
-        $filter_system = (isset($_REQUEST['filter_system']) ? $filter_system = $_REQUEST['filter_system'] : "");
+        $filter_system=$field_home_library_system;
     } else {
         $filter_illemailblank = (isset($_REQUEST['filter_illemailblank']) ? $filter_illemailblank = $_REQUEST['filter_illemailblank'] : "");
         $filter_illpart = (isset($_REQUEST['filter_illpart']) ? $filter_illpart = $_REQUEST['filter_illpart'] : "");
         $filter_suspend = (isset($_REQUEST['filter_suspend']) ? $filter_suspend = $_REQUEST['filter_suspend'] : "");
-        $filter_system = (isset($_REQUEST['filter_system']) ? $filter_system = $_REQUEST['filter_system'] : "");
+        $filter_system=$field_home_library_system;
         $filter_aliasblank = (isset($_REQUEST['filter_aliasblank']) ? $filter_aliasblank = $_REQUEST['filter_aliasblank'] : "");
     }
 } else {
@@ -33,7 +37,6 @@ if ($firstpass == "no") {
     $filter_illemail = "";
     $filter_illemailblank = "";
     $filter_suspend = "";
-    $filter_system = "";
     $filter_numresults = "25";
     if (($filter_library != "") || ($filter_loc != "")) {
         $filter_illpart = "";
@@ -528,7 +531,7 @@ if ($pageaction ==3) {
     } else {
         $SQLLIMIT = "";
     }
-
+ 
     $SQLMIDDLE =''; #This builds the display options for the SQL
     $SQLMIDDLE= ($filter_illpart == "yes" ? $SQLMIDDLE = "`participant` = 1 " : $SQLMIDDLE = "`participant` = 0 ");
     $SQLMIDDLE= ($filter_aliasblank == "yes" ? $SQLMIDDLE = $SQLMIDDLE .  "AND alias = ''  " : $SQLMIDDLE = $SQLMIDDLE . "  ");
@@ -538,8 +541,8 @@ if ($pageaction ==3) {
     $SQLMIDDLE= (strlen($filter_alias) >= 1 ? $SQLMIDDLE = $SQLMIDDLE . "AND `Alias` like  '%" . $filter_alias . "%' " : $SQLMIDDLE = $SQLMIDDLE);
     $SQLMIDDLE= ($filter_suspend == "yes" ? $SQLMIDDLE = $SQLMIDDLE . "AND `suspend` = 1 " : $SQLMIDDLE = $SQLMIDDLE . " AND `suspend` = 0 ");
     $SQLMIDDLE= (strlen($filter_library) >= 2 ? $SQLMIDDLE = $SQLMIDDLE . "AND `Name` like  '%" . $filter_library . "%' " : $SQLMIDDLE = $SQLMIDDLE);
-    $SQLMIDDLE= (strlen($filter_system) >= 1 ? $SQLMIDDLE = $SQLMIDDLE . "AND `System` like  '%" . $filter_system . "%' " : $SQLMIDDLE = $SQLMIDDLE);
-    $SQLMIDDLE= (strlen($filter_system) < 1 ? $SQLMIDDLE = $SQLMIDDLE . "AND (`System` like  '%CRB%' OR `System` like  '%Q3S%' OR `System` like  '%HFM%' OR `System` like  '%WSWHE%' ) " : $SQLMIDDLE = $SQLMIDDLE);
+    $SQLMIDDLE= (strlen($field_home_library_system) >= 1 ? $SQLMIDDLE = $SQLMIDDLE . "AND `System` like  '%" . $field_home_library_system . "%' " : $SQLMIDDLE = $SQLMIDDLE);
+    $SQLMIDDLE= (strlen($field_home_library_system) < 1 ? $SQLMIDDLE = $SQLMIDDLE . "AND (`System` like  '%CRB%' OR `System` like  '%Q3S%' OR `System` like  '%HFM%' OR `System` like  '%WSWHE%' ) " : $SQLMIDDLE = $SQLMIDDLE);
     $GETFULLSQL = $SQLBASE . $SQLMIDDLE . $SQLEND;
     $GETLISTSQL = $SQLBASE . $SQLMIDDLE . $SQLEND . $SQLLIMIT;
 
@@ -558,13 +561,6 @@ if ($pageaction ==3) {
     echo "<input type='checkbox' name='filter_illemailblank' value='yes' " . checked($filter_illemailblank) . ">Missing ILL Email ";
     echo "<input type='checkbox' name='filter_illpart' value='yes' " . checked($filter_illpart) . ">ILL Participant ";
     echo "<input type='checkbox' name='filter_suspend' value='yes' " . checked($filter_suspend) . ">ILL Suspended ";
-    echo "<br>Library System: <select name='filter_system'>";
-    echo "<option value='' " . selected("", $filter_system) . ">All</option>";
-    echo "<option value = 'CRB' " . selected("CRB", $filter_system) . ">Capital Region BOCES</option>";
-    echo "<option value = 'HFM' " . selected("HFM", $filter_system) . ">Hamilton-Fulton-Montgomery BOCES</option>";
-    echo "<option value = 'Q3S' " . selected("Q3S", $filter_system) . ">Questar III SLS</option>";
-    echo "<option value = 'WSWHE' " . selected("WSWHE", $filter_system) . ">WSWHE BOCES</option>";
-    echo "</select>";
     echo "<br>Search:";
     echo "<br>Library Name: <input name='library' type='text' value='$filter_library'> ";
     echo "<br>Library Alias: <input name='filter_alias' type='text' value='$filter_alias'> ";
@@ -595,6 +591,8 @@ if ($pageaction ==3) {
     echo "</form>";
     echo "<a href='".$_SERVER['REDIRECT_URL']."?action=1'>Would you like to add a library?</a><br>";
     echo "<a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending (hint: for updating system)</a><br>";
+    echo "<a target='_blank' href=/export_ls>Export to CSV</a><br>";
+
     echo "<table><tr><th>Library</th><th>Alias</th><th>Participant</th><th>Suspend</th><th>System</th><th>OCLC</th><th>LOC</th><th>Action</th></tr>";
     while ($row = mysqli_fetch_assoc($GETLIST)) {
         $librecnumb = $row["recnum"];
@@ -620,6 +618,8 @@ if ($pageaction ==3) {
         echo " <Tr><Td>$libname</td><td>$libalias</td><td>$libparticipant</td><td>$libsuspend</td><td>$system</td><td>$oclc</td><td>$loc</td> ";
         echo "<td><a href='".$_SERVER['REDIRECT_URL']."?action=2&librecnumb=$librecnumb'>Edit</a>  <a href='".$_SERVER['REDIRECT_URL']."?action=3&librecnumb=$librecnumb''>Delete</a> </td></tr>";
     }
+     //store array of all results  in session for export function
+     $_SESSION['query2'] = $GETFULLSQL;
     echo "</table>";
 }
 ?>

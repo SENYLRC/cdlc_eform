@@ -69,7 +69,8 @@ if (isset($_GET['loc'])) {
 #Filter options
 echo "<form action=".$_SERVER['REDIRECT_URL']." method='post'>";
 echo "<input type='hidden' name='loc' value= '$loc'>";
-echo "<p>Display Fill Status: ";
+echo "<h3>Limit Results</h3>";
+echo "<p><b>By Fill Status</b><br>";
 echo "<input type='checkbox' name='filter_yes' value='yes' " . checked($filter_yes) . ">Yes  ";
 echo "<input type='checkbox' name='filter_no' value='yes' " . checked($filter_no) . ">No  ";
 echo "<input type='checkbox' name='filter_noans' value='yes' " . checked($filter_noans) . ">No Answer  ";
@@ -77,8 +78,8 @@ echo "<input type='checkbox' name='filter_expire' value='yes' " . checked($filte
 echo "<input type='checkbox' name='filter_cancel' value='yes' " . checked($filter_cancel) . ">Canceled  ";
 echo "<input type='checkbox' name='filter_recevied' value='yes' " . checked($filter_recevied) . ">Received  ";
 echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filter_return) . ">Return  ";
-echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check-In  ";
-echo "for ";
+echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check-In <br><br>";
+echo "<b>Time Frame  </b>";
 echo "<select name='filter_days'>";
 echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
 echo "<option value='30' " . selected("30", $filter_days) . ">30 days</option>";
@@ -86,10 +87,12 @@ echo "<option value='60' " . selected("60", $filter_days) . ">60 days</option>";
 
 echo "<option value='all' " . selected("all", $filter_days) . ">all days</option>";
 echo "</select> ";
-echo "<a href='".$_SERVER['REDIRECT_URL']."?clear=yes'>clear</a>  ";
-echo "<input type=Submit value=Update><br>";
-echo "ILL # <input name='filter_illnum' type='text' value='$filter_illnum'>  ";
-echo "Destination <input name='filter_destination' type='text' value='$filter_destination'>";
+echo "<b>ILL#  </b>";
+echo "<input name='filter_illnum' type='text' value='$filter_illnum'>  ";
+echo "<b>Lender Destination  </b><input name='filter_destination' type='text' value='$filter_destination'><br><br>";
+
+echo "<a href='".$_SERVER['REDIRECT_URL']."?clear=yes'>Reset Filters </a> <b>OR </b>  ";
+echo "<input type=Submit value=Update>";
 echo "</p>";
 echo "</form>";
 
@@ -189,7 +192,17 @@ $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
 #This is the form to process bulk actions
 ?>
+<hr>
+<h4>Perform Bulk Action</h4>
 <form action=bulkaction method='post'>
+<select name="bulkaction" id="bulkaction">
+  <option value="1">Cancel Requests</option>
+  <option value="2">Renew Requests</option>
+  <option value="3">Received Item</option>
+  <option value="4">Return Items</option>
+</select>
+<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">
+<br><br>
 <?php
 echo "$GETLISTCOUNTwhole results<bR>";
 echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Lender Destination & Contact</TH><TH>Borrower</TH><TH>Due Date & Shipping</TH><TH>Timestamp</TH><TH>Status</TH><TH>Action</TH></TR>";
@@ -281,15 +294,14 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 }
 echo "</table>";
 ?>
-<select name="bulkaction" id="bulkaction">
-  <option value="1">Cancel Requests</option>
-  <option value="2">Renew Requests</option>
-  <option value="3">Received Item</option>
-</select>
-<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
+
+
+
+
+
 
 </from>
-<?php //end for to process bulk action?>
+<?php //end for to process bulk action ?>
 <script type="text/javascript">
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {

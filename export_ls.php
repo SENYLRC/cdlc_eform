@@ -1,6 +1,6 @@
 <?php
 ob_end_clean();
-// export.php###
+// export_ls.php###
 
 //start session for export feature
 session_start();
