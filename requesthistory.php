@@ -1,5 +1,5 @@
 <?php
-###requesthistory.php###
+// requesthistory.php###
 
 require '/var/www/cdlc_script/cdlc_function.php';
 
@@ -24,7 +24,7 @@ if (isset($_GET['loc'])) {
         if (isset($_REQUEST['filter_illnum'])) {
             $filter_illnum = $_REQUEST['filter_illnum'];
         }
-        if ($filter_illnum != "") { #resets the other options for the best possible ILL search
+        if ($filter_illnum != "") { // resets the other options for the best possible ILL search
             $filter_yes="yes";
             $filter_no="yes";
             $filter_noans="yes";
@@ -66,7 +66,7 @@ if (isset($_GET['loc'])) {
     }
 }
 
-#Filter options
+// Filter options
 echo "<form action=".$_SERVER['REDIRECT_URL']." method='post'>";
 echo "<input type='hidden' name='loc' value= '$loc'>";
 echo "<h3>Limit Results</h3>";
@@ -81,6 +81,7 @@ echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filte
 echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check-In <br><br>";
 echo "<b>Time Frame  </b>";
 echo "<select name='filter_days'>";
+echo "<option value='90' " . selected("365", $filter_days) . ">365 days</option>";
 echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
 echo "<option value='30' " . selected("30", $filter_days) . ">30 days</option>";
 echo "<option value='60' " . selected("60", $filter_days) . ">60 days</option>";
@@ -91,17 +92,17 @@ echo "<b>ILL#  </b>";
 echo "<input name='filter_illnum' type='text' value='$filter_illnum'>  ";
 echo "<b>Lender Destination  </b><input name='filter_destination' type='text' value='$filter_destination'><br><br>";
 
-echo "<a href='".$_SERVER['REDIRECT_URL']."?clear=yes'>Reset Filters </a> <b>OR </b>  ";
-echo "<input type=Submit value=Update>";
+echo "<button><a href='".$_SERVER['REDIRECT_URL']."?clear=yes'>Reset Filters </a></button> <b>OR </b>  ";
+echo "<input type=Submit value='Update Results'>";
 echo "</p>";
 echo "</form>";
 
-#Connect to database
+// Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
 
-#Sanitize data
+// Sanitize data
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE `Requester LOC` = '$loc'";
@@ -187,18 +188,18 @@ if ($filter_checkin == "yes") {
     }
 }
 $GETLISTSQL = $SQLBASE . $SQL_DESTINATION . $SQL_DAYS . $SQLILL . " AND (" . $SQLMIDDLE . ")" . $SQLEND;
-#echo $GETLISTSQL;
+//echo $GETLISTSQL;
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
-#This is the form to process bulk actions
+// This is the form to process bulk actions
 ?>
 <hr>
 <h4>Perform Bulk Action</h4>
 <form action=bulkaction method='post'>
 <select name="bulkaction" id="bulkaction">
   <option value="1">Cancel Requests</option>
+  <option value="3">Received Items</option>
   <option value="2">Renew Requests</option>
-  <option value="3">Received Item</option>
   <option value="4">Return Items</option>
 </select>
 <input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">
@@ -239,12 +240,12 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $shiptxt=shipmtotxt($shipmethod);
     $returnmethodtxt=shipmtotxt($returnmethod);
     $dest=trim($dest);
-    #Get the Destination Name
+    // Get the Destination Name
     //has to be set to 0 because NYSL is just N
     if (strlen($dest)>0) {
         $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
-        #for testing
-        #echo $GETLISTSQLDEST;
+        // for testing
+        // echo $GETLISTSQLDEST;
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
         while ($rowdest = mysqli_fetch_assoc($resultdest)) {
             $dest=$rowdest["Name"];
@@ -263,29 +264,29 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $displayrenewnotes= build_renewnotes($renewNote, $renewNoteLender);
     echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD><a href='mailto:".$destemail."?Subject=NOTE Request ILL# ".$illNUB."' >$dest</a></TD><TD>$reqp</TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp</TD><TD>$statustxt</TD>";
     if ($fill == 3) {
-        #Only show cancel button if request has not been answered
+        // Only show cancel button if request has not been answered
         echo "<TD><a href ='/cancel?num=$illNUB&a=3'>Cancel Request</a></TD></TR> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)<2)) {
-        #Only show the received button of the request was filled to start with
+        // Only show the received button of the request was filled to start with
         echo"<td><a class='confirmation' href ='/status?num=$illNUB&a=1'>Received Item</a></td></tr> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)>1)&&(strlen($returnaccount)<1)) {
-        #Only show renew and return if request was received but not returned
+        // Only show renew and return if request was received but not returned
         echo"<td><a href ='/renew?num=".$illNUB."&a=3'>Request Renewal</a><hr><a href ='/status?num=".$illNUB."&a=2'>Return Item</a></td></tr> ";
     } elseif (($fill== 1)&&(strlen($receiveaccount)>1)&&($renewAnswer!=0)&&(strlen($returnaccount)<1)) {
-        #Only show renew and return if request was received but not returned
+        // Only show renew and return if request was received but not returned
         echo"<td><a href ='/status?num=".$illNUB."&a=2'>Return Item</a></td></tr> ";
     } else {
         echo "<td>&nbsp</td>";
     }
 
     if ((strlen($reqnote) > 2) || (strlen($patronnote)>2)|| (strlen($lendnote) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR><TR><TD></TD><TD></TD><TD colspan=8>$patronnote</td></tr>";
+        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=9>$displaynotes</TD></TR><TR><TD></TD><TD></TD><TD colspan=9>$patronnote</td></tr>";
     }
     if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$dispalyreturnnotes</TD></TR>";
+        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=9>$dispalyreturnnotes</TD></TR>";
     }
     if ((strlen($renewNote) > 2) || (strlen($renewNoteLender) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displayrenewnotes</TD></TR>";
+        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=9>$displayrenewnotes</TD></TR>";
     }
 
 

@@ -56,8 +56,8 @@ if (isset($_GET['loc'])) {
         $filter_yes="yes";
         $filter_no="yes";
         $filter_noans="yes";
-        $filter_expire="";
-        $filter_cancel="";
+        $filter_expire="yes";
+        $filter_cancel="yes";
         $filter_recevied="";
         $filter_return="";
         $filter_checkin="";
@@ -71,7 +71,8 @@ if (isset($_GET['loc'])) {
 #Filter options
 echo "<form action='lender-history' method='post'>";
 echo "<input type='hidden' name='loc' value= '$loc'>";
-echo "<p><B>Display Fill Status:</b><br> ";
+echo "<h3>Limit Results</h3>";
+echo "<p><b>By Fill Status:</b><br>";
 echo "<input type='checkbox' name='filter_yes' value='yes' " . checked($filter_yes) . ">Yes  ";
 echo "<input type='checkbox' name='filter_no' value='yes' " . checked($filter_no) . ">No  ";
 echo "<input type='checkbox' name='filter_noans' value='yes' " . checked($filter_noans) . ">No Answer  ";
@@ -80,19 +81,20 @@ echo "<input type='checkbox' name='filter_cancel' value='yes' " . checked($filte
 echo "<input type='checkbox' name='filter_recevied' value='yes' " . checked($filter_recevied) . ">Received ";
 echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filter_return) . ">Return  ";
 echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check In  ";
-echo "<input type='checkbox' name='filter_renew' value='yes' " . checked($filter_renew) . ">Renew Pending ";
-echo "<br>for last ";
+echo "<input type='checkbox' name='filter_renew' value='yes' " . checked($filter_renew) . ">Renew Pending<br><br> ";
+echo "<b>Time Frame  </b> ";
 echo "<select name='filter_days'>";
+echo "<option value='365' " . selected("365", $filter_days) . ">365 days</option>";
 echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
 echo "<option value='30' " . selected("30", $filter_days) . ">30 days</option>";
 echo "<option value='60' " . selected("60", $filter_days) . ">60 days</option>";
-
 echo "<option value='all' " . selected("all", $filter_days) . ">all days</option>";
 echo "</select> ";
-echo "<a href='lender-history?clear=yes'>clear</a>  ";
-echo "<input type=Submit value=Update><br>";
-echo "ILL # <input name='filter_illnum' type='text' value='$filter_illnum'>  ";
-echo "Destination <input name='filter_destination' type='text' value='$filter_destination'>";
+echo "<b>ILL #  </b><input name='filter_illnum' type='text' value='$filter_illnum'>  ";
+echo "<b>Destination  </b> <input name='filter_destination' type='text' value='$filter_destination'><br><br>";
+
+echo "<button><a href='lender-history?clear=yes'>Reset Filters</a></button>  <b>OR</b>  ";
+echo "<input type=Submit value='Update Results'>";
 echo "</p>";
 echo "</form>";
 
@@ -122,7 +124,7 @@ if (strlen($filter_illnum) > 2) {
 if (strlen($filter_destination) > 2) {
     $SQL_Dest_Search="SELECT `loc` FROM `$cdlcLIB`  where `Name` like '%$filter_destination%'";
     #for testing
-    #echo $SQL_Dest_Search."<br>";
+    //echo $SQL_Dest_Search."<br>";
     $PossibleDests=mysqli_query($db, $SQL_Dest_Search);
     while ($rowdest = mysqli_fetch_assoc($PossibleDests)) {
         $destloc=$rowdest["loc"];
@@ -195,22 +197,24 @@ if ($filter_checkin == "yes") {
     }
 }
 $GETLISTSQL = $SQLBASE . $SQL_DESTINATION . $SQL_DAYS . $SQLILL . " AND (" . $SQLMIDDLE . ")" . $SQLEND;
-#echo $GETLISTSQL; #Diagnostic... displays sql string
+//echo $GETLISTSQL; #Diagnostic... displays sql string
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
 #This is the form to process bulk actions
 ?>
+<hr>
+<h4>Perform Bulk Action</h4>
 <form action=bulkaction method='post'>
 <select name="bulkaction" id="bulkaction">
   <option value="5">Request Not Filled</option>
   <option value="6">Check Item Back In</option>
 </select>
-<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to contine with bulk update.');">
-
+<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">
+<br><br>
 <?php
 echo "$GETLISTCOUNTwhole results<bR>";
 
-echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower & Contact</TH><TH>Due Date & Shipping</TH><TH>Timestamp & Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
+echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower / Contact</TH><TH>Due Date / Shipping</TH><TH>Timestamp / Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
 $rowtype=1;
 while ($row = mysqli_fetch_assoc($GETLIST)) {
     $illNUB = $row["illNUB"];
@@ -274,7 +278,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
     if (($fill == 3) || (strlen($receiveAccount)<1)&&($daysdiff < '30')) {
         #Only show cancel button if request has not been answered and not received.
-        echo "<TD><a href='/respond?num=$illNUB&a=1'>Fill</a><hr><a href='/respond?num=$illNUB&a=0'>Not Fill</a></TD></TR> ";
+        echo "<TD><a href='/respond?num=$illNUB&a=1'>Yes, Will Fill</a><hr><a href='/respond?num=$illNUB&a=0'>No, Can't Fill</a></TD></TR> ";
     } elseif ((strlen($returnAccount)<2)&&($fill== 1)&&($renewAnswer==0)&&(strlen($renewAccountRequester)>1)&&(strlen($checkinAccount)<2)) {
         #Only show renew if someon requested a renwall
         echo"<td><a href ='/renew?num=".$illNUB."&a=1'>Approve Renewal</a><br><br><a href ='/renew?num=".$illNUB."&a=2'>Deny Renewal</a><br> ";
