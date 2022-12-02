@@ -6,8 +6,8 @@
   $(document).ready(function() {
      $("#datepicker").datepicker();
      $("#datepicker2").datepicker();
-	 $("#datepickerl").datepicker();
-	 $("#datepickerl2").datepicker();
+     $("#datepickerl").datepicker();
+     $("#datepickerl2").datepicker();
      $("#expdatepicker").datepicker();
      $("#expdatepicker2").datepicker();
      $("#top10datepicker").datepicker();
@@ -18,7 +18,7 @@
   </script>
 <?php
 
-#####Connect to database
+// Connect to database
 require '/var/www/cdlc_script/cdlc_function.php';
 require '/var/www/cdlc_script/cdlc_db.inc';
 
@@ -27,7 +27,7 @@ mysqli_select_db($db, $dbname);
 
 if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     if ($_REQUEST['stattype'] == 'wholesystem') {
-        #A request to generate stats has been posted
+        // A request to generate stats has been posted
         $startdate = date('Y-m-d', strtotime('-7 days'));
         $enddated = $_REQUEST["enddate"];
         $startdated =   $_REQUEST["startdate"];
@@ -39,53 +39,53 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         if ($libsystem=='none') {
             echo "<h1 style=color:red;>Please chose a system first to run stats</h1><br><br>";
         } else {
-            #Get total requests
+            // Get total requests
             $GETREQUESTCOUNTSQLL= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' ";
 
 
             $retval = mysqli_query($db, $GETREQUESTCOUNTSQLL);
             $row_cnt = mysqli_num_rows($retval);
-            #Get total filled requests
+            // Get total filled requests
             $FINDFILL= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =1 ";
             $retfilled =   mysqli_query($db, $FINDFILL);
             $row_fill = mysqli_num_rows($retfilled);
-            #Get percentage fill
+            // Get percentage fill
             $percentfill = $row_fill/$row_cnt;
             $percent_friendly_fill = number_format($percentfill * 100, 2) . '%';
 
-            #Get total not filled requests
+            // Get total not filled requests
             $FINDNOTFILL= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =0 ";
             $retnotfilled =   mysqli_query($db, $FINDNOTFILL);
             $row_notfill = mysqli_num_rows($retnotfilled);
-            #Get percentage fill
+            // Get percentage fill
             $percentnotfill = $row_notfill/$row_cnt;
             $percent_friendly_notfill = number_format($percentnotfill * 100, 2) . '%';
 
-            #Get total requests expired
+            // Get total requests expired
             $FINDEXPIRE= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =4  ";
             $retexpire =   mysqli_query($db, $FINDEXPIRE);
             $row_expire = mysqli_num_rows($retexpire);
-            #Get percentage fill
+            // Get percentage fill
             $percentexpire = $row_expire/$row_cnt;
             $percent_friendly_expire = number_format($percentexpire * 100, 2) . '%';
 
-            #Get total requests not answered
+            // Get total requests not answered
             $FINDNOANSW= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =3 ";
             $retnoansw =   mysqli_query($db, $FINDNOANSW);
             $row_noansw = mysqli_num_rows($retnoansw);
-            #Get percentage fill
+            // Get percentage fill
             $percentnoansw = $row_noansw/$row_cnt;
             $percent_friendly_noansw = number_format($percentnoansw * 100, 2) . '%';
 
-            #Get total requests canceled
+            // Get total requests canceled
             $CANANSW= "SELECT * FROM `$cdlcSTAT` WHERE  `ReqSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =6 ";
             $canansw =   mysqli_query($db, $CANANSW);
             $row_cancel = mysqli_num_rows($canansw);
-            #Get percentage fill
+            // Get percentage fill
             $percentcancel = $row_cancel/$row_cnt;
             $percent_friendly_cancel = number_format($percentcancel * 100, 2) . '%';
 
-            #translate system code to text name
+            // translate system code to text name
             if (strcmp($libsystem, 'CRB')==0) {
                 $libsystemtxt = "Capital Region BOCES";
             } elseif (strcmp($libsystem, 'HFM')==0) {
@@ -106,7 +106,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 $libsystemtxt = "CDLC Group";
             }
 
-            #Stats overall in the time frame chosen
+            // Stats overall in the time frame chosen
             echo "<h1><center>eForm Borrowing Stats from $startdated to $enddated </h1></center>";
             echo "<h1>Library System ".$libsystemtxt." </h1>";
             echo "Total Request ".$row_cnt." <br>";
@@ -116,24 +116,24 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             echo "Number of Request Canceled: ".$row_cancel." (".$percent_friendly_cancel.")<br>";
             echo "Number of Not Answered Yet: ".$row_noansw." (".$percent_friendly_noansw.")<br><br>";
 
-            #Calulcate fill from other systems
+            // Calulcate fill from other systems
             if (strlen($libsystem)>1) {
                 echo "<h1>Break down of requests</h1>";
-                #Find which systems they sent request to
+                // Find which systems they sent request to
                 $destsystem=" SELECT distinct (`DestSystem` )  FROM `$cdlcSTAT` WHERE `ReqSystem`='$libsystem' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  ";
                 $destsystemq = mysqli_query($db, $destsystem);
-                #loop through the results of destion systems
+                // loop through the results of destion systems
                 while ($row = mysqli_fetch_assoc($destsystemq)) {
                     $dessysvar= $row['DestSystem'];
                     $destsystemcount=" SELECT `itype`  FROM `$cdlcSTAT` WHERE `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  ";
                     $destsystemcountq = mysqli_query($db, $destsystemcount);
-                    #Count the number of requests to that system
+                    // Count the number of requests to that system
                     $destnum_rows = mysqli_num_rows($destsystemcountq);
 
-                    #Get percentage
+                    // Get percentage
                     $percentdestnum_rows = $destnum_rows/$row_cnt;
                     $percent_friendly_destnum = number_format($percentdestnum_rows * 100, 2) . '%';
-                    #translate system code to text name
+                    // translate system code to text name
                     if (strcmp($dessysvar, 'CRB')==0) {
                         $dessysvartxt = "Capital Region BOCES";
                     } elseif (strcmp($dessysvar, 'HFM')==0) {
@@ -152,64 +152,64 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                         $dessysvartxt = "cdlc Group";
                     }
                     echo " ".$destnum_rows." (".$percent_friendly_destnum.") overall requests were made  to <strong> ".$dessysvartxt."</strong><br>";
-                    #Find which item types were requests
+                    // Find which item types were requests
                     $destitype=" SELECT distinct (`itype` )  FROM `$cdlcSTAT`  WHERE `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' ";
                     $destitypeq = mysqli_query($db, $destitype);
-                    #loop through the results of items from that destination
+                    // loop through the results of items from that destination
                     while ($row2 = mysqli_fetch_assoc($destitypeq)) {
                         $dessysitype= $row2['itype'];
-                        #Remove any white space
+                        // Remove any white space
                         $destitemcount=" SELECT `fill`  FROM `$cdlcSTAT` WHERE `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountq = mysqli_query($db, $destitemcount);
-                        #Count the number of reuqests to that system
+                        // Count the number of reuqests to that system
                         $destnumitype_rows = mysqli_num_rows($destitemcountq);
-                        #Get percentage
+                        // Get percentage
                         $percenttypesys_rows = $destnumitype_rows/$row_cnt;
                         $percent_friendly_typesys = number_format($percenttypesys_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp".$destnumitype_rows." (".$percent_friendly_typesys.") of the request to ".$dessysvartxt." were <strong>".$dessysitype."</strong><br>";
-                        #Find what the fill rate is
+                        // Find what the fill rate is
                         $destitemcountfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='1' and `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountfillq = mysqli_query($db, $destitemcountfill);
-                        #Count the number of fills
+                        // Count the number of fills
                         $destnumfilled_rows = mysqli_num_rows($destitemcountfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent1_rows =$destnumfilled_rows/ $destnumitype_rows;
                         $percent_friendly_1 = number_format($percent1_rows * 100, 2) . '%';
                         echo " &nbsp&nbsp&nbsp&nbsp&nbsp      $destnumfilled_rows (".$percent_friendly_1.") were filled<br>";
-                        #Find what the unfill rate is
+                        // Find what the unfill rate is
                         $destitemcountunfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='0' and `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountunfillq = mysqli_query($db, $destitemcountunfill);
-                        #Count the number of unfilled
+                        // Count the number of unfilled
                         $destnumunfilled_rows = mysqli_num_rows($destitemcountunfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent2_rows =$destnumunfilled_rows/ $destnumitype_rows;
                         $percent_friendly_2 = number_format($percent2_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumunfilled_rows (". $percent_friendly_2.") were not filled<br>";
-                        #Find what the expire rate is
+                        // Find what the expire rate is
                         $destitemcountexfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='4' and `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountexfillq = mysqli_query($db, $destitemcountexfill);
-                        #Count the number of expired requests
+                        // Count the number of expired requests
                         $destnumexfilled_rows = mysqli_num_rows($destitemcountexfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent3_rows = $destnumexfilled_rows/$destnumitype_rows;
                         ;
                         $percent_friendly_3 = number_format($percent3_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumexfilled_rows (". $percent_friendly_3.") were expired<br>";
-                        #Find what the cancel rate is
+                        // Find what the cancel rate is
                         $destitemcountcanfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='6' and `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountcanfillq = mysqli_query($db, $destitemcountcanfill);
-                        #Count the number of canceled requests
+                        // Count the number of canceled requests
                         $destnumcanfilled_rows = mysqli_num_rows($destitemcountcanfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent4_rows =$destnumcanfilled_rows/$destnumitype_rows;
                         $percent_friendly_4 = number_format($percent4_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumcanfilled_rows  (". $percent_friendly_4.") were canceled<br>";
-                        #Find the numbered not answer yet
+                        // Find the numbered not answer yet
                         $destitemcountnoanswfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='3' and `Itype`='$dessysitype' and `ReqSystem`='$libsystem'  and `DestSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountnoanswfillq = mysqli_query($db, $destitemcountnoanswfill);
-                        #Count the number of requests not answered yet
+                        // Count the number of requests not answered yet
                         $destnumnoanswfilled_rows = mysqli_num_rows($destitemcountnoanswfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent5_rows =$destnumnoanswfilled_rows/ $destnumitype_rows;
                         $percent_friendly_5 = number_format($percent5_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumnoanswfilled_rows  (". $percent_friendly_5.") of requests not answered yet<br>";
@@ -219,11 +219,11 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 }
             }//end check if libsystem is larger than 1 character
         }//end check if system is none
-    #End of whole system borrowing stats
+        // End of whole system borrowing stats
     } elseif ($_REQUEST['stattype'] == 'wholesystemlending') {
 
 
-        #A request to generate stats has been posted
+        // A request to generate stats has been posted
         $startdate = date('Y-m-d', strtotime('-7 days'));
         $enddated = $_REQUEST["enddate"];
         $startdated =   $_REQUEST["startdate"];
@@ -236,55 +236,55 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             $enddate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $enddated)));
 
 
-            #Get total requests received
+            // Get total requests received
 
 
             $GETREQUESTCOUNTSQLL= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%'  and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' ";
             //  echo $GETREQUESTCOUNTSQLL;
             $retval = mysqli_query($db, $GETREQUESTCOUNTSQLL);
             $row_cnt = mysqli_num_rows($retval);
-            #Get total filled requests
+            // Get total filled requests
             $FINDFILL= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =1 ";
             $retfilled =   mysqli_query($db, $FINDFILL);
             $row_fill = mysqli_num_rows($retfilled);
-            #Get percentage fill
+            // Get percentage fill
             $percentfill = $row_fill/$row_cnt;
             $percent_friendly_fill = number_format($percentfill * 100, 2) . '%';
 
-            #Get total not filled requests
+            // Get total not filled requests
             $FINDNOTFILL= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =0 ";
             $retnotfilled =   mysqli_query($db, $FINDNOTFILL);
             $row_notfill = mysqli_num_rows($retnotfilled);
 
-            #Get percentage fill
+            // Get percentage fill
             $percentnotfill = $row_notfill/$row_cnt;
             $percent_friendly_notfill = number_format($percentnotfill * 100, 2) . '%';
 
-            #Get total requests expired
+            // Get total requests expired
             $FINDEXPIRE= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =4 ";
             $retexpire =   mysqli_query($db, $FINDEXPIRE);
             $row_expire = mysqli_num_rows($retexpire);
-            #Get percentage fill
+            // Get percentage fill
             $percentexpire = $row_expire/$row_cnt;
             $percent_friendly_expire = number_format($percentexpire * 100, 2) . '%';
 
-            #Get total requests not answered
+            // Get total requests not answered
             $FINDNOANSW= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =3 ";
             $retnoansw =   mysqli_query($db, $FINDNOANSW);
             $row_noansw = mysqli_num_rows($retnoansw);
-            #Get percentage fill
+            // Get percentage fill
             $percentnoansw = $row_noansw/$row_cnt;
             $percent_friendly_noansw = number_format($percentnoansw * 100, 2) . '%';
 
-            #Get total requests canceled
+            // Get total requests canceled
             $CANANSW= "SELECT * FROM `$cdlcSTAT` WHERE `DestSystem` LIKE '%$libsystem%' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =6 ";
             $canansw =   mysqli_query($db, $CANANSW);
             $row_cancel = mysqli_num_rows($canansw);
-            #Get percentage fill
+            // Get percentage fill
             $percentcancel = $row_cancel/$row_cnt;
             $percent_friendly_cancel = number_format($percentcancel * 100, 2) . '%';
 
-            #translate system code to text name
+            // translate system code to text name
             if (strcmp($libsystem, 'CRB')==0) {
                 $libsystemtxt = "Capital Region BOCES";
             } elseif (strcmp($libsystem, 'HFM')==0) {
@@ -305,7 +305,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 $libsystemtxt = "CDLC Group";
             }
 
-            #Stats overall in the time frame chosen
+            // Stats overall in the time frame chosen
             echo "<h1><center>eForm Lending Stats from $startdated to $enddated </h1></center>";
             echo "<h1>Lender request statistics for ".$libsystemtxt."  </h1>";
             echo "Total Requests received ".$row_cnt." <br>";
@@ -315,26 +315,26 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             echo "Number of Requests Canceled: ".$row_cancel." (".$percent_friendly_cancel.")<br>";
             echo "Number of Requests Not Answered Yet: ".$row_noansw." (".$percent_friendly_noansw.")<br><br>";
 
-            #Calulcate fill to other systems
+            // Calulcate fill to other systems
             if (strlen($libsystem)>1) {
                 echo "<h1>Break down of lending requests</h1>";
-                #Find which systems they sent request to
+                // Find which systems they sent request to
                 $destsystem=" SELECT distinct (`ReqSystem` )  FROM `$cdlcSTAT` WHERE `DestSystem`='$libsystem' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
 
                 $destsystemq = mysqli_query($db, $destsystem);
-                #loop through the results of destion systems
+                // loop through the results of destion systems
                 while ($row = mysqli_fetch_assoc($destsystemq)) {
                     $dessysvar= $row['ReqSystem'];
                     $destsystemcount="SELECT `itype` FROM `$cdlcSTAT` WHERE `DestSystem`='$libsystem' and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  ";
 
                     $destsystemcountq = mysqli_query($db, $destsystemcount);
-                    #Count the number of requests to that system
+                    // Count the number of requests to that system
                     $destnum_rows = mysqli_num_rows($destsystemcountq);
 
-                    #Get percentage
+                    // Get percentage
                     $percentdestnum_rows = $destnum_rows/$row_cnt;
                     $percent_friendly_destnum = number_format($percentdestnum_rows * 100, 2) . '%';
-                    #translate system code to text name
+                    // translate system code to text name
                     if (strcmp($dessysvar, 'CRB')==0) {
                         $dessysvartxt = "Capital Region BOCES";
                     } elseif (strcmp($dessysvar, 'HFM')==0) {
@@ -353,64 +353,64 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                         $dessysvartxt = "CDLC Group";
                     }
                     echo " ".$destnum_rows." (".$percent_friendly_destnum.") overall lendinng requests were made  from <strong> ".$dessysvartxt."</strong><br>";
-                    #Find which item types were requests
+                    // Find which item types were requests
                     $destitype=" SELECT distinct (`itype` )  FROM `$cdlcSTAT`  WHERE `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' ";
                     $destitypeq = mysqli_query($db, $destitype);
-                    #loop through the results of items from that destination
+                    // loop through the results of items from that destination
                     while ($row2 = mysqli_fetch_assoc($destitypeq)) {
                         $dessysitype= $row2['itype'];
-                        #Remove any white space
+                        // Remove any white space
                         $destitemcount=" SELECT `fill`  FROM `$cdlcSTAT` WHERE `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountq = mysqli_query($db, $destitemcount);
-                        #Count the number of reuqests from that system
+                        // Count the number of reuqests from that system
                         $destnumitype_rows = mysqli_num_rows($destitemcountq);
-                        #Get percentage
+                        // Get percentage
                         $percenttypesys_rows = $destnumitype_rows/$row_cnt;
                         $percent_friendly_typesys = number_format($percenttypesys_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp".$destnumitype_rows." (".$percent_friendly_typesys.") of the request from ".$dessysvartxt." were <strong>".$dessysitype."</strong><br>";
-                        #Find what the fill rate is
+                        // Find what the fill rate is
                         $destitemcountfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='1' and `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountfillq = mysqli_query($db, $destitemcountfill);
-                        #Count the number of fills
+                        // Count the number of fills
                         $destnumfilled_rows = mysqli_num_rows($destitemcountfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent1_rows =$destnumfilled_rows/ $destnumitype_rows;
                         $percent_friendly_1 = number_format($percent1_rows * 100, 2) . '%';
                         echo " &nbsp&nbsp&nbsp&nbsp&nbsp      $destnumfilled_rows (".$percent_friendly_1.") were filled<br>";
-                        #Find what the unfill rate is
+                        // Find what the unfill rate is
                         $destitemcountunfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='0' and `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountunfillq = mysqli_query($db, $destitemcountunfill);
-                        #Count the number of unfilled
+                        // Count the number of unfilled
                         $destnumunfilled_rows = mysqli_num_rows($destitemcountunfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent2_rows =$destnumunfilled_rows/ $destnumitype_rows;
                         $percent_friendly_2 = number_format($percent2_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumunfilled_rows (". $percent_friendly_2.") were not filled<br>";
-                        #Find what the expire rate is
+                        // Find what the expire rate is
                         $destitemcountexfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='4' and `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountexfillq = mysqli_query($db, $destitemcountexfill);
-                        #Count the number of expired requests
+                        // Count the number of expired requests
                         $destnumexfilled_rows = mysqli_num_rows($destitemcountexfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent3_rows = $destnumexfilled_rows/$destnumitype_rows;
                         ;
                         $percent_friendly_3 = number_format($percent3_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumexfilled_rows (". $percent_friendly_3.") were expired<br>";
-                        #Find what the cancel rate is
+                        // Find what the cancel rate is
                         $destitemcountcanfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='6' and `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountcanfillq = mysqli_query($db, $destitemcountcanfill);
-                        #Count the number of canceled requests
+                        // Count the number of canceled requests
                         $destnumcanfilled_rows = mysqli_num_rows($destitemcountcanfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent4_rows =$destnumcanfilled_rows/$destnumitype_rows;
                         $percent_friendly_4 = number_format($percent4_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumcanfilled_rows  (". $percent_friendly_4.") were canceled<br>";
-                        #Find the numbered not answer yet
+                        // Find the numbered not answer yet
                         $destitemcountnoanswfill=" SELECT `fill`  FROM `$cdlcSTAT` WHERE Fill='3' and `Itype`='$dessysitype' and `DestSystem`='$libsystem'  and `ReqSystem`='$dessysvar' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'";
                         $destitemcountnoanswfillq = mysqli_query($db, $destitemcountnoanswfill);
-                        #Count the number of requests not answered yet
+                        // Count the number of requests not answered yet
                         $destnumnoanswfilled_rows = mysqli_num_rows($destitemcountnoanswfillq);
-                        #Get percentage
+                        // Get percentage
                         $percent5_rows =$destnumnoanswfilled_rows/ $destnumitype_rows;
                         $percent_friendly_5 = number_format($percent5_rows * 100, 2) . '%';
                         echo "&nbsp&nbsp&nbsp&nbsp&nbsp   $destnumnoanswfilled_rows  (". $percent_friendly_5.") of requests not answered yet<br>";
@@ -421,9 +421,9 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             }
         }//end check if system is set to none
 
-    #End of whole system lending stats
+        // End of whole system lending stats
     } elseif ($_REQUEST['stattype'] == 'top10fstats') {
-        #Generate the top 10 filling requests
+        // Generate the top 10 filling requests
         $startdate = date('Y-m-d', strtotime('-7 days'));
         $enddated = $_REQUEST["enddate"];
         $startdated =   $_REQUEST["startdate"];
@@ -431,7 +431,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         $startdate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $startdated)));
         $enddate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $enddated)));
         echo "<h1><center>Top 10 Libraries Filling Requests from $startdated to $enddated </h1></center>";
-        $GETREQUESTCOUNTSQLL= "SELECT  `Destination`, count(*)  FROM `$cdlcSTAT` WHERE `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' and Fill=1  GROUP BY `Destination` ORDER BY count(*) DESC LIMIT 10 ";
+        $GETREQUESTCOUNTSQLL= "SELECT  `Destination`, count(*)  FROM `$cdlcSTAT` WHERE  	DestSystem  = '".$field_home_library_system."' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00' and Fill=1  GROUP BY `Destination` ORDER BY count(*) DESC LIMIT 10 ";
         $retval = mysqli_query($db, $GETREQUESTCOUNTSQLL);
         $row_cnt = mysqli_num_rows($retval);
         echo "<table><tr><th>Library Name</th><th>Number of Fills</th></tr>";
@@ -453,7 +453,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         $startdate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $startdated)));
         $enddate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $enddated)));
         echo "<h1><center>Top 10 Libraries Making Requests from $startdated to $enddated </h1></center>";
-        $GETREQUESTCOUNTSQLL= "SELECT  `Requester LOC`, count(*)  FROM `$cdlcSTAT` WHERE `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'   GROUP BY `Requester LOC` ORDER BY count(*) DESC LIMIT 10 ";
+        $GETREQUESTCOUNTSQLL= "SELECT  `Requester LOC`, count(*)  FROM `$cdlcSTAT`  WHERE  	ReqSystem  = '".$field_home_library_system."' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'   GROUP BY `Requester LOC` ORDER BY count(*) DESC LIMIT 10 ";
         $retval = mysqli_query($db, $GETREQUESTCOUNTSQLL);
         $row_cnt = mysqli_num_rows($retval);
         echo "<table><tr><th>Library Name</th><th>Number of Requests</th></tr>";
@@ -474,85 +474,77 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         $startdated =   $_REQUEST["startdate"];
         $startdate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $startdated)));
         $enddate = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $enddated)));
-        #Get total requests that expired
-        $GETREQUESTCOUNTSQLL= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =4 ORDER BY Destination";
+        // Get total requests that expired
+        $GETREQUESTCOUNTSQLL= "SELECT * FROM `$cdlcSTAT`   WHERE  	DestSystem  = '".$field_home_library_system."' and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  and  Fill =4 ORDER BY Destination";
+        
         $retval = mysqli_query($db, $GETREQUESTCOUNTSQLL);
         $row_cnt = mysqli_num_rows($retval);
 
-        #loop through the results of items from that destination
+        // loop through the results of items from that destination
         echo "<h1><center>eForm Requests that expired from $startdated to $enddated </h1></center>";
         echo  "$row_cnt  results"; ?>
      <table><tr><th>ILL #</th><th>LOC</th><th>Destination Library</th><th>Requesting Library</th><th>Note</th><th>Title</th><th>Item Type</th><th>Date</th></tr>
-      <?php
-      while ($row2 = mysqli_fetch_assoc($retval)) {
-          $dessid= $row2['Destination'];
-          $illid= $row2['illNUB'];
-          $note= $row2['responderNOTE'];
-          $title= $row2['Title'];
-          $itype= $row2['Itype'];
-          $date= $row2['Timestamp'];
-          $reqestid = $row2['Requester LOC'];
-          $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `loc`='$dessid' ";
-          $result = mysqli_query($db, $libnames);
-          while ($row =  $result->fetch_assoc()) {
-              $dessidtxt =  $row["Name"];
-          }
-          $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `loc`='$reqestid' ";
-          $result = mysqli_query($db, $libnames);
-          while ($row =  $result->fetch_assoc()) {
-              $reqestid =  $row["Name"];
-          }
-          echo "<tr><td>".$illid."</td><td><a target='_blank' href='/senthistory?loc=".$dessid."'> ".$dessid."</a></td><td>".$dessidtxt."</td><td>".$reqestid."</td><td>".$note."</td><td>".$title."</td><td>".$itype."</td><td>".$date."</td></tr>";
-      }
+        <?php
+        while ($row2 = mysqli_fetch_assoc($retval)) {
+            $dessid= $row2['Destination'];
+            $illid= $row2['illNUB'];
+            $note= $row2['responderNOTE'];
+            $title= $row2['Title'];
+            $itype= $row2['Itype'];
+            $date= $row2['Timestamp'];
+            $reqestid = $row2['Requester LOC'];
+            $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `loc`='$dessid' ";
+            $result = mysqli_query($db, $libnames);
+            while ($row =  $result->fetch_assoc()) {
+                $dessidtxt =  $row["Name"];
+            }
+            $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `loc`='$reqestid' ";
+            $result = mysqli_query($db, $libnames);
+            while ($row =  $result->fetch_assoc()) {
+                $reqestid =  $row["Name"];
+            }
+            echo "<tr><td>".$illid."</td><td><a target='_blank' href='/senthistory?loc=".$dessid."'> ".$dessid."</a></td><td>".$dessidtxt."</td><td>".$reqestid."</td><td>".$note."</td><td>".$title."</td><td>".$itype."</td><td>".$date."</td></tr>";
+        }
         echo "</table>";
     }
 } else {
-  #eForm Borrowing Stats
+    // eForm Borrowing Stats
 
     ?>
-     <h2>Enter the data range you will like to run eForm borrowing stats usage:</h2>
+     <h3>Borrowing statistics for <?php echo $field_home_library_system;?>:</h3>
      <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
      Start Date:
      <input id="datepicker" name="startdate"/>
      End Date:
      <input id="datepicker2" name="enddate"/>
      <br><br>
-     <B>Requesting Library System</b><select name="system">
-       <option value="none">Please Choose a System</option>
-                    <option value="CRB">Capital Region BOCES</option>
-                    <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
-                    <option value="Q3S">Questar III SLS</option>
-                    <option value="WSWHE">WSWHE BOCES</option>                  </select>
-     <input type="hidden" name="stattype" value="wholesystem">
+     
+                    <input type="hidden" name="system" value="<?php echo $field_home_library_system;?>">
+                    <input type="hidden" name="stattype" value="wholesystem">
      <input type="submit" value="Submit">
     </form>
     <br><hr>
-	#eForm Lending Stats
-     <h2>Enter the data range you will like to run eForm lending stats usage:</h2>
+    <!--#eForm Lending Stats-->
+     <h3>Lending statistics for <?php echo $field_home_library_system;?>:</h3>
      <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
      Start Date:
      <input id="datepickerl" name="startdate"/>
      End Date:
      <input id="datepickerl2" name="enddate"/>
      <br><br>
-     <B>Requesting Library System</b><select name="system">
-                    <option value="none">Please Choose a System</option>
-                    <option value="CRB">Capital Region BOCES</option>
-                    <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
-                    <option value="Q3S">Questar III SLS</option>
-                    <option value="WSWHE">WSWHE BOCES</option>
-                  </select>
+   
+     <input type="hidden" name="system" value="<?php echo $field_home_library_system;?>">
      <input type="hidden" name="stattype" value="wholesystemlending">
      <input type="submit" value="Submit">
     </form>
     <br><hr>
 
     <?php
-    #Generate the drop down for borrower stats
-    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1 and (System = 'WSWHE' or System = 'HFM' or System = 'CRB' or System = 'Q3S') order by `Name` ";
+    // Generate the drop down for borrower stats
+    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1 and System = '".$field_home_library_system."' order by `Name` ";
     $libnameq =   mysqli_query($db, $libnames);
     echo "<form action='/libstats'   method='post2' >";
-    echo "<h2>Generate borrowing stats for a specific Library:</h2><br>";
+    echo "<h3>Borrowing statistics for a specific library:</h3><br>";
     echo "<select name=libname>";
     while ($row = $libnameq->fetch_assoc()) {
         $libname =  $row["Name"];
@@ -562,11 +554,11 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     echo "<input type='submit' value='Submit'>";
     echo "</select></form>";
     echo "<hr>";
-    #Generating the links for borrowing stats
-    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1  and (System = 'WSWHE' or System = 'HFM' or System = 'CRB' or System = 'Q3S') order by `Name` ";
+    // Generating the links for borrowing stats
+    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1  and System = '".$field_home_library_system."' order by `Name` ";
     $libnameq =   mysqli_query($db, $libnames);
     echo "<form action='/liblenderstat'   method='post2' >";
-    echo "<h2>Generate lending stats for a specific Library:</h2><br>";
+    echo "<h3>Lending statistics for a specific library:</h3><br>";
     echo "<select name=libname>";
     while ($row = $libnameq->fetch_assoc()) {
         $libname =  $row["Name"];
@@ -577,7 +569,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     echo "</select></form>"; ?>
     <hr>
     <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
-    <h2>Generate list of expired requests:</h2><br>
+    <h3>List of expired requests:</h3><br>
      Start Date:
      <input id="expdatepicker" name="startdate"/>
      End Date:
@@ -587,7 +579,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     </form>
     <hr>
     <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
-    <h2>Generate list of top 10 libraries making requests:</h2><br>
+    <h3>List of top 10 borrowing libraries:</h3><br>
     Start Date:
     <input id="top10datepicker" name="startdate"/>
     End Date:
@@ -595,9 +587,9 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     <input type="hidden" name="stattype" value="top10stats">
     <input type="submit" value="Submit">
     </form>
-	  <hr>
+      <hr>
     <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
-    <h2>Generate list of top 10 libraries filling requests:</h2><br>
+    <h3>List of top 10 lending libraries:</h3><br>
     Start Date:
     <input id="top10fdatepicker" name="startdate"/>
     End Date:
@@ -605,6 +597,6 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     <input type="hidden" name="stattype" value="top10fstats">
     <input type="submit" value="Submit">
   </form>
-  <?php
+    <?php
 }
 ?>
