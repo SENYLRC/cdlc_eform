@@ -284,7 +284,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
         echo"<td><a href ='/renew?num=".$illNUB."&a=1'>Approve Renewal</a><br><br><a href ='/renew?num=".$illNUB."&a=2'>Deny Renewal</a><br> ";
         echo "</td></tr>";
     } elseif (($daysdiff > '14')&&(strlen($checkinAccount)<2)&&($fill != 4)&&($fill != 6)) {
-        echo"<td><a  href ='/status?num=$illNUB&a=3'>Check Item Back In 1</a> ";
+        echo"<td><a  href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
         echo "</td></tr>";
     } elseif ((strlen($returnAccount)<2)&&(strlen($renewAccountRequester)<1)&&(strlen($receiveAccount)>1)&&(strlen($checkinAccount)<2)) {
         #Give the option for lender to change due date as long as it has been recived and not returned or renewed
@@ -292,12 +292,12 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
         $timestamp =     date("Y-m-d", strtotime($timestamp));
         $daysdiff = round(abs(strtotime($now)-strtotime($timestamp))/86400);
         if ($daysdiff > '14') {
-            echo"<br><br><a href ='/status?num=$illNUB&a=3'>Check Item Back In 2</a> ";
+            echo"<br><br><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
         }
         echo "</td></tr>";
     } elseif ((strlen($checkinAccount)<2)&&(strlen($receiveAccount)>1)) {
         #Give the option for lender to check the item back in
-        echo"<td><a href ='/status?num=$illNUB&a=3'>Check Item Back In 3</a></td></tr> ";
+        echo"<td><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a></td></tr> ";
     } else {
         echo "<td>&nbsp</td>";
     }
