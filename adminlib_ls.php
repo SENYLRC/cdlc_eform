@@ -211,7 +211,7 @@ if ($pageaction ==3) {
         $result = mysqli_query($db, $insertsql);
         echo  "Library Had Been Added";
         echo "<br><a href='".$_SERVER['REDIRECT_URL']."'>Return to main list</a><br>";
-        echo "<br><a href='/adminlib?action=1'>Add Another Library</a>";
+        echo "<br><a href='/adminlib_ls?action=1'>Add Another Library</a>";
     } else {
         ?>
     <form action="".$_SERVER['REDIRECT_URL']."?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
@@ -373,7 +373,7 @@ if ($pageaction ==3) {
         $journal = $row["periodical_copy"];
         $timestamp = $row["ModifyDate"];
         $enddateshow = $row["SuspendDateEnd"]; ?>
-    <form action="/adminlib?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
+    <form action="/adminlib_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
     <B>Library Name:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libname" value="<?php echo $libname?>"><br>
     <B>Library Alias:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libalias" value="<?php echo $libalias?>"><br>
     <B>Library ILL Email:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libemail" value="<?php echo $libemail?>"><br>
@@ -556,16 +556,17 @@ if ($pageaction ==3) {
 
     echo "<form action=".$_SERVER['REDIRECT_URL']." method='post'>";
     echo "<input type='hidden' name='firstpass' value= 'no'>";
-    echo "<p>Display filters:";
+    echo "<h3>Limit Results</h3>";
+    echo"<h4>Display Filters</h4>";
     echo "<input type='checkbox' name='filter_aliasblank' value='yes' " . checked($filter_aliasblank) . ">Missing alias ";
     echo "<input type='checkbox' name='filter_illemailblank' value='yes' " . checked($filter_illemailblank) . ">Missing ILL Email ";
     echo "<input type='checkbox' name='filter_illpart' value='yes' " . checked($filter_illpart) . ">ILL Participant ";
     echo "<input type='checkbox' name='filter_suspend' value='yes' " . checked($filter_suspend) . ">ILL Suspended ";
-    echo "<br>Search:";
-    echo "<br>Library Name: <input name='library' type='text' value='$filter_library'> ";
-    echo "<br>Library Alias: <input name='filter_alias' type='text' value='$filter_alias'> ";
-    echo "<br>ILL Code: <input name='loc' type='text' value='$filter_loc'> ";
-    echo "<br>ILL Email: <input name='filter_illemail' type='text' value='$filter_illemail'> ";
+    echo "<br><b>OR</b><h4>Search by:</h4>";
+    echo "<b>Library Name: </b><input name='library' type='text' value='$filter_library'> ";
+    echo "<br><b>Library Alias: </b><input name='filter_alias' type='text' value='$filter_alias'> ";
+    echo "<br><b>ILL Code: </b><input name='loc' type='text' value='$filter_loc'> ";
+    echo "<br><b>ILL Email: </b><input name='filter_illemail' type='text' value='$filter_illemail'> ";
     echo "<br><select name='filter_numresults'></br>";
     echo "<option " . selected("25", $filter_numresults) . " value = '25'>25</option>";
     echo "<option " . selected("50", $filter_numresults) . " value = '50'>50</option>";
@@ -587,11 +588,11 @@ if ($pageaction ==3) {
     }
     echo "<br>Total Results: ".$GETLISTCOUNTwhole."<br>";
     ;
-    echo "<br><a href='adminlib'>Clear</a> <input type=Submit value=Update><br>";
+    echo "<br><button><a href='adminlib'>Clear</a></button> <b>OR</b><input type=Submit value=Update><br>";
     echo "</form>";
-    echo "<a href='".$_SERVER['REDIRECT_URL']."?action=1'>Would you like to add a library?</a><br>";
-    echo "<a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending (hint: for updating system)</a><br>";
-    echo "<a target='_blank' href=/export_ls>Export to CSV</a><br>";
+    echo "<hr><ul><li><a href='".$_SERVER['REDIRECT_URL']."?action=1'>Would you like to add a library?</a></li>";
+    echo "<li><a href='".$_SERVER['REDIRECT_URL']."?action=5'>Mass suspend or activate library lending (hint: for updating system)</a></li>";
+    echo "<li><a target='_blank' href=/export_ls>Export to CSV</a></li></ul>";
 
     echo "<table><tr><th>Library</th><th>Alias</th><th>Participant</th><th>Suspend</th><th>System</th><th>OCLC</th><th>LOC</th><th>Action</th></tr>";
     while ($row = mysqli_fetch_assoc($GETLIST)) {
