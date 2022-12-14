@@ -334,7 +334,7 @@ if ($pageaction ==3) {
         } else {
             $enddate = date('Y-m-d', strtotime(str_replace('-', '/', $enddate)));
         }
-        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='Southeastern ADMIN',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
+        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='CDLC ADMIN',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
         //for testing
         //echo $sqlupdate;
         $result = mysqli_query($db, $sqlupdate);

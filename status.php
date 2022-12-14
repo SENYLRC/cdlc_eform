@@ -51,8 +51,10 @@ if (($_SERVER['REQUEST_METHOD'] == 'GET')&&($recanswer=='1')) {
         echo "How are you returning the item:<select name='shipmethod'>";
         echo "<option value=''></option>";
         echo "<option value='usps'>US Mail</option>";
-        echo "<option value='mhls'>Mid-Hudson Courier</option>";
-        echo "<option value='rcls'>RCLS Courier</option>";
+        echo "<option value='sals'>SALS Courier</option>";
+        echo "<option value='mvls'>MVLS Courier</option>";
+        echo "<option value='crb'>Capital Region BOCES Courier</option>";
+        echo "<option value='uhls'>Uppper Hudson Courier</option>";
         echo "<option value='empire'>Empire Delivery</option>";
         echo "<option value='ups'>UPS</option>";
         echo "<option value='fedex'>FedEx</option>";
