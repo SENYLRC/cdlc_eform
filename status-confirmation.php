@@ -13,7 +13,7 @@ if (isset($_REQUEST['enddate'])) {
     $enddate = $_REQUEST['enddate'];
 }
 
-#If suspenson is set with no end date, a default one of 7 days is calulated
+// If suspenson is set with no end date, a default one of 7 days is calulated
 if (($suspend==1)&&(strlen($enddate)<2)) {
     $enddate = strtotime("+7 day");
     $enddate = date('Y-m-d', $enddate);
@@ -65,25 +65,28 @@ if ($action == "go") {
   <input type="submit" name="proceed" value="Proceed"> <a href='/adminlib'>Cancel</a></form><?php
 } elseif ($action == "doit") {
         echo "<b>The libraries have been updated!<b>";
-        #Connect to database
-        require '/var/www/cdlc_script/cdlc_db.inc';
+        // Connect to database
+        include '/var/www/cdlc_script/cdlc_db.inc';
+        include '/var/www/cdlc_script/cdlc_function.php';
+        $timestamp = date("Y-m-d H:i:s");
+
         $db = mysqli_connect($dbhost, $dbuser, $dbpass);
         mysqli_select_db($db, $dbname);
 
 
-        if ($task == "suspend") {
-            #Suspend
-            $sqlupdate = "UPDATE `$cdlcLIB` SET suspend='1', SuspendDateEnd='$enddate' WHERE `participant` = '1' and `suspend` = '0' and `system` = '$system' ";
-        } else {
-            #Activate
-            $sqlupdate = "UPDATE `$cdlcLIB` SET suspend='0' WHERE `participant` = '1' and `suspend` = '1' and `system` = '$system' ";
-        }
-        echo $sqlupdate;
+    if ($task == "suspend") {
+        // Suspend
+        $sqlupdate = "UPDATE `$cdlcLIB` SET suspend='1', SuspendDateEnd='$enddate',ModifyDate='$timestamp',ModEmail ='$email' WHERE loc <> '' and `participant` = '1' and `suspend` = '0' and `system` = '$system' ";
+    } else {
+        // Activate
+        $sqlupdate = "UPDATE `$cdlcLIB` SET suspend='0',ModifyDate='$timestamp',ModEmail ='$email' WHERE loc <> '' and `participant` = '1' and `suspend` = '1' and `system` = '$system' ";
+    }
+        //echo $sqlupdate;
         $result = mysqli_query($db, $sqlupdate);
 
-        #Close the database
+        // Close the database
         mysqli_close($db);
-    } else {
-        echo "Sorry! We cannot complete your action.  <a href='/adminlib'>Please go back</a> and select a library system.";
-    }
+} else {
+    echo "Sorry! We cannot complete your action.  ";
+}
 ?>

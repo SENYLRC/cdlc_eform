@@ -417,7 +417,7 @@ if ($pageaction ==3) {
         echo "selected=\"selected\"";
 } ?>>Yes</option><option value="0" <?php if ($libparticipant=="0") {
             echo "selected=\"selected\"";
-                                                                                 } ?>>No</option></select><br>
+                                                                               } ?>>No</option></select><br>
     <B>Suspend ILL</b><select name="suspend">  <option value="0" <?php if ($libsuspend=="0") {
         echo "selected=\"selected\"";
 } ?>>No</option><option value="1" <?php if ($libsuspend=="1") {

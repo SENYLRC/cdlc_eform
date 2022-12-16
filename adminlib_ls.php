@@ -160,15 +160,11 @@ if ($pageaction ==3) {
     ?>
    <p>Please select the action you wish to take and the library system to act upon.</p>
    <form action="/status-confirmation" method="post">
+   <?php echo "<input type='hidden' name='system' value= '".$field_home_library_system."'>";?>
    <input type="radio" name="task" value="suspend">Suspend lending<br>
    <input type="radio" name="task" value="activate" checked="checked">Activate lending<br><br>
-   <b>Library System </b><select name="system">
-   <option value = "none">Select a system</option>
-   <option value="CRB">Capital Region BOCES</option>
-   <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
-   <option value="Q3S">Questar III SLS</option>
-   <option value="WSWHE">WSWHE BOCES</option>
-    </select><br>
+   <b>Library System: <?php echo $field_home_library_system?> </b>
+   <br>
       <b>Suspension End Date:</b><input id="datepicker" name="enddate"/><br>
    <br><br>
    <input type="submit" value="Submit">
@@ -334,7 +330,7 @@ if ($pageaction ==3) {
         } else {
             $enddate = date('Y-m-d', strtotime(str_replace('-', '/', $enddate)));
         }
-        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='CDLC ADMIN',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
+        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='$email',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
         //for testing
         //echo $sqlupdate;
         $result = mysqli_query($db, $sqlupdate);
