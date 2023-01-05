@@ -1,9 +1,9 @@
 <?php
 
-###sent.php###
+// sent.php###
 
 require '/var/www/cdlc_script/cdlc_function.php';
-#Connect to database
+// Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
@@ -50,7 +50,7 @@ if (isset($_REQUEST['patronnote'])) {
     $patronnote = $_REQUEST['patronnote'];
 }
 
-#Pull all the articles files and then combine into one variable
+// Pull all the articles files and then combine into one variable
 if (isset($_REQUEST['arttile'])) {
     $arttile = $_REQUEST['arttile'];
 }
@@ -92,23 +92,23 @@ if (strlen($issn)>2) {
     $issn="ISSN: $issn";
 }
 
-#Pull the information of the person making the request
+// Pull the information of the person making the request
 $reqsystem=$field_home_library_system;
 foreach ($_POST['libdestination'] as $destination) {
     list($libcode, $library, $destsystem, $itemavail, $itemcall, $itemlocation, $destemail, $destloc) = explode(":", $destination);
-    #UnHTML encodes call numbers that might have strange characters
+    // UnHTML encodes call numbers that might have strange characters
     $itemcall = htmlspecialchars_decode($itemcall, ENT_QUOTES);
     $libcode = htmlspecialchars_decode($libcode, ENT_QUOTES);
     $library = htmlspecialchars_decode($library, ENT_QUOTES);
 
-    #Put the dest email in an array in case the library has more than one person who gets the message
+    // Put the dest email in an array in case the library has more than one person who gets the message
     $destemailarray = explode(';', $destemail);
-    #Check to see if data was posted to the forum
+    // Check to see if data was posted to the forum
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        #Insert request into Database
+        // Insert request into Database
         $today = date('Y-m-d H:i:s');
 
-        #Add escape for the title, author, call number, Library name, and Requester Name
+        // Add escape for the title, author, call number, Library name, and Requester Name
         $ititle = mysqli_real_escape_string($db, $title);
         $article = mysqli_real_escape_string($db, $article);
         $iauthor = mysqli_real_escape_string($db, $author);
@@ -136,8 +136,8 @@ foreach ($_POST['libdestination'] as $destination) {
         $itype = trim($itype);
         $destloc = trim($destloc);
         $reqLOCcode = trim($reqLOCcode);
-        #The SQL statement to insert for Stats and to recall if needed in the future
-        #$itemcall_s = mysql_escape_string($itemcall);
+        // The SQL statement to insert for Stats and to recall if needed in the future
+        // $itemcall_s = mysql_escape_string($itemcall);
 
 
 
@@ -150,7 +150,7 @@ foreach ($_POST['libdestination'] as $destination) {
         if (mysqli_query($db, $sql)) {
             //for testing
             //echo "SQL was good<br><br>";
-            #Get the SQL id and create a ILL Number
+            // Get the SQL id and create a ILL Number
             $sqlidnumb= mysqli_insert_id($db);
             $yearid=date('Y');
             $illnum="$yearid-$sqlidnumb";
@@ -158,8 +158,8 @@ foreach ($_POST['libdestination'] as $destination) {
             echo "Request <b>$illnum</b> has been emailed to <b>$library.</b><br>";
             mysqli_query($db, $sqlupdate);
 
-            #SETUP email
-            #We'll set these to white space if they are empty to prevent an error message
+            // SETUP email
+            // We'll set these to white space if they are empty to prevent an error message
             if (empty($needbydatet)) {
                 $needbydatet='';
             }
@@ -169,7 +169,7 @@ foreach ($_POST['libdestination'] as $destination) {
             if (empty($arttile)) {
                 $article='';
             }
-            #Copy of message sent to the requester
+            // Copy of message sent to the requester
             $messagereq = "An ILL request ($illnum) has been created for the following: <br><br>
      Library: $library <br>
      Title: $title <br>
@@ -197,7 +197,7 @@ foreach ($_POST['libdestination'] as $destination) {
      $wphone<br>";
             //end of the message to the requester
 
-            #Message for the destination library
+            // Message for the destination library
             $messagedest = "An ILL request ($illnum) has been created for the following: <br><br>
      Library: $library <br>
      Title: $title <br>
@@ -224,38 +224,38 @@ foreach ($_POST['libdestination'] as $destination) {
      Will you fill this request?  <a href='https://eform.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='https://eform.cdlc.org/respond?num=$illnum&a=0' >No</a><br>";
             //end of the message to the destination
             //start of sending mail
-            #Set email subject for request
+            // Set email subject for request
             $subject = "NEW ILL Request from $inst ILL# $illnum";
 
-            #SEND EMAIL to destination Library with DKIM Signature
+            // SEND EMAIL to destination Library with DKIM Signature
             $email_to = implode(',', $destemailarray);
             $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eFrom" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            #mail has been sent to meg at CDLC for development
-            $email_to="mwakeman@cdlc.org";
+            //mail has been sent to meg at CDLC for development
+            //$email_to="mwakeman@cdlc.org";
             mail($email_to, $subject, $messagedest, $headers);
 
-            #SEND a copy of EMAIL to the requester with DKIM sig
+            // SEND a copy of EMAIL to the requester with DKIM sig
             $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            #mail has been sent to meg at CDLC for development
-            $email="mwakeman@cdlc.org";
+            //mail has been sent to meg at CDLC for development
+            //$email="mwakeman@cdlc.org";
             mail($email, $subject, $messagereq, $headers);
 
-        //end of sending mail
+            //end of sending mail
         } else {
-            #Something happened, and I could not create a request
+            // Something happened, and I could not create a request
             echo "Error: " . $sql . "<br>" . mysqli_error($db);
             echo "Unable to create request due a technical issue, if this happens again, please contact CDCL Tech Support";
             echo "<br><br>";
-        }#end if for SQL query check
+        }// end if for SQL query check
     }//end if the check for POST
 
-    #This will generate the web page response
+    // This will generate the web page response
     echo "<br>Details of your request(s):<br>";
     echo "Library: <b>$library</b><br>" ;
     echo "Title: <b>$title</b><br>" ;
@@ -264,7 +264,7 @@ foreach ($_POST['libdestination'] as $destination) {
     echo "A copy of this request has also been emailed to the requester $fname $lname at $email.<br>" ;
 }//end foreach loop
 mysqli_close($db);
-#Ask the requester if they would like to make another request
+// Ask the requester if they would like to make another request
 ?>
 <br>
-<a href='/'>Would you like to make another request?</a>
+<button><a href='/'>Would you like to make another request?</a></button>

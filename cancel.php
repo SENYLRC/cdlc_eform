@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             // mail has been sent to meg at CDLC for development
-            $destemail_to="mwakeman@cdlc.org";
-            $to="mwakeman@cdlc.org";
+            //$destemail_to="mwakeman@cdlc.org";
+            //$to="mwakeman@cdlc.org";
             mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
             mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
         }

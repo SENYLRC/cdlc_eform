@@ -63,7 +63,7 @@ if (isset($_POST['bulkaction'])) {
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
-                $destemail_to="mwakeman@cdlc.org";
+                //$destemail_to="mwakeman@cdlc.org";
                 mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
                 echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
@@ -91,7 +91,7 @@ if (isset($_POST['bulkaction'])) {
                 $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
-                $destemail_to="mwakeman@cdlc.org";
+                //$destemail_to="mwakeman@cdlc.org";
                 mail($destemail_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
             } else {
                 echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
@@ -122,7 +122,7 @@ if (isset($_POST['bulkaction'])) {
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
-                $to="mwakeman@cdlc.org";
+                //$to="mwakeman@cdlc.org";
                 mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
                 echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
@@ -145,7 +145,7 @@ if (isset($_POST['bulkaction'])) {
                 $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
-                $to="mwakeman@cdlc.org";
+                //$to="mwakeman@cdlc.org";
                 mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
             } else {
                 echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
@@ -165,5 +165,5 @@ if (isset($_POST['bulkaction'])) {
 
     }//end foreach loop
 } else {
-    echo "<div style='color: red;'>Please go back to your profile and submit a bulk action through the interace</div><br>";
+    echo "<div style='color: red;'>Please go back to your profile and submit a bulk action through the interface</div><br>";
 }//end if check if action was posted

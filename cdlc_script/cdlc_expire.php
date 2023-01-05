@@ -67,7 +67,8 @@ function getWorkingDays($startDate, $endDate, $holidays)
 }
 
 
-$holidays=array("2023-01-01","2023-01-16","2023-02-20","2023-05-29","2023-06-19","2023-07-04","2023-09-04","2023-10-9","2022-11-11","2022-11-24","2021-11-25","2022-12-26","2022-12-27","2022-12-28","2022-12-29","2022-12-30");
+$holidays=array("2023-01-01","2023-01-16","2023-02-20","2023-05-29","2023-06-19","2023-07-04","2023-09-04","2023-10-9","2022-11-11","2022-11-24","2021-11-25","2022-12-26","2022-12-27","2022-12-28","2022-12-29","
+2022-12-30");
 
 
 #####Connect to database
@@ -167,7 +168,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
 						$email<br>
 						$wphone<br>
             <br><hr style='width:200px;text-align:left;margin-left:0'><Br>
-            This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in this ILL transaction, email ".$destemailarray.".";
+            This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in this 
+ILL transaction, email ".$destemailarray.".";
 
 
         ######Message for the destination library
@@ -204,8 +206,8 @@ library in this ILL transaction, email ".$email."
         $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-        #mail has been sent to meg at CDLC for development
-        $email_to="mwakeman@cdlc.org";
+        //mail has been sent to meg at CDLC for development
+        //$email_to="mwakeman@cdlc.org";
         mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
 
         #####SEND a copy of EMAIL to requester with DKIM sig
@@ -215,8 +217,8 @@ library in this ILL transaction, email ".$email."
 
         $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        #mail has been sent to meg at CDLC for development
-        $email="mwakeman@cdlc.org";
+        //mail has been sent to meg at CDLC for development
+        //$email="mwakeman@cdlc.org";
         mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
 
         $sqlupdate = "UPDATE `$cdlcSTAT` SET `Fill` = '4', `emailsent` = '3' , `responderNOTE` =  'EXPIRE MSG Sent' WHERE `illNUB` = '$illnum'";
