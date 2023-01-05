@@ -52,7 +52,7 @@ $retactlib3 =   mysqli_query($db, $actlib3);
 $row_actlib3 = mysqli_num_rows($retactlib3);
 
 
-#Find the number of libraries who donot particpate and not suspended.  This should always be 0
+#Find the number of libraries who donot particpate 
 $actlib2 = "SELECT * FROM `$cdlcLIB` WHERE `participant`=0 and `suspend`=0";
 $retactlib2 =   mysqli_query($db, $actlib2);
 $row_actlib2 = mysqli_num_rows($retactlib2);
@@ -72,8 +72,7 @@ Request not Answered: ".$row_noansw."<br>
           Number of Active Libraries: ".$row_actlib." <br>
 Number of Active Libraries Suspended: ".$row_actlib3." <br>
 <br>
-(This should be always be zero)
-Number of Libraries who do not participate and are not suspended ".$row_actlib2."<br>
+Number of Libraries who do not participate  ".$row_actlib2."<br>
 
 <br>";
 
@@ -81,7 +80,7 @@ Number of Libraries who do not participate and are not suspended ".$row_actlib2.
 
 $subject = "eform Stats for the week of ".$startdate." to ".$curdate."";
 
-#####SEND EMAIL to SENYLRC ILL
+#####SEND EMAIL to CDLC ILL
 
 $email_to = "spalding@senylrc.org;ill@cdlc.org";
 
@@ -89,7 +88,8 @@ $email_to = "spalding@senylrc.org;ill@cdlc.org";
  $headers .= "MIME-Version: 1.0\r\n";
  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
- mail($email_to, $subject, $messagedest, $headers);
+ mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+
 
 
 ?>
