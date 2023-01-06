@@ -314,9 +314,9 @@ function find_locationinfo($locationalias, $locationname)
     if ($locationname == "MVLS and SALS combined catalog") {
         $a2= explode(":", $locationalias);
         $locationalias=strtok($a2[0], ' ');
-        $GETLISTSQL="SELECT loc,participant,`ill_email`,suspend,system,Name,alias FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
+        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
     } else {
-        $GETLISTSQL="SELECT loc,participant,`ill_email`,suspend,system,Name,alias FROM `$cdlcLIB` where alias = '$locationalias' ";
+        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias = '$locationalias' ";
     }
     #for test list of libraries on request page
     #echo $GETLISTSQL."<br>";
@@ -375,3 +375,4 @@ function check_itemtype($destill, $itemtype)
     }
     return 0; #Matched none of the above
 } # end check_itemtype
+?>

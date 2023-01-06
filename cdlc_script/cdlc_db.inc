@@ -1,5 +1,5 @@
 <?php
-$dbhost="ls-3da7049ca6203a5a6babb50f6bcb79261c889d08.czgrpux9mcqg.us-east-1.rds.amazonaws.com";
+$dbhost="ls-e97d42f006e12b4a70f0f2d7eddc2781ea7cad30.czgrpux9mcqg.us-east-1.rds.amazonaws.com:";
 $dbuser="cdlcEform";
 $dbpass="vUqc6YPCoaOXh04T";
 $dbname="cdlc_eform";
