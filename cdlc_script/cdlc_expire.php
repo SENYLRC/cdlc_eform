@@ -90,6 +90,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
     $pubdate	= $row["pubdate"];
     $isbn        = $row["reqisbn"];
     $issn        = $row["reqissn"];
+    $itemcall      = $row["Call Number"];
     $itemavail	= $row["Available"];
     $article    = $row["article"];
     $inst	= $row["Requester lib"];

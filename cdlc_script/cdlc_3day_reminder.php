@@ -97,6 +97,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
     $pubdate	= $row["pubdate"];
     $isbn        = $row["reqisbn"];
     $issn        = $row["reqissn"];
+    $itemcall   = $row["Call Number"];
     $itemavail	= $row["Available"];
     $article    = $row["article"];
     $inst	= $row["Requester lib"];
@@ -170,7 +171,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $article='';
         }
         ######Copy of message sent to the requester
-        $messagereq = "An ILL request ($illnum)has been created for the following: <br><br>
+        $messagereq = "An ILL request ($illnum) has been created for the following: <br><br>
 						Title: $title <br>
 						Author: $author<br>
 						Item Type: $itype<br>

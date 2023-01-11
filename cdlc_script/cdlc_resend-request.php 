@@ -56,7 +56,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
 				if ( empty($issn)) $issn='';
 					if ( empty($arttile)) $article='';
 						######Copy of message sent to the requester
-						$messagereq = "An ILL request ($illnum)has been created for the following: <br><br>
+						$messagereq = "An ILL request ($illnum) has been created for the following: <br><br>
 						Title: $title <br>  
 						Author: $author<br>
 						Item Type: $itype<br> 
