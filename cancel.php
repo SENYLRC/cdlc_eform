@@ -23,10 +23,16 @@ $reqanswer = mysqli_real_escape_string($db, $reqanswer);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $respnote=$_REQUEST["respondnote"];
     $resfill=$_REQUEST["fill"];
+
+    //get title value before removal and store in row
+    $sqlselect="select requesterEMAIL,Title,Destination from  `$cdlcSTAT` where illNUB='$reqnumb'  LIMIT 1 ";
+    $result = mysqli_query($db, $sqlselect);
+    $row = mysqli_fetch_array($result);
+
     // Escape values for security
     $respnote = mysqli_real_escape_string($db, $respnote);
     $resfill = mysqli_real_escape_string($db, $resfill);
-    $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1' , `responderNOTE` =  '$respnote' WHERE `illNUB` = '$reqnumb'";
+    $sqlupdate = "UPDATE `$cdlcSTAT` SET `Fill` =  '6', `Title` = '', `Author` = '', `pubdate` = '', `reqisbn` = '', `reqissn` = '', `itype` = '', `Call Number` = '', `article` = '', `needbydate` = '', `patronnote` = '', `DueDate` = '', `emailsent` = '1' , `responderNOTE` =  '$respnote' WHERE `illNUB` = '$reqnumb'";
 
     if (mysqli_query($db, $sqlupdate)) {
         echo "Thank you.  Your response has been recorded to the request<br><br>";
@@ -36,12 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $respnote="The requesting library has noted the following <br> $respnote";
         }
 
-        $sqlselect="select responderNOTE,requesterEMAIL,Title,Destination from  `$cdlcSTAT` where illNUB='$reqnumb'  LIMIT 1 ";
-        $result = mysqli_query($db, $sqlselect);
-        $row = mysqli_fetch_array($result);
-        $title =$row['Title'];
-        $requesterEMAIL=$row['requesterEMAIL'];
-        $destlib=$row['Destination'];
+        
+        $title    = $row["Title"];
+        $requesterEMAIL= $row['requesterEMAIL'];
+        $destlib= $row['Destination'];
         // Get the Destination Name
         $GETLISTSQLDEST="SELECT`Name`, `ill_email` FROM  `$cdlcLIB`  where loc like '$destlib'  limit 1";
         $resultdest=mysqli_query($db, $GETLISTSQLDEST);
@@ -83,9 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     // The Request will be canceled #############################################
     if ($reqanswer=='3') {
-        $sqlupdate = "UPDATE `$cdlcSTAT` SET `Fill` =  '6', `Title` = '', `Author` = '', `pubdate` = '', `reqisbn` = '', `reqissn` = '', `itype` = '', `Call Number` = '', `article` = '', `needbydate` = '', `patronnote` = '', `DueDate` = '' WHERE `illNUB` = '$reqnumb'";
-        if (mysqli_query($db, $sqlupdate)) {
-            // Generate web message
+             // Generate web message
             echo "Please click the submit button to confirm you want to cancel this request.<br>  Thank You."; ?>
        <br><br><h4>Notes about the cancelation</h4>
        <form action="/cancel" method="post">
@@ -94,13 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        <textarea name='respondnote' rows="4" cols="50"></textarea><br>
        <input type="submit" value="Submit">
        </form>
-            <?php
-            // This will generate an error if database can't be updated########
-        } else {
-            echo "Unable to record answer for ILL request $reqnumber please call SENYLRC to report this error";
-        }
+        <?php
     }
-
     // End if statement if we are updating the note box####
 }
 mysqli_close($db);
