@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 //mail has been sent to meg at CDLC for development
                 //$to="mwakeman@cdlc.org";
-                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
 
             // Sending not filledmessage#########
         }else{
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                //mail has been sent to meg at CDLC for development
                //$to="mwakeman@cdlc.org";
-               mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+               mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
 
         }
     }else{

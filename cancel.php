@@ -73,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // mail has been sent to meg at CDLC for development
             //$destemail_to="mwakeman@cdlc.org";
             //$to="mwakeman@cdlc.org";
-            mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
-            mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
+            mail($destemail_to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }
     } else {
         echo "Unable to record the answer for ILL request $reqnumb please call SENYLRC to report this error";

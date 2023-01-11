@@ -64,7 +64,7 @@ if (isset($_POST['bulkaction'])) {
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
                 //$destemail_to="mwakeman@cdlc.org";
-                mail($destemail_to, $subject, $message, $headers, "-f ill@cdlc.org");
+                mail($destemail_to, $subject, $message, $headers, "-f donotreply@cdlc.org");
             } else {
                 echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
@@ -92,7 +92,7 @@ if (isset($_POST['bulkaction'])) {
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
                 //$destemail_to="mwakeman@cdlc.org";
-                mail($destemail_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+                mail($destemail_to, $subject, $messagedest, $headers, "-f donotreply@cdlc.org");
             } else {
                 echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
@@ -123,7 +123,7 @@ if (isset($_POST['bulkaction'])) {
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
                 //$to="mwakeman@cdlc.org";
-                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
             } else {
                 echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
@@ -146,7 +146,7 @@ if (isset($_POST['bulkaction'])) {
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 // mail has been sent to meg at CDLC for development
                 //$to="mwakeman@cdlc.org";
-                mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+                mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
             } else {
                 echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
