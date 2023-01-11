@@ -63,7 +63,7 @@ library in this ILL transaction, email.";
     $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
     //mail has been sent to meg at CDLC for development
     //$email_to="mwakeman@cdlc.org";
-    mail($email_to, $subject, $messagereq, $headers, "-f ill@cdlc.org");
+    mail($email_to, $subject, $messagereq, $headers, "-f donotreply@cdlc.org");
 
 
 

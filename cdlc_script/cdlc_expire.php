@@ -208,7 +208,7 @@ library in this ILL transaction, email ".$email."
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         //mail has been sent to meg at CDLC for development
         //$email_to="mwakeman@cdlc.org";
-        mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+        mail($email_to, $subject, $messagedest, $headers, "-f donotreply@cdlc.org");
 
         #####SEND a copy of EMAIL to requester with DKIM sig
         $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
@@ -219,7 +219,7 @@ library in this ILL transaction, email ".$email."
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
         //mail has been sent to meg at CDLC for development
         //$email="mwakeman@cdlc.org";
-        mail($email, $subject, $messagereq, $headers, "-f ill@cdlc.org");
+        mail($email, $subject, $messagereq, $headers, "-f donotreply@cdlc.org");
 
         $sqlupdate = "UPDATE `$cdlcSTAT` SET `Fill` = '4', `emailsent` = '3' , `responderNOTE` =  'EXPIRE MSG Sent' WHERE `illNUB` = '$illnum'";
         mysqli_query($db, $sqlupdate);

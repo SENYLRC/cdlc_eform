@@ -88,7 +88,7 @@ $email_to = "spalding@senylrc.org;ill@cdlc.org";
  $headers .= "MIME-Version: 1.0\r\n";
  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
- mail($email_to, $subject, $messagedest, $headers, "-f ill@cdlc.org");
+ mail($email_to, $subject, $messagedest, $headers, "-f donotreply@cdlc.org");
 
 
 
