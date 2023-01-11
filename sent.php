@@ -134,8 +134,19 @@ foreach ($_POST['libdestination'] as $destination) {
         $saddress2 = mysqli_real_escape_string($db, $address2);
         $caddress = mysqli_real_escape_string($db, $caddress);
         $itype = trim($itype);
+        $ititle = trim($ititle);
+        $iauthor = trim($iauthor);
+        $email = trim($email);
+        $library = trim($library);
+        $inst = trim($inst);
         $destloc = trim($destloc);
+        $caddress = trim($caddress);
+        $saddress = trim($saddress);
         $reqLOCcode = trim($reqLOCcode);
+        $wphone = trim($wphone);
+        $fname = trim($fname);
+        $lname = trim($lname);
+        $pubdate = trim($pubdate);
         // The SQL statement to insert for Stats and to recall if needed in the future
         // $itemcall_s = mysql_escape_string($itemcall);
 
@@ -235,7 +246,7 @@ foreach ($_POST['libdestination'] as $destination) {
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             //mail has been sent to meg at CDLC for development
             //$email_to="mwakeman@cdlc.org";
-            mail($email_to, $subject, $messagedest, $headers);
+            mail($email_to, $subject, $messagedest, $headers, "-f donotreply@cdlc.org");
 
             // SEND a copy of EMAIL to the requester with DKIM sig
             $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
@@ -244,7 +255,7 @@ foreach ($_POST['libdestination'] as $destination) {
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             //mail has been sent to meg at CDLC for development
             //$email="mwakeman@cdlc.org";
-            mail($email, $subject, $messagereq, $headers);
+            mail($email, $subject, $messagereq, $headers, "-f donotreply@cdlc.org");
 
             //end of sending mail
         } else {
