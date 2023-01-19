@@ -19,7 +19,7 @@ $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $filter_illnum = $_REQUEST
 if ($firstpass == "no") {
     #Setting options to user's chosen
   if ($filter_illnum != "") { #If looking for ILL num then set the other options
-    $filter_startdate = "08/01/2022";
+    $filter_startdate = date("m/d/Y");
       $filter_enddate = date("m/d/Y");
       $filter_lender = "";
       $filter_borrower = "";
@@ -119,7 +119,7 @@ mysqli_select_db($db, $dbname);
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE ";
-$SQLEND=" ORDER BY `index` DESC ";
+$SQLEND=" ORDER BY `Timestamp` DESC ";
 
 if (strlen($filter_illnum) > 2) {
     $SQLILL = " AND `illNUB` = '" . $filter_illnum . "'";
@@ -264,7 +264,7 @@ echo "<input type='checkbox' name='filter_no' value='yes' " . checked($filter_no
 echo "<input type='checkbox' name='filter_noans' value='yes' " . checked($filter_noans) . ">No Answer  ";
 echo "<input type='checkbox' name='filter_expire' value='yes' " . checked($filter_expire) . ">Expired  ";
 echo "<input type='checkbox' name='filter_cancel' value='yes' " . checked($filter_cancel) . ">Canceled  ";
-echo "<input type='checkbox' name='filter_recevied' value='yes' " . checked($filter_recevied) . ">Rreceived  ";
+echo "<input type='checkbox' name='filter_recevied' value='yes' " . checked($filter_recevied) . ">Received  ";
 echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filter_return) . ">Return  ";
 echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check In  ";
 echo "<br>";
