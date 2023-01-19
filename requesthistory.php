@@ -81,11 +81,12 @@ echo "<input type='checkbox' name='filter_return' value='yes' " . checked($filte
 echo "<input type='checkbox' name='filter_checkin' value='yes' " . checked($filter_checkin) . ">Check-In <br><br>";
 echo "<b>Time Frame  </b>";
 echo "<select name='filter_days'>";
-echo "<option value='90' " . selected("365", $filter_days) . ">365 days</option>";
-echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
+
+
 echo "<option value='30' " . selected("30", $filter_days) . ">30 days</option>";
 echo "<option value='60' " . selected("60", $filter_days) . ">60 days</option>";
-
+echo "<option value='90' " . selected("90", $filter_days) . ">90 days</option>";
+echo "<option value='365' " . selected("365", $filter_days) . ">365 days</option>";
 echo "<option value='all' " . selected("all", $filter_days) . ">all days</option>";
 echo "</select> ";
 echo "<b>ILL#  </b>";
@@ -106,7 +107,7 @@ mysqli_select_db($db, $dbname);
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE `Requester LOC` = '$loc'";
-$SQLEND=" ORDER BY `index`  DESC";
+$SQLEND=" ORDER BY `Timestamp`  DESC";
 
 if ($filter_days == "all") {
     $SQL_DAYS = "";

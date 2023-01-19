@@ -107,7 +107,7 @@ mysqli_select_db($db, $dbname);
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE `Destination` = '$loc'";
-$SQLEND=" ORDER BY `index`  DESC";
+$SQLEND=" ORDER BY `Timestamp`  DESC";
 
 if ($filter_days == "all") {
     $SQL_DAYS = "";
