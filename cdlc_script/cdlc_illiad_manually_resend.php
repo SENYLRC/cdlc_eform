@@ -2,12 +2,13 @@
 //resend a request to ILLiad
 
 //note article does not work
-$illnumb='11763';
+$illnumb='14130';
+
+
 #####Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
-
 
 $sqlselect="select * from `$cdlcSTAT` where `index`='$illnumb' limit 1";
 echo $sqlselect."\n";;
@@ -69,18 +70,25 @@ $GETLISTCOUNT = '1';
          if (empty($arttile)) {
              //set the special instruction to the correct lib systems
              $specialinst= "ELD - ".$destsystem." ";
-             $jsonstr = array( 'Username' =>'Lending','WantedBy'=>'CDLC eForm Request: This is a book loan','LendingString'=> 'This is a book loan', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'SpecIns'=>$specialinst,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ILLNumber'=>$illnum);
+             $jsonstr = array( 'Username' =>'Lending','WantedBy'=>'CDLC eForm Request: This is a book loan','LendingString'=> 'This is a book loan', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'
+LendingLibrary'=>$illiadLIBSymbol,'SpecIns'=>$specialinst,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ILLN
+umber'=>$illnum);
          } else {
-             $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'SpecIns'=>$specialinst,'TransactionStatus'=>'Awaiting Lending RequestProcessing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum);
+             $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'SpecIns'=>$specialinst,'TransactionStatus'=>'Awaiting Lendin
+g RequestProcessing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'Phot
+oJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum);
          }
      } else {
          //go with defualts
 
          #Store data for request in array
          if (empty($arttile)) {
-             $jsonstr = array( 'Username' =>'Lending','LendingString'=> 'This is a book loan', 'ProcessType'=>'Lending','LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ILLNumber'=>$illnum);
+             $jsonstr = array( 'Username' =>'Lending','LendingString'=> 'This is a book loan', 'ProcessType'=>'Lending','LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus
+'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ILLNumber'=>$illnum);
          } else {
-             $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum);
+             $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','L
+oanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artiss
+ue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum);
          }
      }
 
@@ -129,12 +137,12 @@ $GETLISTCOUNT = '1';
      $illstatus = $output_decoded['TransactionStatus'];
 
      if (strlen($illiadtxnub)<4) {
-         $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+         $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
          $headers .= "MIME-Version: 1.0\r\n";
          $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
          $messagereq = "Request did not go to ILLiad Ill ".$illnum." ".$output." ";
          $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-         mail("spalding@senylrc.org", "ILLiad Failure", $messagereq, $headers, "-f noc@senylrc.org");
+         mail("spalding@senylrc.org", "CDLC ILLiad Failure", $messagereq, $headers, "-f donotreply@cdlc.org");
      } //end check if ILLad transaction did not happen
 
 
@@ -148,12 +156,12 @@ $GETLISTCOUNT = '1';
          //mysqli_query($db, $sqlupdate2);
                 //no error and everthing is fine
      } else {
-         #Something happen and could not update request, will_email the sql to admin
-         $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+         #Something happen and could not update request, will email the sql to admin
+         $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
          $headers .= "MIME-Version: 1.0\r\n";
          $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-         $messagereq = "UPDATE `$cdlcSTAT` SET IlliadStatus = ".$illstatus.", IlliadTransID = ".$illiadtxnub." WHERE index = ".$illnumb." ";
+         $messagereq = "UPDATE ".$cdlcSTAT." IlliadStatus = ".$illstatus.", IlliadTransID = ".$illiadtxnub." WHERE index = ".$illnumb." ";
          $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-         mail("spalding@senylrc.org", "sql update Failure", $messagereq, $headers, "-f noc@senylrc.org");
+         mail("spalding@senylrc.org", "sql update Failure", $messagereq, $headers, "-f donotreply@cdlc.org");
      }
  }//end while loop

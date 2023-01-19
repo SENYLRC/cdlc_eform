@@ -147,11 +147,18 @@ foreach ($_POST['libdestination'] as $destination) {
         $fname = trim($fname);
         $lname = trim($lname);
         $pubdate = trim($pubdate);
+        //get any illiead data
+        $illiadchecksql = "SELECT IlliadURL,Illiad,APIkey,LibEmailAlert FROM `$cdlcLIB` WHERE `loc`='$destloc'";
+        //for debuging
+        //echo $illiadchecksql."<br>";
+        $illiadGETLIST = mysqli_query($db, $illiadchecksql);
+        $illiadGETLISTCOUNT = '1';
+        $illiadrow = mysqli_fetch_assoc($illiadGETLIST);
+        $libilliadurl = $illiadrow["IlliadURL"];
+        $libilliad = $illiadrow["Illiad"];
+        $libilliadkey = $illiadrow["APIkey"];
+        $libemailalert = $illiadrow["LibEmailAlert"];
         // The SQL statement to insert for Stats and to recall if needed in the future
-        // $itemcall_s = mysql_escape_string($itemcall);
-
-
-
         $sql = "INSERT INTO `$cdlcSTAT` (`illNUB`,`Title`,`Author`,`pubdate`,`reqisbn`,`reqissn`,`itype`,`Call Number`,`Location`,`Available`,`article`,`needbydate`,`reqnote`,`patronnote`,`Destination`,`DestSystem`,`Requester lib`,`Requester LOC`,`ReqSystem`,`Requester person`,`requesterEMAIL`,`Timestamp`,`Fill`,`responderNOTE`,`requesterPhone`,`saddress`,`saddress2`,`caddress`)
  VALUES ('0','$ititle','$iauthor','$pubdate','$isbn','$issn','$itype','$itemcall','$itemlocation','$itemavail','$article','$needbydate','$reqnote','$patronnote','$destloc','$destsystem','$inst','$reqLOCcode','$reqsystem','$fname $lname','$email','$today','3','','$wphone','$saddress','$saddress2','$caddress')";
         //for testing
@@ -159,13 +166,128 @@ foreach ($_POST['libdestination'] as $destination) {
         //  echo $sql."<br>";
 
         if (mysqli_query($db, $sql)) {
-            //for testing
+            //for debuggin
             //echo "SQL was good<br><br>";
             // Get the SQL id and create a ILL Number
             $sqlidnumb= mysqli_insert_id($db);
             $yearid=date('Y');
             $illnum="$yearid-$sqlidnumb";
             $sqlupdate = "UPDATE `$cdlcSTAT` SET `illNUB` =  '$illnum' WHERE `index` = $sqlidnumb";
+
+                // Send to ILLiad via API
+            if ($libilliad=='1') {
+                $sqlseloclc = "SELECT loc,Name,`ill_email`,address2,address3,OCLC,`system` FROM `$cdlcLIB` WHERE `loc`='$reqLOCcode'";
+                //for debugging
+                //echo $sqlseloclc ;
+                $sqlseloclcGETLIST = mysqli_query($db, $sqlseloclc);
+                $sqlseloclcGETLISTCOUNT = '1';
+                $sqlseloclcrow = mysqli_fetch_assoc($sqlseloclcGETLIST);
+                $libreqOCLC = $sqlseloclcrow["oclc"];
+                $libreqLOC = $sqlseloclcrow["loc"];
+                $libreqemail = $sqlseloclcrow["ill_email"];
+                $libreqname = $sqlseloclcrow["Name"];
+                $libreqsystem =  $sqlseloclcrow["system"];
+                $libreqaddress2 = $sqlseloclcrow["address2"];
+                $libreqaddress3 = $sqlseloclcrow["address3"];
+                $libreqaddress3=trim($libreqaddress3);
+                $libreqaddress3 = str_replace(',', '', $libreqaddress3);
+                $pieces = explode(" ", $libreqaddress3);
+                $libreqcity= $pieces[0];
+                $libreqstate= $pieces[1];
+                $libreqzip= $pieces[2];
+        
+                $sqlilliadmp = "SELECT * FROM `$cdlcILLiadMapping` WHERE `LOC`='$reqLOCcode' and `illiadID`='$destloc'";
+                // echo $sqlilliadmp."<br>";
+                $sqlilliadmpGETLIST = mysqli_query($db, $sqlilliadmp);
+                $sqlilliadmpGETLISTCOUNT = '1';
+                $sqlilliadmprow = mysqli_fetch_assoc($sqlilliadmpGETLIST);
+                $illiadADDnumb  = $sqlilliadmprow["illiadADDnumb"];
+                $illiadLIBSymbol =  $sqlilliadmprow["illiadLIBSymbol"];
+                // Add slashes to these string to prevent coding issue
+                $ititle=addslashes($ititle);
+                $iauthor=addslashes($iauthor);   
+        
+                // Store data for request in array
+                if (empty($arttile)) {
+                    //book request have to be sent as an article or API won't take them
+                    //note about being a book loan is set so ILLiad users know to press loan radio button
+                    $jsonstr = array( 'Username' =>'Lending','LendingString'=> 'This is a book loan', 'RequestType'=>Article,'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ILLNumber'=>$illnum ,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail);
+                } else {
+                    $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail );
+                }
+                
+        
+                // Enocde the array in to json data
+                $json_enc=json_encode($jsonstr);
+        
+                //just so we can see this on screen
+                //echo "<br /><br /><br />";
+                //echo $json_enc;
+                //echo "<br /><br /><br />";
+                // variables to pass through cURL
+        
+                define("ILLIAD_REQUEST_TOKEN_URL", $libilliadurl);
+        
+                $key = $libilliadkey;
+                // create the cURL request
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, ILLIAD_REQUEST_TOKEN_URL);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $json_enc);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // commenting this out prints to screen (via echo)
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    array(
+                      "Content-Type: application/json",
+                      "Content-Length: " . strlen($json_enc),
+                      "ApiKey: $key")
+                );
+        
+                // make the call
+                if (!curl_errno($ch)) {
+                    // $output contains the output string
+                    $output = curl_exec($ch);
+                }
+        
+                // close curl resource to free up system resources
+                curl_close($ch);
+        
+        
+                // print the results of the call to the screen
+                echo "<!--API output-->";
+                echo "<!--".$output."-->";
+                $output_decoded = json_decode($output, true);
+                $illiadtxnub= $output_decoded['TransactionNumber'];
+                $illstatus = $output_decoded['TransactionStatus'];
+        
+                if (strlen($illiadtxnub)<4) {
+                    $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+                    $headers .= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+                    $messagereq = "Request did not go to ILLiad Ill ".$illnum." ".$output." ";
+                    $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
+                    mail("spalding@senylrc.org", "ILLiad Failure", $messagereq, $headers, "-f donotreply@cdlc.org");
+                } //end check if ILLad transaction did not happen
+        
+                //save API output to the request
+                $sqlupdate2 = "UPDATE `$cdlcSTAT` SET `IlliadStatus` = '$illstatus', `IlliadTransID` = '$illiadtxnub' WHERE `index` = $sqlidnumb";
+                //echo $sqlupdate2;
+        
+                if (mysqli_query($db, $sqlupdate2)) {
+                    //mysqli_query($db, $sqlupdate2);
+                    //no error and everthing is fine
+                } else {
+                    // Something happen and could not update request, will email the sql to admin
+                    $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+                    $headers .= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+                    $messagereq = "UPDATE SENYLRC-SEAL2-STATS SET IlliadStatus = ".$illstatus.", IlliadTransID = ".$illiadtxnub." WHERE index = ".$sqlidnumb." ";
+                    $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
+                    mail("spalding@senylrc.org", "sql update Failure", $messagereq, $headers, "-f donotreply@cdlc.org");
+                }
+            }// end the $libilliad check
+
             echo "Request <b>$illnum</b> has been emailed to <b>$library.</b><br>";
             mysqli_query($db, $sqlupdate);
 
@@ -240,7 +362,7 @@ foreach ($_POST['libdestination'] as $destination) {
 
             // SEND EMAIL to destination Library with DKIM Signature
             $email_to = implode(',', $destemailarray);
-            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eFrom" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email . "\r\n" . 'Content-type: text/html; charset=utf8';
+            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);

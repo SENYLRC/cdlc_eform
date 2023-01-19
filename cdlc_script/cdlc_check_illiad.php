@@ -1,4 +1,4 @@
-eformFILL<?php
+<?php
 #####Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
@@ -115,8 +115,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
         }//end check for database update
-        $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$article
-PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
+        $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$articlePASS."".
+"<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
         #######Setup php email headers
         $to=$requesterEMAIL;
         $subject = "ILL Request Filled ILL# $reqnumb  ";
@@ -181,7 +181,7 @@ PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications
         #######Setup php email headers
         $to=$requesterEMAIL;
         //set up email headers
-        $headers = "From: CDLC eFrom <donotreply@cdlc.org>\r\n" ;
+         $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         //$to = "spalding@senylrc.org";
@@ -189,7 +189,7 @@ PASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }
 
     //Reques1t has not been process yet so don't do anything

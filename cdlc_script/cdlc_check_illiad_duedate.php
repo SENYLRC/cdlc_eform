@@ -194,6 +194,6 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        # for testing mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }//end check for database update
 }//end while loop of sql results
