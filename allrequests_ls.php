@@ -22,7 +22,7 @@ $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $filter_illnum = $_REQUEST
 if ($firstpass == "no") {
     // Setting options to user's chosen
     if ($filter_illnum != "") { // If looking for ILL num then set the other options
-        $filter_startdate = "08/01/2022";
+        $filter_startdate = "01/01/2023";
         $filter_enddate = date("m/d/Y");
         $filter_lender = "";
         $filter_borrower = "";
@@ -89,7 +89,7 @@ if ($firstpass == "no") {
     // Setting options to default values
     $firstpass = "no";
     $filter_illnum = "";
-    $filter_startdate = "08/01/2022";
+    $filter_startdate = "01/01/2023";
     $filter_enddate = date("m/d/Y");
     $filter_lender = "";
     $filter_borrower = "";
@@ -116,7 +116,7 @@ mysqli_select_db($db, $dbname);
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE ";
-$SQLEND=" ORDER BY `index` DESC ";
+$SQLEND=" ORDER BY `Timestamp` DESC ";
 
 if (strlen($filter_illnum) > 2) {
     $SQLILL = " AND `illNUB` = '" . $filter_illnum . "'";
