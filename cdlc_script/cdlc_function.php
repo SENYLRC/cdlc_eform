@@ -93,6 +93,9 @@ function shipmtotxt($shipmethod)
     if ($shipmethod=="crb") {
         $shiptxt='Capital Region BOCES Courier';
     }
+    if ($shipmethod=='OCLC Article Exchange'){
+        $shiptxt='OCLC Article Exchange';
+    }
     if ($shipmethod=="other") {
         $shiptxt='Other';
     }
