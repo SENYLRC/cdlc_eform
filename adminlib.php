@@ -93,6 +93,9 @@ if (isset($_REQUEST['$libilliadkey'])) {
 if (isset($_REQUEST['libilliadurl'])) {
     $libilliadurl = $_REQUEST['libilliadurl'];
 }
+if (isset($_REQUEST['libilliaddate'])) {
+    $libilliaddate = $_REQUEST['libilliaddate'];
+}
 if (isset($_REQUEST['$libemailalert'])) {
     $libemailalert = $_REQUEST['$libemailalert'];
 }
@@ -338,6 +341,7 @@ if ($pageaction ==3) {
         $phone=trim($phone);
         $oclc=trim($oclc);
         $libilliadurl = mysqli_real_escape_string($db, $libilliadurl);
+        $libilliaddate = mysqli_real_escape_string($db, $libilliaddate);
         $loc=trim($loc);
         $libemail=trim($libemail);
         // If suspenson is set with no end date, a default one of 7 days is calulated
@@ -352,7 +356,7 @@ if ($pageaction ==3) {
         if ($participant=='0') {
             $suspend='0';
         }
-        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='CDLC ADMIN',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
+        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',IlliadDATE='$libilliaddate',APIkey='$libilliadkey',ModEmail ='CDLC ADMIN',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
         //for testing
         //echo $sqlupdate;
         $result = mysqli_query($db, $sqlupdate);
@@ -378,6 +382,7 @@ if ($pageaction ==3) {
         $loc = $row["loc"];
         $lastmodemail = $row["ModEmail"];
         $libilliadurl = $row["IlliadURL"];
+        $libilliaddate = $row["IlliadDATE"];
         $libsuspend = $row["suspend"];
         $system = $row["system"];
         $address1 = $row["address1"];
@@ -412,12 +417,13 @@ if ($pageaction ==3) {
           echo "selected=\"selected\"";
                                                                         } ?>>No</option></select><br>
     <B>ILLiad URL:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="libilliadurl" value="<?php echo $libilliadurl?>"><br>
+    <B>ILLiad Due Date Days:</b> <input type="text" SIZE=10 MAXLENGTH=10  name="libilliaddate" value="<?php echo $libilliaddate?>"><br>
     <B>ILLiad API <keygen name="name" challenge="string" keytype="RSA" keyparams="medium">:</b> <input type="text" SIZE=60 MAXLENGTH=255  name="$libilliadkey" value="<?php echo $libilliadkey?>"><br>
     <B>Library ILL participant</b><select name="participant">  <option value="1" <?php if ($libparticipant=="1") {
         echo "selected=\"selected\"";
 } ?>>Yes</option><option value="0" <?php if ($libparticipant=="0") {
             echo "selected=\"selected\"";
-                                                                               } ?>>No</option></select><br>
+                                                                                 } ?>>No</option></select><br>
     <B>Suspend ILL</b><select name="suspend">  <option value="0" <?php if ($libsuspend=="0") {
         echo "selected=\"selected\"";
 } ?>>No</option><option value="1" <?php if ($libsuspend=="1") {

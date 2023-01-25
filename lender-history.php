@@ -4,7 +4,7 @@
 require '/var/www/cdlc_script/cdlc_function.php';
 
 if (isset($_GET['loc'])) {
-    $loc = $field_loc_location_code[0]['value'];
+    $loc=$field_loc_location_code;
     $filter_yes="yes";
     $filter_no="yes";
     $filter_noans="yes";

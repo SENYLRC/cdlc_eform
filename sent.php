@@ -148,13 +148,14 @@ foreach ($_POST['libdestination'] as $destination) {
         $lname = trim($lname);
         $pubdate = trim($pubdate);
         //get any illiead data
-        $illiadchecksql = "SELECT IlliadURL,Illiad,APIkey,LibEmailAlert FROM `$cdlcLIB` WHERE `loc`='$destloc'";
+        $illiadchecksql = "SELECT IlliadDATE,IlliadURL,Illiad,APIkey,LibEmailAlert FROM `$cdlcLIB` WHERE `loc`='$destloc'";
         //for debuging
         //echo $illiadchecksql."<br>";
         $illiadGETLIST = mysqli_query($db, $illiadchecksql);
         $illiadGETLISTCOUNT = '1';
         $illiadrow = mysqli_fetch_assoc($illiadGETLIST);
         $libilliadurl = $illiadrow["IlliadURL"];
+        $libilliaddate = $illiadrow["IlliadDATE"];
         $libilliad = $illiadrow["Illiad"];
         $libilliadkey = $illiadrow["APIkey"];
         $libemailalert = $illiadrow["LibEmailAlert"];
@@ -206,12 +207,16 @@ foreach ($_POST['libdestination'] as $destination) {
                 // Add slashes to these string to prevent coding issue
                 $ititle=addslashes($ititle);
                 $iauthor=addslashes($iauthor);   
-        
+                //Generate the due date, requrired for ILLiad Loans
+                if (ctype_digit($libilliaddate)) {
+                    $date = date("Y-m-d");
+                    $illduedateCAL= date('Y-m-d', strtotime($date. ' + '.$illduedate.' days'));
+                }
                 // Store data for request in array
                 if (empty($arttile)) {
                     //book request have to be sent as an article or API won't take them
                     //note about being a book loan is set so ILLiad users know to press loan radio button
-                    $jsonstr = array( 'Username' =>'Lending','LendingString'=> 'This is a book loan', 'RequestType'=>Article,'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ISSN'=>$isbn,'ILLNumber'=>$illnum ,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail);
+                    $jsonstr = array( 'Username' =>'Lending','LendingString'=> $reqnote, 'RequestType'=>Loan,'DueDate'=>$illduedateCAL.'T00:00:00-04:00','ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ISSN'=>$isbn,'ILLNumber'=>$illnum ,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail);
                 } else {
                     $jsonstr = array('Username' =>'Lending', 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail );
                 }
