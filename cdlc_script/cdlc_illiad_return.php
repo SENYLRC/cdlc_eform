@@ -8,7 +8,7 @@ mysqli_select_db($db, $dbname);
 
 
 //Get data about requests from database
-$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Shipped%' or `IlliadStatus` LIKE '%Awaiting%'";
+$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Shipped%' or `IlliadStatus` LIKE '%Awaiting%' or `IlliadStatus` LIKE '%Review%' or `IlliadStatus` LIKE '%Switch%'";
 $retval = mysqli_query($db, $sqlselect);
 $GETLISTCOUNT = mysqli_num_rows($retval);
 
@@ -29,13 +29,6 @@ while ($row = mysqli_fetch_assoc($retval)) {
         $illiadURL=$rowdest["IlliadURL"];
     }
 
-
-
-
-    //Check if working with NewPaltz and remove eForm from end of URL
-    if (strpos($illiadURL, 'newpaltz.edu') !== false) {
-        $illiadURL=substr($illiadURL, 0, -5);
-    }
 
     //build the curl command
     $url =$illiadURL." ".$Illiadid."";

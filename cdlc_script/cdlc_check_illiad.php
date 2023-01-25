@@ -50,6 +50,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
     $output_decoded = json_decode($output, true);
     $illiadtxnub= $output_decoded['TransactionNumber'];
     $status = $output_decoded['TransactionStatus'];
+    $articleExch = $output_decoded['ArticleExchangeUrl']; 
     $reasonCancel = $output_decoded['ReasonForCancellation'];
 
     $articleURL = $output_decoded['ArticleExchangeUrl'];
@@ -93,7 +94,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
     }
 
     //IF request was filled via oclc
-    if (($eformFILL=='3')&&(strpos($status, 'Awaiting Article Exchange Notification') !== false)) {
+    if (($eformFILL=='3')&&(strlen($articleExch)>5)) {
         //echo "item has been filled\n\n";
         $sqlupdate2 = "\n UPDATE `$cdlcSTAT` SET `shipMethod`='OCLC Article Exchange', `DueDate` = 'None', `Fill` = '1' , `IlliadStatus` = 'Request Finished' WHERE `index` = $sqlidnumb\n
 ";
