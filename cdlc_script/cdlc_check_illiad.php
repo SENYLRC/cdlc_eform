@@ -5,7 +5,7 @@ $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
 
 //Get data about requests from database
-$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Awaiting%'";
+$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Awaiting%' or `IlliadStatus` LIKE '%Review%' or `IlliadStatus` LIKE '%Switch%'";
 $retval = mysqli_query($db, $sqlselect);
 $GETLISTCOUNT = mysqli_num_rows($retval);
 
@@ -38,10 +38,6 @@ while ($row = mysqli_fetch_assoc($retval)) {
     $destemailarray = explode(';', $destemail);
     $destemail_to = implode(',', $destemailarray);
     echo "\n\n emails: ".$destemail_to ."\n\n";
-     //Check if working with NewPaltz and remove eForm from end of URL
-     if (strpos($illiadURL, 'newpaltz.edu') !== false) {
-     $illiadURL=substr($illiadURL, 0, -5);
-     }
 
     //build the curl command
     $url =$illiadURL." ".$Illiadid."";
@@ -82,7 +78,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }//end check for database update
         $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br>Due Date: $dueDate<br><br>Shipped via: empire<br> ".
                                      "<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
@@ -93,7 +89,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }
 
     //IF request was filled via oclc
@@ -113,7 +109,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }//end check for database update
         $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$articlePASS."".
 "<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
@@ -123,7 +119,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }
 
 
@@ -165,13 +161,13 @@ while ($row = mysqli_fetch_assoc($retval)) {
             echo "database was updataed";
         //if error happen let tech support know
         } else {
-            $to = "noc@senylrc.org";
+            $to = "spalding@senylrc.org";
             $message="eForm was not able to update ILLiad status";
             $subject = "eForm/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f  donotreply@cdlc.org");
         }//end check for database update
 
 
@@ -181,7 +177,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #######Setup php email headers
         $to=$requesterEMAIL;
         //set up email headers
-         $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+        $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         //$to = "spalding@senylrc.org";
@@ -189,7 +185,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
+        mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }
 
     //Reques1t has not been process yet so don't do anything
