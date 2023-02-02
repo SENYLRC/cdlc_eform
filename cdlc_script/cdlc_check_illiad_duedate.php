@@ -66,7 +66,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $to=$requesterEMAIL;
-            // $to = "spalding@cdlc.org";
+            // $to = "spalding@senylrc.org";
             $message="eFrom Request ".$reqnumb." ".$reqnumbRequest." from ".$destlib." has a new due date which is ".$dueDate."<br>";
             $message.="This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the oth
 er library in this ILL transaction";
@@ -74,7 +74,7 @@ er library in this ILL transaction";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }
     }
     //IF request was finished, mark that in database
@@ -91,13 +91,13 @@ er library in this ILL transaction";
             $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-            $to = "noc@cdlc.org";
+            $to = "noc@senylrc.org";
             $message="eForm was not able to update ILLiad status";
             $subject = "eForm/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }//end check for database update
     }//end if to mark it finished
 
@@ -136,13 +136,13 @@ er library in this ILL transaction";
             echo "database was updataed";
         //if error happen let tech support know
         } else {
-            $to = "noc@cdlc.org";
+            $to = "noc@senylrc.org";
             $message="eForm was not able to update ILLiad status";
             $subject = "eForm/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-            # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+            mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }//end check for database update
 
 
@@ -155,12 +155,12 @@ er library in this ILL transaction";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         #######Setup php email headers
         $to=$requesterEMAIL;
-        //$to = "spalding@cdlc.org";
+        //$to = "spalding@senylrc.org";
         $subject = "ILL Request Not Filled ILL# $reqnumb  ";
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f ill@cdlc.org");
+        mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }//end the cancel check
 }//end while loop of sql results
 
@@ -188,12 +188,12 @@ while ($row = mysqli_fetch_assoc($retval)) {
         $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-        $to = "noc@cdlc.org";
+        $to = "noc@senylrc.org";
         $message="eForm was not able to update ILLiad status";
         $subject = "eForm/ILLiad Database Update Failure  ";
         #####SEND requester an email to let them know the request will be filled
         $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
         $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-        # for testing mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
+        mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
     }//end check for database update
 }//end while loop of sql results
