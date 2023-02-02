@@ -23,7 +23,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
     $origDueDate = $row['DueDate'];
     $requesterEMAIL = $row['requesterEMAIL'];
     //Get data about Destination library from database
-    $GETLISTSQLDEST="SELECT `APIkey`, `IlliadURL`, `Name`, `ill_email` FROM $cdlcLIB` where loc like '$destlib'  limit 1";
+    $GETLISTSQLDEST="SELECT `APIkey`, `IlliadURL`, `Name`, `ill_email` FROM `$cdlcLIB` where loc like '$destlib'  limit 1";
+    echo $GETLISTSQLDEST."\n";
     $resultdest=mysqli_query($db, $GETLISTSQLDEST);
     while ($rowdest = mysqli_fetch_assoc($resultdest)) {
         $destlib=$rowdest["Name"];
