@@ -136,6 +136,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $av = $row["av_loan"];
     $reference = $row["theses_loan"];
     $ebook = $row["ebook_request"];
+    $ejrnl = $row["ejournal_request"];
     if ($libsuspend=="0") {
         $libsuspend="Yes";
     } else {
@@ -171,7 +172,11 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     } else {
         $ebook ="No";
     }
-
+    if ($ejrnl =="Yes") {
+        $ejrnl ="Yes";
+    } else {
+        $ejrnl ="No";
+    }
     echo "<div class='illDirTableCell'>";
     echo "Name: <strong> $libname</strong><br>";
     echo "Address: <strong> $libaddress2 </strong><br>";
@@ -188,11 +193,12 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "<br><br>";
     echo "<button onclick='showHide($count)'>Show loaning options</button><br><br>";
     echo "<span class='loadoptions' id='showhide-$count' style='display: none'>";
-    echo "Loaning Books: <strong>$book</strong><br>";
-    echo "Loaning Journals or Articles: <strong>$journal</strong><br>";
-    echo "Loaning Audio/Video: <strong>$av</strong><br>";
+    echo "Loaning Print Book: <strong>$book</strong><br>";
+    echo "Loaning Print Journal or Article: <strong>$journal</strong><br>";
+    echo "Loaning Audio Video Materials: <strong>$av</strong><br>";
     echo "Loaning Theses: <strong>$reference</strong><br>";
-    echo "Loaning E-Books: <strong>$ebook</strong><br><br>";
+    echo "Loaning Electronic Book: <strong>$ebook</strong><br>";
+    echo "Loaning Electronic Journal: <strong>$ejrnl</strong><br><br>";
     echo "</div>"; #end the illDirTableCell
     if ($count++ % 2 == 0) {
         echo "</div>"; #end the illDirTableRow

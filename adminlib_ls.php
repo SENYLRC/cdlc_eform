@@ -200,7 +200,7 @@ if ($pageaction ==3) {
         $loc=trim($loc);
         $libemail=trim($libemail);
         $insertsql  = "
-    INSERT INTO `$cdlcLIB` (`recnum`, `Name`, `ill_email`, `alias`, `participant`, `suspend`, `system`, `phone`, `address1`, `address2`, `address3`,  `loc`, `oclc`, `book_loan`,`periodical_copy`,`av_loan`, `ebook_request`, `ejournal_request`,`theses_loan`,`ModifyDate`)
+    INSERT INTO `$cdlcLIB` (`recnum`, `Name`, `ill_email`, `alias`, `participant`, `suspend`, `system`, `phone`, `address1`, `address2`, `address3`,  `loc`, `oclc`, `book_loan`,`periodical_loan`,`av_loan`, `ebook_request`, `ejournal_request`,`theses_loan`,`ModifyDate`)
       VALUES (NULL,'$libname','$libemail','$libalias','$participant','$suspend','$system','$phone','$address1','$address2','$address3','$loc','$oclc','$book','$journal','$av','$ebook','$ejournal','$reference','$timestamp')";
         ###Show interset on debug
         //echo $insertsql;
@@ -330,7 +330,7 @@ if ($pageaction ==3) {
         } else {
             $enddate = date('Y-m-d', strtotime(str_replace('-', '/', $enddate)));
         }
-        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='$email',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
+        $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname', alias='$libalias', `ill_email` ='$libemail',participant=$participant,suspend=$suspend,SuspendDateEnd='$enddate',`system`='$system',phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',loc='$loc',book_loan='$book',periodical_loan='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',ModifyDate='$timestamp',Illiad='$libilliad',IlliadURL='$libilliadurl',APIkey='$libilliadkey',ModEmail ='$email',LibEmailAlert='$libemailalert' WHERE `recnum` = '$librecnumb' ";
         //for testing
         //echo $sqlupdate;
         $result = mysqli_query($db, $sqlupdate);
@@ -366,7 +366,7 @@ if ($pageaction ==3) {
         $av = $row["av_loan"];
         $ebook = $row["ebook_request"];
         $ejournal = $row["ejournal_request"];
-        $journal = $row["periodical_copy"];
+        $journal = $row["periodical_loan"];
         $timestamp = $row["ModifyDate"];
         $enddateshow = $row["SuspendDateEnd"]; ?>
     <form action="/adminlib_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
