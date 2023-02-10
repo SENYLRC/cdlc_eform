@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $enddated = date('Y-m-d', strtotime(str_replace('-', '/', $enddated)));
     }
-    $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname',  `ill_email` ='$libemail',suspend=$suspend,phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',book_loan='$book',periodical_copy='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',SuspendDateEnd='$enddated',ModifyDate='$timestamp', ModEmail='$lastmodemail'  WHERE `loc` ='$loc'";
+    $sqlupdate = "UPDATE `$cdlcLIB` SET Name = '$libname',  `ill_email` ='$libemail',suspend=$suspend,phone='$phone',address1='$address1',address2='$address2',address3='$address3',oclc='$oclc',book_loan='$book',periodical_loan='$journal',av_loan='$av',ebook_request='$ebook',ejournal_request='$ejournal',theses_loan='$reference',SuspendDateEnd='$enddated',ModifyDate='$timestamp', ModEmail='$lastmodemail'  WHERE `loc` ='$loc'";
     //for testing
     //  echo $sqlupdate;
     $result = mysqli_query($db, $sqlupdate);
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $av = $row["av_loan"];
         $ebook = $row["ebook_request"];
         $ejournal = $row["ejournal_request"];
-        $journal = $row["periodical_copy"];
+        $journal = $row["periodical_loan"];
         $enddate  = $row["SuspendDateEnd"];
         $timestamp = $row["ModifyDate"];
         $lastmodemail = $row["ModEmail"];
