@@ -247,7 +247,6 @@ function find_catalog($location)
     case "University at Albany":
         return "Alma";
             break;
-
     case "Fulton Montgomery Community College":
         return "Alma";
             break;
@@ -282,7 +281,7 @@ function find_catalog($location)
         return "Polaris";
             break;
     case "Upper Hudson Library System":
-        return "Innovative";
+        return "InnovativeUHLS";
             break;
     case "WSWHE BOCES School Library System":
         return "OPALS";
@@ -318,6 +317,8 @@ function find_locationinfo($locationalias, $locationname)
         $a2= explode(":", $locationalias);
         $locationalias=strtok($a2[0], ' ');
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
+    }elseif $locationname == "Upper Hudson Library System"{
+        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and system`='UHLS' ";
     } else {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias = '$locationalias' ";
     }
@@ -326,7 +327,7 @@ function find_locationinfo($locationalias, $locationname)
     // echo $locationalias."<br>";
     // echo $locationname."<br>";
 
-    $result=mysqli_query($db, $GETLISTSQL);
+    $result=mysqli_query($db, $GETLISTSQL) {}
     $row = mysqli_fetch_row($result);
     $libparticipant = $row;
     return $libparticipant;
