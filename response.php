@@ -37,7 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Escape values for security
     $respnote = mysqli_real_escape_string($db,  $respnote);
     $resfill = mysqli_real_escape_string($db,  $resfill);
-    $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '$resfill'  , `responderNOTE` =  '$respnote',`shipMethod`='$shipmethod',`DueDate`='$duedate',`ReasonNotFilled`='$nofillreason'  WHERE `illNUB` = '$reqnumb'";
+    $todaydate = date("Y-m-d");
+
+    $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '$resfill'  , `responderNOTE` =  '$respnote',`shipMethod`='$shipmethod',`DueDate`='$duedate',`ReasonNotFilled`='$nofillreason',`fillNofillDate` = '$todaydate'  WHERE `illNUB` = '$reqnumb'";
 
     if (mysqli_query($db, $sqlupdate)) {
         echo "Thank you.  Your response has been recorded to the request.<br><a href='/lender-history'>Click here to view your lender history</a><br>";
@@ -72,21 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($resfill=='1') {
 
                 // Setting up email notification
-            if($shipmethod=="crb") { $shiptxt='Capital Region BOCES Courier';
-            }
-            if($shipmethod=="empire") { $shiptxt='Empire Library Delivery';
-            }
-            if($shipmethod=="fedex") { $shiptxt='FedEx';
-            }
-            if($shipmethod=="mvls") { $shiptxt='MVLS Courier';
-            }
-            if($shipmethod=="sals") { $shiptxt='SALS Courier';
+            if($shipmethod=="lc") { $shiptxt='Library Courier';
             }
             if($shipmethod=="usps") { $shiptxt='US Mail';
             }
-            if($shipmethod=="ups") { $shiptxt='UPS';
-            }
-            if($shipmethod=="uhls") { $shiptxt='Uppper Hudson Courier';
+            if($shipmethod=="upsfx") { $shiptxt='UPS/FedEx';
             }
             if($shipmethod=="other") { $shiptxt='Other';
             }
@@ -156,15 +148,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     Ship Method:
       <select name="shipmethod">
           <option value=""></option>
-         <option value="crb">Capital Region BOCES Courier</option>
-         <option value="empire">Empire Library Delivery</option>
-         <option value="fedex">FedEx</option>
-         <option value="mvls">MVLS Courier</option>
-         <option value="sals">SALS Courier</option>
-         <option value="crb">US Mail</option>
-         <option value="ups">UPS</option>
-         <option value="uhls">Upper Hudson Courier</option>
-         <option value="other">Other</option></select><br>
+         <option value='lc'>Library Courier</option>
+         <option value='usps'>US Mail</option>
+         <option value='upsfx'>UPS/FedEx</option>
+         <option value='other'>Other</option></select><br>
       <input type="submit" value="Submit">
       </form>
         <?php

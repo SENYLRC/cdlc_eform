@@ -318,6 +318,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $returnnote=$row['returnNote'];
     $returnmethod=$row['returnMethod'];
     $returndate=$row['returnDate'];
+    $fillNoFillDate=$row['fillNofillDate'];
+
     $receivedate=$row['receiveDate'];
     $checkinAccount=$row['checkinAccount'];
     $checkindate=$row['checkinTimeStamp'];
@@ -327,7 +329,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $renewNoteLender = $row["renewNoteLender"];
     $renewAccountRequester = $row["renewAccountRequester"];
     $fill = $row["Fill"];
-    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate);
+    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate,$fillNoFillDate);
     $shiptxt=shipmtotxt($shipmethod);
     $returnmethodtxt=shipmtotxt($returnmethod);
     $dest=trim($dest);

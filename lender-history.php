@@ -236,6 +236,8 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $returnmethod=$row['returnMethod'];
     $returndate=$row['returnDate'];
     $receivedate=$row['receiveDate'];
+    $fillNoFillDate=$row['fillNofillDate'];
+
     $checkinAccount=$row['checkinAccount'];
     $checkindate=$row['checkinTimeStamp'];
     $duedate = $row["DueDate"];
@@ -248,7 +250,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
 
 
     $fill = $row["Fill"];
-    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate);
+    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate,$fillNoFillDate);
     $shiptxt=shipmtotxt($shipmethod);
     $returnmethodtxt=shipmtotxt($returnmethod);
 

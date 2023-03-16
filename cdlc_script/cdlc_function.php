@@ -104,13 +104,17 @@ function shipmtotxt($shipmethod)
     }
     return $shiptxt;
 }
-function itemstatus($fill, $receiveaccount, $returnaccount, $returndate, $receivedate, $checkinaccount, $checkindate)
+function itemstatus($fill, $receiveaccount, $returnaccount, $returndate, $receivedate, $checkinaccount, $checkindate,$fillNoFillDate)
 {
+    if ($fillNoFillDate=='0000-00-00'){
+        $fillNoFillDate='';
+    }
+
     if ($fill=="1") {
-        $fill="Filled";
+        $fill="Filled<br>".$fillNoFillDate."";
     }
     if ($fill=="0") {
-        $fill="Not Filled";
+        $fill="Not Filled<br>".$fillNoFillDate."";
     }
     if ($fill=="3") {
         $fill="No Answer";
