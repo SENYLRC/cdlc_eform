@@ -50,14 +50,9 @@ if (($_SERVER['REQUEST_METHOD'] == 'GET')&&($recanswer=='1')) {
         echo "<input type='hidden' name='num' value= '".$reqnumb."'>";
         echo "How are you returning the item:<select name='shipmethod'>";
         echo "<option value=''></option>";
+        echo "<option value='lc'>Library Courier</option>";
         echo "<option value='usps'>US Mail</option>";
-        echo "<option value='sals'>SALS Courier</option>";
-        echo "<option value='mvls'>MVLS Courier</option>";
-        echo "<option value='crb'>Capital Region BOCES Courier</option>";
-        echo "<option value='uhls'>Uppper Hudson Courier</option>";
-        echo "<option value='empire'>Empire Delivery</option>";
-        echo "<option value='ups'>UPS</option>";
-        echo "<option value='fedex'>FedEx</option>";
+        echo "<option value='upsfx'>UPS/FedEx</option>";
         echo "<option value='other'>Other</option></select><br><br>";
         echo "Return Notes <input type='text' size='100' name='returnnote'>";
         echo "<input type='submit' value='Submit'>";
@@ -66,7 +61,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'GET')&&($recanswer=='1')) {
         $timestamp = date("Y-m-d H:i:s");
         $todaydate = date("Y-m-d");
         //will remove bib information when doing a return
-        $sql = "UPDATE `$cdlcSTAT` SET `returnTimeStamp` = '$timestamp',`returnMethod` = '$returnmethod',`returnNote` = '$returnnote', `returnAccount` = '" .$wholename."', `returnDate` = '$todaydate', `Title` = '', `Author` = '', `pubdate` = '', `reqisbn` = '', `reqissn` = '', `itype` = '', `Call Number` = '', `article` = '', `needbydate` = '', `patronnote` = '', `DueDate` = '' WHERE `illNUB` = '$reqnumb'";
+        $sql = "UPDATE `$cdlcSTAT` SET `returnTimeStamp` = '$timestamp',`returnMethod` = '$returnmethod',`returnNote` = '$returnnote', `returnAccount` = '" .$wholename."', `returnDate` = '$todaydate', `patronnote` = '' WHERE `illNUB` = '$reqnumb'";
         if (mysqli_query($db, $sql)) {
             //echo $sql;
             echo "ILL ".$reqnumb." has been makred as being returned, <a href='/requesthistory'>click here to go back to request history</a>";
@@ -100,5 +95,5 @@ if (($_SERVER['REQUEST_METHOD'] == 'GET')&&($recanswer=='1')) {
         }
     }
 } else {
-    echo "Something has gone wrong, unable to change status.  Make sure to access page vai the <a href='/user'>direct link in your profile</a>";
+    echo "Something has gone wrong, unable to change status.  Make sure to access page via the <a href='/user'>direct link in your profile</a>";
 }
