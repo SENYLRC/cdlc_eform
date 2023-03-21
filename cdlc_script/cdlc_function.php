@@ -106,10 +106,9 @@ function shipmtotxt($shipmethod)
 }
 function itemstatus($fill, $receiveaccount, $returnaccount, $returndate, $receivedate, $checkinaccount, $checkindate,$fillNoFillDate)
 {
-    if ($fillNoFillDate=='0000-00-00'){
+    if ($fillNoFillDate=='0000-00-00') {
         $fillNoFillDate='';
     }
-
     if ($fill=="1") {
         $fill="Filled<br>".$fillNoFillDate."";
     }
@@ -236,6 +235,9 @@ function find_catalog($location)
     case "Albany College of Pharmacy and Health Sciences":
         return "Worldcat";
             break;
+    case "NYS Dept. of Environmental Conservation";
+        return "OPALS";
+            break;
     case "New York State Department of Health":
         return "OPALS";
             break;
@@ -321,8 +323,8 @@ function find_locationinfo($locationalias, $locationname)
         $a2= explode(":", $locationalias);
         $locationalias=strtok($a2[0], ' ');
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
-    }elseif $locationname == "Upper Hudson Library System"{
-        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and system`='UHLS' ";
+    }elseif ($locationname == "Upper Hudson Library System") {
+        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '".$locationalias."%'  and `system`='UHLS' ";     
     } else {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias = '$locationalias' ";
     }
@@ -331,7 +333,7 @@ function find_locationinfo($locationalias, $locationname)
     // echo $locationalias."<br>";
     // echo $locationname."<br>";
 
-    $result=mysqli_query($db, $GETLISTSQL) {}
+    $result=mysqli_query($db, $GETLISTSQL);
     $row = mysqli_fetch_row($result);
     $libparticipant = $row;
     return $libparticipant;
@@ -347,8 +349,8 @@ function check_itemtype($destill, $itemtype)
     while ($row = $result->fetch_assoc()) {
         $libname=$row['Name'];
         if (strpos($libname, 'New York State Library')!== false) {
-            // allow all items for the NY State Library at their request
-            return 1;
+                // allow all items for the NY State Library at their request
+                return 1;
         }
         if ((strcmp($itemtype, 'book') == "No") || (strcmp($itemtype, 'book (large print)') == "No")) {
             // See if  request is for a book
