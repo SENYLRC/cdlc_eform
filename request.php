@@ -1,387 +1,452 @@
+<script>
+
+(function($) {
+
+Drupal.behaviors.DisableInputEnter = {
+  attach: function(context, settings) {
+    $('input', context).once('disable-input-enter', function() {
+      $(this).keypress(function(e) {
+        if (e.keyCode == 13) {
+          e.preventDefault();
+        }
+      });
+    });
+  }
+}
+
+
+
+})(jQuery);
+</script>
 <?php
-
-$user_id = \Drupal::currentUser()->id();
-$user = \Drupal\user\Entity\User::load($user_id);
-
-//Getting the values
-$display_username = $user->getAccountName();
-//For testing
-//echo "$display_username<br><br>\n";
-$field_first_name = $user->get('field_first_name')->value;
-$field_last_name = $user->get('field_last_name')->value;
-$field_your_institution = $user->get('field_your_institution')->value;
-$field_loc_location_code = $user->get('field_loc_location_code')->value;
-$field_street_address = $user->get('field_street_address')->value;
-$field_street_address2 = $user->get('field_street_address2')->value;
-$field_city_state_zip = $user->get('field_city_state_zip')->value;
-$field_work_phone = $user->get('field_work_phone')->value;
-$field_home_library_system = $user->get('field_home_library_system')->value;
-$field_filter_own_system = $user->get('field_filter_own_system')->value;
-$field_backup_email = $user->get('field_backup_email')->value;
-$email = $user->getEmail();
-
-$AuthedUser ="1";
-$firstname = $field_first_name;
-$lastname = $field_last_name;
-$wholename = "$firstname $lastname";
+require '/var/www/cdlc_script/cdlc_function.php';
 
 
-function build_notes($reqnote, $lendnote)
-{
-    $displaynotes = "";
-    if ((strlen($reqnote) > 2) && (strlen($lendnote) > 2)) {
-        $displaynotes = $reqnote . "</br>Lender Note: " . $lendnote;
-    }
-    if ((strlen($reqnote) > 2) && (strlen($lendnote) < 2)) {
-        $displaynotes=$reqnote;
-    }
-    if ((strlen($reqnote) < 2) && (strlen($lendnote) > 2)) {
-        $displaynotes= "Lender Note: " . $lendnote;
-    }
-    return $displaynotes;
-}
-function build_renewnotes($renewNote, $renewNoteLender)
-{
-    $displayrenewnotes = "";
-    if ((strlen($renewNote) > 2) && (strlen($renewNoteLender) > 2)) {
-        $displayrenewnotes = "Renew Note: ".$renewNote . "</br>Lender Note: " . $renewNoteLender;
-    }
-    if ((strlen($renewNote) > 2) && (strlen($renewNoteLender) < 2)) {
-        $displayrenewnotes="Renew Note: ".$renewNote;
-    }
-    if ((strlen($renewNote) < 2) && (strlen($renewNoteLender) > 2)) {
-        $displaynotes= "Lender Note: " . $renewNoteLender;
-    }
-    return $displayrenewnotes;
-}
-function build_return_notes($returnnote, $returnmethodtxt)
-{
-    if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
-        $dispalyreturnnotes = "Return Note: " .$returnnote."  <Br>Return Method: ".$returnmethodtxt;
-    }
-    return $dispalyreturnnotes;
-}
-function checked($filter_value)
-{
-    if (($filter_value == "yes")) {
-        $filterout="checked";
-    } else {
-        $filterout="";
-    }
-    return $filterout;
-}
-function shipmtotxt($shipmethod)
-{
-    if ($shipmethod=="usps") {
-        $shiptxt='US Mail';
-    }
-    if ($shipmethod=="mhls") {
-        $shiptxt='Mid-Hudson Courier';
-    }
-    if ($shipmethod=="rcls") {
-        $shiptxt='RCLS Courier';
-    }
-    if ($shipmethod=="empire") {
-        $shiptxt='Empire Delivery';
-    }
-    if ($shipmethod=="ups") {
-        $shiptxt='UPS';
-    }
-    if ($shipmethod=="fedex") {
-        $shiptxt='FedEx';
-    }
-    if ($shipmethod=="crb") {
-        $shiptxt='Capital Region BOCES Courier';
-    }
-    if ($shipmethod=='OCLC Article Exchange') {
-        $shiptxt='OCLC Article Exchange';
-    }
-    if ($shipmethod=="other") {
-        $shiptxt='Other';
-    }
-    if ($shipmethod=="") {
-        $shiptxt='';
-    }
-    return $shiptxt;
-}
-function itemstatus($fill, $receiveaccount, $returnaccount, $returndate, $receivedate, $checkinaccount, $checkindate)
-{
-    if ($fill=="1") {
-        $fill="Filled";
-    }
-    if ($fill=="0") {
-        $fill="Not Filled";
-    }
-    if ($fill=="3") {
-        $fill="No Answer";
-    }
-    if ($fill=="4") {
-        $fill="Expired";
-    }
-    if ($fill=="6") {
-        $fill="Canceled";
-    }
-    if ((strlen($receiveaccount)>1)&&(strlen($returnaccount)<1)&&(strlen($checkinaccount)<1)) {
-        $fill="Loan Item Received<br>".$receivedate."";
-    }
-    if ((strlen($checkinaccount)<1)&&(strlen($receiveaccount)>1)&&(strlen($returnaccount)>1)) {
-        $fill="Loan Item Returned<Br>".$returndate."";
-    }
-    if (strlen($checkinaccount)>1) {
-        $fill="Item Checkin by Lender<Br>".$checkindate."";
-    }
-    return $fill;
-}
-function selected($days, $filter_value)
-{
-    if ($days == $filter_value) {
-        $filterout = "selected";
-    } else {
-        $filterout = "";
-    }
-    return $filterout;
-}
-function elementHunt($startdated, $hunting)
-{
-    switch ($hunting) {
-    case "D":
-        $hunted = substr($startdated, 3, 2);
-        break;
-    case "M":
-        $hunted = substr($startdated, 0, 2);
-        break;
-    case "Y":
-        $hunted = substr($startdated, 6, 4);
-        break;
-    }
-    return $hunted;
-}
-function convertDate($InputDate)
-{
-    $Y = elementHunt($InputDate, "Y");
-    $M = elementHunt($InputDate, "M");
-    $D = elementHunt($InputDate, "D");
-    $OutputDate = $Y . "-" . $M . "-" . $D;
-    return $OutputDate;
-}
-function returnLimits($Offset, $filter_numresults)
-{
-    if (($Offset == "") || ($$Offset = 0)) {
-        $startint = 0;
-    } else {
-        $startint = $Offset * $filter_numresults;
-    }
-    $endint = $startint + $filter_numresults;
-}
-// start of eform Functions
-function normalize_availability($itemavail)
-{
-    $itemavail = str_replace(" ", "", $itemavail);
-    $itemavail = str_replace("\n", "", $itemavail);
-    switch ($itemavail) {
-    case "-":
-        return 1;
-            break;
-    case "AVAILABLE":
-        return 1;
-            break;
-    case "Available":
-        return 1;
-            break;
-    case "CheckedIn":
-        return 1;
-            break;
-    default:
-        return 0;
-    }
-}
-function set_availability($itemavail)
-{
-    if ($itemavail == 1) {
-        return "Available";
-    }
-    if ($itemavail == 0) {
-        return "Unavailable";
-    }
-    if ($itemavail == 2) {
-        return "UNKNOWN";
-    }
-}
-function set_koha_availability($itemavail)
-{
-    if ($itemavail == 0) {
-        return "Available";
-    }
-    if ($itemavail == 1) {
-        return "Unavailable";
-    }
-    if ($itemavail == 2) {
-        return "UNKNOWN";
-    }
-}
+// Get the IDs needed for curl command
+$jession= $_GET['jsessionid'];
+$windowid= $_GET['windowid'];
+$idc= $_GET['id'];
+// Define the server to make the CURL request to
+$reqserverurl='https://cdlc.indexdata.com/service-proxy/?command=record\\&windowid=';
+// Define the CURL command
+$cmd= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc);
+// put in curl command in as html comment for development
+echo "<!-- my cmd is  $cmd \n-->";
+// Run the CURL to get XML data
+$output = shell_exec($cmd);
+// put xml in html src for development
+//echo "<!-- \n";
+//print_r($output);
+//echo "\n-->\n\n";
 
-function find_catalog($location)
-{
-    switch ($location) {
-    case "CDLC Partial Union Catalog (PUC)":
-        return "Koha";
-            break;
-    case "HFM BOCES":
-        return "Alexandria";
-            break;
-    case "Albany College of Pharmacy and Health Sciences":
-        return "Worldcat";
-            break;
-    case "New York State Department of Health":
-        return "OPALS";
-            break;
-    case "Siena College":
-        return "Alma";
-            break;
-    case "Albany Law School":
-        return "Symphony";
-            break;
-    case "Hudson Valley Community College":
-        return "Alma";
-            break;
-    case "University at Albany":
-        return "Alma";
-            break;
-    case "Fulton Montgomery Community College":
-        return "Alma";
-            break;
-    case "Rudolf Steiner Library":
-        return "OPALS";
-            break;
-    case "Union College":
-        return "Alma";
-            break;
-    case "SUNY Adirondack":
-        return "Alma";
-            break;
-    case "SUNY Cobleskill":
-        return "Alma";
-            break;
-    case "Schenectady County Community College":
-        return "Alma";
-            break;
-    case "Russell Sage College":
-        return "Alma";
-            break;
-    case "Skidmore College":
-        return "Folio";
-            break;
-    case "College of Saint Rose":
-        return "Voyager";
-            break;
-    case "Rensselaer Polytechnic Institute":
-        return "Worldcat";
-            break;
-    case "MVLS and SALS combined catalog":
-        return "Polaris";
-            break;
-    case "Upper Hudson Library System":
-        return "InnovativeUHLS";
-            break;
-    case "WSWHE BOCES School Library System":
-        return "OPALS";
-            break;
-    case "Scotia Glenville School District":
-        return "OPALS";
-            break;
-    case "Questar School Library System":
-        return "OPALS";
-            break;
-    case "Capital Region BOCES":
-        return "SirsiDynix";
-            break;
-    case "Emma Willard":
-        return "SirsiDynix";
-            break;
-    case "New York State Library":
-        return "SirsiDynix";
-            break;
 
-    }
+echo "<p>Please review the details of your request and then select a library to send your request to.</p>";
+echo "<form action='sent' method='post'>";
+echo "<h3>Requester Details</h3>";
+echo "<b>Name:</b>  " .$field_first_name. " ".$field_last_name. "<br>";
+echo "<b>E-mail:</b> ".$email. "<br>";
+echo  "<b>Institution:</b>  ".$field_your_institution ."<br>";
+echo  "<b>Work Phone:</b> ".$field_work_phone ."<br>";
+echo  "<b>Mailing Address:</b> <br> ".$field_street_address."<br> ".$field_city_state_zip."<br><br>";
+echo "<input type='hidden' name='fname' value= ' ".$field_first_name ." '>";
+echo "<input type='hidden' name='lname' value= ' ".$field_last_name ." '>";
+echo "<input type='hidden' name='email' value= ' ".$email ."'>";
+$field_your_institution_clean=htmlspecialchars($field_your_institution, ENT_QUOTES);
+echo "<input type='hidden' name='inst' value= ' ".$field_your_institution_clean." '>";
+echo "<input type='hidden' name='address' value= ' ".$field_street_address ." '>";
+echo "<input type='hidden' name='address2' value= ' ".$field_street_address2 ." '>";
+echo "<input type='hidden' name='caddress' value= ' ".$field_city_state_zip ." '>";
+echo "<input type='hidden' name='wphone' value= ' ".$field_work_phone ." '>";
+echo "<input type='hidden' name='reqLOCcode' value= ' ".$field_loc_location_code ." '>";
+echo "<h3>Request Details</h3>";
+echo "<b>Need by date</b> <input type='text' size='100' name='needbydate'><br><br>";
+echo "<b>Note</b> <input type='text' size='100' name='reqnote'><br><br>";
+echo "<b>Patron Name or Barcode</b> <input SIZE=100 MAXLENGTH=255 type='text' size='100' name='patronnote'><br><br>";
+echo "<b>Is this a request for an article?</b>  ";
+echo "Yes <input type='radio' onclick='javascript:yesnoCheck();' name='yesno' id='yesCheck'>";
+echo "No <input type='radio' onclick='javascript:yesnoCheck();' name='yesno' id='noCheck' checked='checked'><br>";
+echo "<div id='ifYes' style='display:none'>";
+echo "<b>Article Title:</b> <input size='80' type='text' name='arttile'><br>";
+echo "<b>Article Author:</b> <input size='80' type='text' name='artauthor'><br>";
+echo "<b>Volume:</b> <input size='80' type='text' name='artvolume'><br>";
+echo "<b>Issue:</b>  <input type='text' name='artissue'><br>";
+echo "<b>Pages:</b> <input type='text' name='artpage' ><br>";
+echo "<b>Issue Month:</b> <input type='text' name='artmonth' ><br>";
+echo "<b>Issue Year:</b> <input type='text' name='artyear' ><br>";
+echo "<b>Copyright compliance:</b>  <select name='artcopyright'>";
+echo "<option value=''></option>";
+echo "<option value='ccl'>CCL</option>";
+echo "<option value='ccg'>CCG</option></select></div><br>";
+
+
+
+// Now we process the xml for Indexdata
+$records = new SimpleXMLElement($output); // for production
+$requestedtitle=$records->{'md-title-complete'};
+$requestedtitle2=$records->{'md-title-number-section'};
+$requestedauthor=$records->{'md-author'};
+$requested=$records->{'md-title'};
+$itemtype=$records->{'md-medium'};
+// Remove any white space stored in item type
+$itemtype=trim($itemtype);
+$pubdate=$records->{'md-date'};
+$isbn=$records->{'md-isbn'};
+$issn=$records->location->{'md-issn'};
+
+echo "<b>Requested Title: </b>" . $requestedtitle  ."  ". $requestedtitle2 . "</b><br>";
+echo "<b>Requested Author: </b>" . $requestedauthor ."</b><br>";
+echo "<b>Item Type:</b>  " . $itemtype."<br>";
+echo "<b>Publication Date: </b>" . $pubdate."<br>";
+if (strlen($issn)>0) {
+    echo "<b>ISSN: </b>" . $issn."<br>";
 }
-function find_locationinfo($locationalias, $locationname)
-{
-    //make sure we tailing white space
-    $locationalias=trim($locationalias);
-    $locationname=trim($locationname);
-    $libparticipant='';
-    include '/var/www/cdlc_script/cdlc_db.inc';
-    $db = mysqli_connect($dbhost, $dbuser, $dbpass);
-    mysqli_select_db($db, $dbname);
-    if ($locationname == "MVLS and SALS combined catalog") {
-        $a2= explode(":", $locationalias);
-        $locationalias=strtok($a2[0], ' ');
-        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
-    }elseif ($locationname == "Upper Hudson Library System") {
-        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '".$locationalias."%'  and `system`='UHLS' ";     
-    } else {
-        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias = '$locationalias' ";
-    }
-    // for test list of libraries on request page
-    // echo $GETLISTSQL."<br>";
-    // echo $locationalias."<br>";
-    // echo $locationname."<br>";
-
-    $result=mysqli_query($db, $GETLISTSQL);
-    $row = mysqli_fetch_row($result);
-    $libparticipant = $row;
-    return $libparticipant;
+if (strlen($isbn)>0) {
+    echo "<b>ISBN: </b>" . $isbn."<br>";
 }
+echo "<br>";
 
-function check_itemtype($destill, $itemtype)
-{
-    include '/var/www/cdlc_script/cdlc_db.inc';
-    $db = mysqli_connect($dbhost, $dbuser, $dbpass);
-    mysqli_select_db($db, $dbname);
-    $GETLISTSQL="SELECT `Name`,book_loan,av_loan,ejournal_request,theses_loan,ebook_request FROM `$cdlcLIB` where loc = '$destill' ";
-    $result=mysqli_query($db, $GETLISTSQL);
-    while ($row = $result->fetch_assoc()) {
-        $libname=$row['Name'];
-        if (strpos($libname, 'New York State Library')!== false) {
-                // allow all items for the NY State Library at their request
-                return 1;
+// Covert single quotes to code so they don't get cut off
+$requestedtitle=htmlspecialchars($requestedtitle, ENT_QUOTES);
+$requestedtitle2=htmlspecialchars($requestedtitle2, ENT_QUOTES);
+$requestedauthor =htmlspecialchars($requestedauthor, ENT_QUOTES);
+// echo "<input type='hidden' name='bibtitle' value= ' ".$requestedtitle ." : ". $requestedtitle2 ." '>";
+echo "<input type='hidden' name='bibtitle' value= ' ".$requestedtitle ." ". $requestedtitle2 ." '>";
+echo "<input type='hidden' name='bibauthor' value= ' ".$requestedauthor ." '>";
+echo "<input type='hidden' name='bibtype' value= ' ".$itemtype ." '>";
+echo "<input type='hidden' name='pubdate' value= ' ".$pubdate ." '>";
+echo "<input type='hidden' name='isbn' value= ' ".$isbn ." '>";
+echo "<input type='hidden' name='issn' value= ' ".$issn ." '>";
+
+echo "<p><b>Select the library you would like to request from.</b><br>";
+echo "Please limit multiple copy requests to classroom sets or book clubs.</p>";
+echo "<p><b>This is a request for:</b> <br>";
+echo "<input type='radio' name='singlemulti' id='singleCheck' checked='checked' onclick='javascript:multiRequest();'>";
+echo "a single copy <input type='radio' name='singlemulti' id='multiCheck' onclick='javascript:multiRequest();'> multiple copies<br><p>";
+
+
+
+$loccount='0'; // Counts available locations
+$deadlibraries = array(); // Initializes the array which keeps the unavailable libraries.
+foreach ($records->location as $location) { // Locations loop start
+    $catalogtype = find_catalog($location['name']);
+    $urlrecipe = $location->{'md-url_recipe'};
+    $mdid = $location->{'md-id'};
+    //echo "zack my location is ".$location['name']."<br>";
+    //echo "zack my catalog type is ".$catalogtype."<br>";
+    foreach ($location->holdings->holding as $holding) { // generic holding loop start
+        $itemavail=$holding->localAvailability;
+        // if ($catalogtype == "OPALS") {
+        // $itemavail=$itemavail>0 ? $itemavail="-" : $itemavail="0";
+        // echo "the OPALS itemavail is ".$itemavail."<br>";
+        // } #OPALS might return (-1 through +X
+        $itemavail=normalize_availability($itemavail); // 0=No, 1=Yes
+
+        $itemavailtext=set_availability($itemavail);
+        $itemcallnum=$holding->callNumber;
+        $itemcallnum=htmlspecialchars($itemcallnum, ENT_QUOTES); // Sanitizes callnumbers with special characters in them
+        $itemlocation=$holding->localLocation; // Gets the alias
+        if ($catalogtype == "Worldcat" || $catalogtype == 'cdlc' || $catalogtype == "Millennium") {
+            $itemlocation=$location['name'];
         }
-        if ((strcmp($itemtype, 'book') == "No") || (strcmp($itemtype, 'book (large print)') == "No")) {
-            // See if  request is for a book
-            if ($row['book_loan']=="Yes") {
-                // Checking if book is allowed
-                return 1;
+        if (($catalogtype == "Alma") ||  ($catalogtype == "Voyager")||($catalogtype == "Folio")|| ($catalogtype == "Symphony")|| ($catalogtype == "SirsiDynix")) {
+            $itemlocation=$location['name'];
+        }
+        if (($catalogtype == "OPALS") || ($catalogtype == "Polaris")) {
+            $itemlocation=  $holding->localLocation;
+        }
+        if ($catalogtype == "InnovativeUHLS") {
+            $itemlocation=$holding->localLocation; // Gets the alias
+            if (str_contains($itemlocation, 'Albany')) {
+                $itemlocation = substr($itemlocation, 0, strrpos($itemlocation, '-'));
+            }else{
+                $itemlocation = substr($itemlocation, 0, strpos($itemlocation, "-"));
             }
         }
-        if ((strcmp($itemtype, 'journal') == "No") || (strcmp($itemtype, 'journal (electronic)') == "No")) {
-            // See if  request is for a journal
-            if ($row['ejournal_request']=="Yes") {
-                // Checking if journal is allowed
-                return 1;
-            }
+        $locationinfo=find_locationinfo($itemlocation, $location['name']);
+        $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+        $destill=$locationinfo[0]; // Destination ILL Code
+        $destpart=$locationinfo[1]; // 0=No, 1=Yes
+
+        $destemail=$locationinfo[2]; // Destination emails
+        $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
+        $destlibsystem=$locationinfo[4]; // Destination library system
+        $destlibname=$locationinfo[5]; // Destination library name
+        $destAlias=$locationinfo[6]; // Destination Alias
+        $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+        //only check item type if they are active in the ILL program
+        if ($destpart==1) {
+            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
         }
-        if ((strcmp($itemtype, 'book (electronic)') == "No") || (strcmp($itemtype, 'web') == "No")) {
-            // See if  request is for ebook
-            if ($row['ebook_request']=="Yes") {
-                // Checking if e-book is allowed
-                return 1;
-            }
+        if (($catalogtype == "Innovative") && ($itemlocation == "ODY Folio")) {
+            $desttypeloan=1;
         }
-        if ((strpos($itemtype, 'recording') !== false) || (strpos($itemtype, 'video') !== false) || (strpos($itemtype, 'audio') !== false)) {
-            // See if  request is  audio video related
-            if ($row['av_loan']=="Yes") {
-                // Checking if AV is allowed
-                return 1;
-            }
+        $itemlocallocation=$itemlocation; // Needed in sent.php
+        echo "<!-- \n";
+        echo "catalogtype: $catalogtype \n";
+        echo "itemavail: $itemavail (1) \n";
+        echo "itemavailtext: $itemavailtext \n";
+        echo "itemlocallocation: $itemlocallocation \n";
+        echo "itemlocation: $itemlocation \n";
+        echo "destill: $destill \n";
+        echo "destpart: $destpart (1)\n";
+        echo "destemail: $destemail \n";
+        echo "destsuspend: $destsuspend (0)\n";
+        echo "destlibsystem: $destlibsystem \n";
+        echo "destlibname: $destlibname \n";
+        echo "desttypeloan: $desttypeloan (1)\n";
+        echo "failmessage: $failmessage\n";
+        echo "--> \n\n";
+        $destfail=0; // 0=No, 1=Yes
+        if ($itemavail == 0) {
+            $destfail = 1;
+            $failmessage = "Material unavailable, see source ILS/LMS for details";
         }
-        if ((strcmp($itemtype, 'other') == 0) || (strcmp($itemtype, 'music-score') == "No") || (strcmp($itemtype, 'map') == "No") || (strcmp($itemtype, 'other (electronic)') == "No")) {
-            // See if  request is for reference
-            if ($row['theses_loan']=="Yes") {
-                // Checking if reference is allowed
-                return 1;
-            }
+        if ($destpart == 0) {
+            $destfail = 1;
+            $failmessage = "Library not particpating in CaDiLaC";
         }
-    }
-    return 0; // Matched none of the above
-} // end check_itemtype
+        if (strlen($destemail) < 2) {
+            $destfail = 1;
+            $failmessage = "Library has no ILL email configured";
+        }
+        if (($destsuspend == 1)&&($destill!='ntr')) {
+            $destfail = 2;
+            $failmessage = "Library not loaning / eForm ILL Suspend";
+        }
+        //Spcial Message for RPI
+        if (($destsuspend == 1)&&($destill=='ntr')) {
+            $destfail = 2;
+            $failmessage = "RPI does not accept the CDLC ILL eForm at this time. Contact the RPI Interlibrary Loan Department <a target='_blank' href='https://webforms.rpi.edu/rensselaer-libraries-ask-question?topic=loan'>here</a> to set up an Institutional Borrowing account.";
+        }
+        if ($desttypeloan == 0) {
+            $destfail = 2;
+            $failmessage = "Library not loaning this material type";
+        }
+        if (($destlibsystem == $field_home_library_system) && ($field_filter_own_system == 1)) {
+            $destfail = 1;
+            $failmessage = "Library a member of your system, please request through your ILS/LMS";
+        }
+        if ($destill == "") {
+            $destfail = 1;
+            $destlibname = $itemlocation;
+            $destlibsystem = "Unknown";
+            $failmessage = "No alias match in eForm directory";
+        }
+        if ($destfail == 0) {
+            $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
+            $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
+            $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
+            //note in html.html.twig I set the body tag to   <body onload="multiRequest()"; {{ attributes }}>
+            echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+            echo"<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+            $loccount=$loccount+1;
+        } elseif ($destfail == 1) {
+            //only showing error code 2
+        } else {
+            $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
+            echo "<!-- Holding location failed checks. --> \n";
+        }
+    } // Generic holding loop end
+    //do a loop for Albany Law School
+    if ($location['name']== 'Albany Law School') {
+        $itemtype=$records->{'md-medium'};
+
+        // Pull the checksum for the location
+        $seslcchecksum=$location['checksum'];
+        // redo the curl statement to includes the checksum
+        $cmdseslc= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc)."\&checksum=$seslcchecksum\&offset=1";
+        $outputseslc = shell_exec($cmdseslc);
+        // This echo will show the CURL statment as an HTML comment
+        // echo "\n<br><!-- my cmd albay law cmd is $cmdseslc \n-->";
+        $recordssSESLC= new SimpleXMLElement($outputseslc); // for production
+        $itemcallnum=$recordssSESLC->d050->sa;
+        // Go through the holding records
+        foreach ($recordssSESLC->d994 as $d994) {
+            $itemlocation=$d994->sb;
+            $locationinfo=find_locationinfo($itemlocation, $location['name']);
+            $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+            $destill=$locationinfo[0]; // Destination ILL Code
+            $destpart=$locationinfo[1]; // 0=No, 1=Yes
+            $destemail=$locationinfo[2]; // Destination emails
+            $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
+            $destlibsystem=$locationinfo[4]; // Destination library system
+            $destlibname=$locationinfo[5]; // Destination library name
+            $destAlias=$locationinfo[6]; // Destination Alias
+            $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
+
+            echo "<!-- \n";
+            echo "catalogtype: $catalogtype \n";
+            echo "itemavail: $itemavail (1) \n";
+            echo "itemavailtext: $itemavailtext \n";
+            echo "itemlocallocation: $itemlocallocation \n";
+            echo "itemlocation: $itemlocation \n";
+            echo "destill: $destill \n";
+            echo "destpart: $destpart (1)\n";
+            echo "destemail: $destemail \n";
+            echo "destsuspend: $destsuspend (0)\n";
+            echo "destlibsystem: $destlibsystem \n";
+            echo "destlibname: $destlibname \n";
+            echo "desttypeloan: $desttypeloan (1)\n";
+            echo "failmessage: $failmessage\n";
+            echo "--> \n\n";
+            $destfail=0; // 0=No, 1=Yes
+            if ($itemavail == 1) {
+                $destfail = 1;
+                $failmessage = "Material unavailable, see source ILS/LMS for details";
+            }
+            if ($destpart == 0) {
+                $destfail = 1;
+                $failmessage = "Library not particpating in CaDiLaC";
+            }
+            if (strlen($destemail) < 2) {
+                $destfail = 1;
+                $failmessage = "Library has no ILL email configured";
+            }
+            if ($destsuspend == 1) {
+                $destfail = 2;
+                $failmessage = "Library not loaning / closed";
+            }
+            if ($desttypeloan == 0) {
+                $destfail = 2;
+                $failmessage = "Library not loaning this material type";
+            }
+
+            if (strlen($destAlias) < 2) {
+                $destfail = 1;
+                $destlibname = $itemlocation;
+                $destlibsystem = "Unknown";
+                $failmessage = "No alias match in eForm directory";
+            }
+            echo "<!-- \n";
+            echo "destfail: $destfail\n";
+            echo "--> \n\n";
+            if ($destfail == 0) {
+                $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
+                $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
+                $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
+                echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                echo"<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                $loccount=$loccount+1;
+            } elseif ($destfail == 1) {
+                //not showing fail code 1 to end user
+                $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
+            } else {
+                //will show other error to inform end user
+                $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
+                echo "<!-- Holding location failed checks. --> \n";
+            }
+        }//end foreach loop for albany law school 994
+    }//end if check for albany law school
+
+
+    //want to add Koha locations to selection
+    if (($catalogtype == "Koha")|| ($catalogtype == "Alexandria")) {
+        // Pull the checksum for the location
+        $seslcchecksum=$location['checksum'];
+        // redo the curl statement to includes the checksum
+        $cmdseslc= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc)."\&checksum=$seslcchecksum\&offset=1";
+        $outputseslc = shell_exec($cmdseslc);
+        // This echo will show the CURL statment as an HTML comment
+        // echo "\n<br><!-- my cmd koha is $cmdseslc \n-->";
+        $recordssSESLC= new SimpleXMLElement($outputseslc); // for production
+        // Go through the holding records
+        foreach ($recordssSESLC->d952 as $d952) {
+            //$itemavai=$d952['i1'];
+            $itemlocation=$d952->sb;
+            $itemcallnum=$d952->so;
+            $itemavail=$d952->s7;
+            // Remove colon from call numbers
+            $seslccall= str_replace(':', '.', $seslccall);
+            $itemavailtext=set_koha_availability($itemavail);
+            $locationinfo=find_locationinfo($itemlocation, $location['name']);
+            $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+            $destill=$locationinfo[0]; // Destination ILL Code
+            $destpart=$locationinfo[1]; // 0=No, 1=Yes
+            $destemail=$locationinfo[2]; // Destination emails
+            $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
+            $destlibsystem=$locationinfo[4]; // Destination library system
+            $destlibname=$locationinfo[5]; // Destination library name
+            $destAlias=$locationinfo[6]; // Destination Alias
+            $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
+            $itemlocallocation=$itemlocation; // Needed in sent.php
+            echo "<!-- \n";
+            echo "catalogtype: $catalogtype \n";
+            echo "itemavail: $itemavail (1) \n";
+            echo "itemavailtext: $itemavailtext \n";
+            echo "itemlocallocation: $itemlocallocation \n";
+            echo "itemlocation: $itemlocation \n";
+            echo "destill: $destill \n";
+            echo "destpart: $destpart (1)\n";
+            echo "destemail: $destemail \n";
+            echo "destsuspend: $destsuspend (0)\n";
+            echo "destlibsystem: $destlibsystem \n";
+            echo "destlibname: $destlibname \n";
+            echo "desttypeloan: $desttypeloan (1)\n";
+            echo "failmessage: $failmessage\n";
+            echo "--> \n\n";
+            $destfail=0; // 0=No, 1=Yes
+            if ($destpart == 0) {
+                $destfail = 1;
+                $failmessage = "Library not particpating in CaDiLaC";
+            }
+            if ($itemavail == 1) {
+                $destfail = 1;
+                $failmessage = "Material unavailable, see source ILS/LMS for details";
+            }
+            if (strlen($destemail) < 2) {
+                $destfail = 1;
+                $failmessage = "Library has no ILL email configured";
+            }
+            if ($destsuspend == 1) {
+                $destfail = 2;
+                $failmessage = "Library not loaning / closed";
+            }
+            if ($desttypeloan == 0) {
+                $destfail = 2;
+                $failmessage = "Library not loaning this material type";
+            }
+            //  if (($destlibsystem == $field_home_library_system[0]['value']) && ($field_filter_own_system[0]['value'] == 1)) {
+            //        $destfail = 1;
+            //          $failmessage = "Library a member of your system, please request through your ILS/LMS";
+            //      }
+            if ($destAlias == "") {
+                $destfail = 1;
+                $destlibname = $itemlocation;
+                $destlibsystem = "Unknown";
+                $failmessage = "No alias match in eForm directory";
+            }
+            echo "<!-- \n";
+            echo "destfail: $destfail\n";
+            echo "--> \n\n";
+            if ($destfail == 0) {
+                $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
+                $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
+                $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
+                echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                echo"<div class='singlereq'><input type='radio' class='librarycheck[]' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                $loccount=$loccount+1;
+            } elseif ($destfail == 1) {
+                //not showing fail code 1 to end user
+                $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
+            } else {
+                //will show other error to inform end user
+                $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
+                echo "<!-- Holding location failed checks. --> \n";
+            }
+        }//end foreach $recordssSESLC
+    }//end if cat type koha
+} // End generic handler
+echo "</select>";
+foreach ($deadlibraries as $line) {
+    echo $line;
+}
+if ($loccount > 0) {
+    echo "<br><input type=Submit value=Submit> ";
+    // If we have no locations don't show submit and display error
+} else {
+    echo "<br><b>Sorry, no available library to route your request at this time.</b>  <a href='https://eform.cdlc.org'>Would you like to try another search ?</a>";
+}
+echo "</form>";
 ?>
