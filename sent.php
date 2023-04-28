@@ -267,7 +267,7 @@ foreach ($_POST['libdestination'] as $destination) {
                 $illstatus = $output_decoded['TransactionStatus'];
         
                 if (strlen($illiadtxnub)<4) {
-                    $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+                    $headers = "From: CDLC Linx <dontreply@CDCL.org>\r\n" ;
                     $headers .= "MIME-Version: 1.0\r\n";
                     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                     $messagereq = "Request did not go to ILLiad Ill ".$illnum." ".$output." ";
@@ -284,7 +284,7 @@ foreach ($_POST['libdestination'] as $destination) {
                     //no error and everthing is fine
                 } else {
                     // Something happen and could not update request, will email the sql to admin
-                    $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+                    $headers = "From: CDLC Linx <dontreply@CDCL.org>\r\n" ;
                     $headers .= "MIME-Version: 1.0\r\n";
                     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                     $messagereq = "UPDATE SENYLRC-SEAL2-STATS SET IlliadStatus = ".$illstatus.", IlliadTransID = ".$illiadtxnub." WHERE index = ".$sqlidnumb." ";
@@ -320,7 +320,7 @@ foreach ($_POST['libdestination'] as $destination) {
      Availability Status: $itemavail<br>
      Location: $itemlocation<br>
      $article<br><br>
-     <a href='https://eform.cdlc.org/cancel?num=$illnum&a=3' >Do you need to cancel this request? </a>
+     <a href='https://linx.cdlc.org/cancel?num=$illnum&a=3' >Do you need to cancel this request? </a>
      <br><br>
      The title is requested by the following library:<br>
      $inst<br>
@@ -359,7 +359,7 @@ foreach ($_POST['libdestination'] as $destination) {
      $fname $lname<br>
      $email<br>
      $wphone<br><br>
-     Will you fill this request?  <a href='https://eform.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='https://eform.cdlc.org/respond?num=$illnum&a=0' >No</a><br>";
+     Will you fill this request?  <a href='https://linx.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='https://linx.cdlc.org/respond?num=$illnum&a=0' >No</a><br>";
             //end of the message to the destination
             //start of sending mail
             // Set email subject for request
@@ -367,7 +367,7 @@ foreach ($_POST['libdestination'] as $destination) {
 
             // SEND EMAIL to destination Library with DKIM Signature
             $email_to = implode(',', $destemailarray);
-            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email . "\r\n" . 'Content-type: text/html; charset=utf8';
+            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "Linx" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
@@ -376,7 +376,7 @@ foreach ($_POST['libdestination'] as $destination) {
             mail($email_to, $subject, $messagedest, $headers, "-f donotreply@cdlc.org");
 
             // SEND a copy of EMAIL to the requester with DKIM sig
-            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "eForm" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
+            $headers = 'MIME-Version: 1.0' . "\r\n" . 'From: "Linx" <donotreply@cdlc.org>' . "\r\n" . "Reply-to: " . $email_to . "\r\n" . 'Content-type: text/html; charset=utf8';
 
             $messagereq = preg_replace('/(?<!\r)\n/', "\r\n", $messagereq);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);

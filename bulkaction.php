@@ -51,7 +51,7 @@ if (isset($_POST['bulkaction'])) {
             if (mysqli_query($db, $sqlupdate)) {
                 echo "ILL #".$id." has been canceled<br>";
 
-                $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+                $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 // Setting up email notification
@@ -76,16 +76,16 @@ if (isset($_POST['bulkaction'])) {
                 // Message for the destination library
                 $messagedest = $field_your_institution." has requested a renewal for ILL# ".$id."<br>Title: ".$title."<br><br>
                 <br>
-                How do you wish to answer the renewal?  <a href='http://eform.cdlc.org/renew?num=$id&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://eform.cdlc.org/renew?num=$id&a=2' >Deny</a>
+                How do you wish to answer the renewal?  <a href='http://linx.cdlc.org/renew?num=$id&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://linx.cdlc.org/renew?num=$id&a=2' >Deny</a>
                 <Br>
                 <hr style='width:200px;text-align:left;margin-left:0'>
-                <br>  This is an automated message from the eForm. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
+                <br>  This is an automated message from the Linx. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
                 // Set email subject for renewal
-                $subject = "eForm Renew Request: from ".$field_your_institution." ILL# $id";
+                $subject = "Linx Renew Request: from ".$field_your_institution." ILL# $id";
                 $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
                 // SEND EMAIL to Detestation Library
                 $email_to = implode(',', $destemailarray);
-                $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+                $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
@@ -107,7 +107,7 @@ if (isset($_POST['bulkaction'])) {
             $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '1'    WHERE `illNUB` = '$id'";
             if (mysqli_query($db, $sqlupdate)) {
                 echo "ILL #".$id." has been marked filled<br>";
-                $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+                $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
@@ -131,13 +131,13 @@ if (isset($_POST['bulkaction'])) {
             $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '0'    WHERE `illNUB` = '$reqnumb'";
             if (mysqli_query($db, $sqlupdate)) {
                 echo "ILL #".$id." has been marked not filled<br>";
-                $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+                $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
                 $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
                 $message = "Your ILL request $id for $title can not be filled by $destlib.<br>".
-                "<br><br>$respnote<br><br> <a href='http://eform.cdlc.org'>Would you like to try a different library</a>?";
+                "<br><br>$respnote<br><br> <a href='http://linx.cdlc.org'>Would you like to try a different library</a>?";
                 // Setup php email headers
                 $to=$requesterEMAIL;
                 $subject = "ILL Request Not Filled ILL# $id  ";

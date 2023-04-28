@@ -64,11 +64,11 @@ if ($renanswer=='1') {
                 $messagedest .= "Lender Note:".$renewNoteLender."            <br>";
             }
             // Set email subject for renewal
-            $subject = "eForm Renewal Approved: for ILL# $reqnumb";
+            $subject = "Linx Renewal Approved: for ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
             $email_to = implode(',', $destemailarray);
-            $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+            $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
@@ -106,11 +106,11 @@ if ($renanswer=='1') {
                 $messagedest .= "Lender Note:".$renewNoteLender."            <br>";
             }
             // Set email subject for renewal
-            $subject = "eForm Renewal Denied: for ILL# $reqnumb";
+            $subject = "Linx Renewal Denied: for ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
             $email_to = implode(',', $destemailarray);
-            $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+            $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
@@ -145,11 +145,11 @@ if ($renanswer=='1') {
             // Message for the destination library
             $messagedest = "The lender has changed the due date for ILL# ".$reqnumb."<br> Title: ".$title." <br>New Due Date: ".$duedate.", please return the book to the lender by that date. <br><br>";
             // Set email subject for renewal
-            $subject = "eForm Due Date Modify: for ILL# $reqnumb";
+            $subject = "Linx Due Date Modify: for ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
             $email_to = implode(',', $destemailarray);
-            $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+            $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
@@ -202,16 +202,16 @@ if ($renanswer=='1') {
             // Message for the destination library
             $messagedest = $field_your_institution[0]['value']." has requested a renewal for ILL# ".$reqnumb."<br>Title: ".$title."<br><br>
             <br>
-            How do you wish to answer the renewal?  <a href='http://eform.cdlc.org/renew?num=$reqnumb&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://eform.cdlc.org/renew?num=$reqnumb&a=2' >Deny</a>
+            How do you wish to answer the renewal?  <a href='http://linx.cdlc.org/renew?num=$reqnumb&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://linx.cdlc.org/renew?num=$reqnumb&a=2' >Deny</a>
             <Br>
             <hr style='width:200px;text-align:left;margin-left:0'>
-            <br>  This is an automated message from the eForm. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
+            <br>  This is an automated message from the Linx. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
             // Set email subject for renewal
-            $subject = "eForm Renew Request: from ".$field_your_institution[0]['value']." ILL# $reqnumb";
+            $subject = "Linx Renew Request: from ".$field_your_institution[0]['value']." ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
             $email_to = implode(',', $destemailarray);
-            $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+            $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
             $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);

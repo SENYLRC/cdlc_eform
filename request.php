@@ -211,12 +211,7 @@ foreach ($records->location as $location) { // Locations loop start
         }
         if (($destsuspend == 1)&&($destill!='ntr')) {
             $destfail = 2;
-            $failmessage = "Library not loaning / eForm ILL Suspend";
-        }
-        //Spcial Message for RPI
-        if (($destsuspend == 1)&&($destill=='ntr')) {
-            $destfail = 2;
-            $failmessage = "RPI does not accept the CDLC ILL eForm at this time. Contact the RPI Interlibrary Loan Department <a target='_blank' href='https://webforms.rpi.edu/rensselaer-libraries-ask-question?topic=loan'>here</a> to set up an Institutional Borrowing account.";
+            $failmessage = "Library not loaning / Linx ILL Suspend";
         }
         if ($desttypeloan == 0) {
             $destfail = 2;
@@ -230,7 +225,7 @@ foreach ($records->location as $location) { // Locations loop start
             $destfail = 1;
             $destlibname = $itemlocation;
             $destlibsystem = "Unknown";
-            $failmessage = "No alias match in eForm directory";
+            $failmessage = "No alias match in Linx directory";
         }
         if ($destfail == 0) {
             $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
@@ -316,7 +311,7 @@ foreach ($records->location as $location) { // Locations loop start
                 $destfail = 1;
                 $destlibname = $itemlocation;
                 $destlibsystem = "Unknown";
-                $failmessage = "No alias match in eForm directory";
+                $failmessage = "No alias match in Linx directory";
             }
             echo "<!-- \n";
             echo "destfail: $destfail\n";
@@ -415,7 +410,7 @@ foreach ($records->location as $location) { // Locations loop start
                 $destfail = 1;
                 $destlibname = $itemlocation;
                 $destlibsystem = "Unknown";
-                $failmessage = "No alias match in eForm directory";
+                $failmessage = "No alias match in Linx directory";
             }
             echo "<!-- \n";
             echo "destfail: $destfail\n";
@@ -446,7 +441,7 @@ if ($loccount > 0) {
     echo "<br><input type=Submit value=Submit> ";
     // If we have no locations don't show submit and display error
 } else {
-    echo "<br><b>Sorry, no available library to route your request at this time.</b>  <a href='https://eform.cdlc.org'>Would you like to try another search ?</a>";
+    echo "<br><b>Sorry, no available library to route your request at this time.</b>  <a href='https://linx.cdlc.org'>Would you like to try another search ?</a>";
 }
 echo "</form>";
 ?>

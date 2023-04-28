@@ -191,7 +191,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
 						$email<br>
 						$wphone<br><br>
             <hr style='width:200px;text-align:left;margin-left:0'><Br>
-            This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other
+            This is an automated message from the Linx ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other
 library in this ILL transaction, email ".$email_to.".";
 
 
@@ -216,11 +216,11 @@ library in this ILL transaction, email ".$email_to.".";
 						$email<br>
 						$wphone<br>
 						<br>
-            Will you fill this request?  <a href='http://eform.cdlc.org/respond?num=$illnum&a=1' >Yes
-</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://eform.cdlc.org/respond?num=$illnum&a=0' >No</a>
+            Will you fill this request?  <a href='http://linx.cdlc.org/respond?num=$illnum&a=1' >Yes
+</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://linx.cdlc.org/respond?num=$illnum&a=0' >No</a>
 <br> <hr style='width:200px;text-align:left;margin-left:0'>
 <br>
-This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in t
+This is an automated message from the Linx ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in t
 his ILL transaction, email ".$email."
 <br>";
 
@@ -235,7 +235,7 @@ his ILL transaction, email ".$email."
 
         #####SEND EMAIL to Detestation Library with DKIM sig
         $email_to = implode(',', $destemailarray);
-        $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+        $headers = "From: CDLC Linx <dontreply@CDCL.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         //mail has been sent to meg at CDLC for development
@@ -244,7 +244,7 @@ his ILL transaction, email ".$email."
 
 
         #####SEND a copy of EMAIL to requester with DKIM sig
-        $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+        $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 

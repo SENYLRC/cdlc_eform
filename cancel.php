@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $destemail_to = implode(',', $destemailarray);
 
 
-        $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+        $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 

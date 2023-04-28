@@ -1,7 +1,7 @@
 <?php
 // manage-libraries.php###
 //start session that is used for export feature
-session_id(YOUR_SESSION_ID);
+session_id('YOUR_SESSION_ID');
 session_start();
 
 require '/var/www/cdlc_script/cdlc_function.php';
@@ -249,7 +249,7 @@ if ($pageaction ==3) {
     <option value="UHLS">Upper Hudson Library System</option>
     <option value="WSWHE">WSWHE BOCES</option>
      </select><br><br>
-      <B>Items willing to loan in eForm</b><br>
+      <B>Items willing to loan in Linx</b><br>
         <table>
         <tr>
         <td><b>Print
@@ -462,7 +462,7 @@ if ($pageaction ==3) {
                         echo "selected=\"selected\"";
 } ?>>Washington-Saratoga-Warren-Hamilton-Essex School Library System</option>
     </select><br><br>
-    <B>Items willing to loan in eForm</b><br>
+    <B>Items willing to loan in Linx</b><br>
       <table>
       <tr>
       <td><b>Print Book</b><td>

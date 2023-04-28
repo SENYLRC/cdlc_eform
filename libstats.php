@@ -94,8 +94,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         }
 
         #Stats overall in the time frame chosen
-        echo "<h1><center>eForm Stats from $startdated to $enddated </h1></center>";
-        echo "<h1>Borrower  statistics for ".$libname."  </h1>";
+        echo "<h3>From $startdated to $enddated </h3>";
+        echo "<h4>Borrower  statistics for ".$libname."  </h4>";
         echo "Total Request Placed  ".$row_cnt." <br>";
         echo "Number of Request Filled: ".$row_fill." (".$percent_friendly_fill.")<br>";
         echo "Number of Request Not Filled: ".$row_notfill." (".$percent_friendly_notfill.")<br>";
@@ -106,7 +106,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
 
 
 
-        echo "<h1>Break down of requests</h1>";
+        echo "<hr><h4>Break down of requests</h4>";
         #Find which systems they sent request to
         $destsystem=" SELECT distinct (`DestSystem` )  FROM `$cdlcSTAT` WHERE `Requester LOC` LIKE '$loc'   and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  ";
         $destsystemq = mysqli_query($db, $destsystem);

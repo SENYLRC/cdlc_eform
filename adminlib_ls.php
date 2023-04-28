@@ -229,7 +229,7 @@ if ($pageaction ==3) {
     <option value="Q3S">Questar III SLS</option>
     <option value="WSWHE">WSWHE BOCES</option>
      </select><br><br>
-      <B>Items willing to loan in eForm</b><br>
+      <B>Items willing to loan in Linx</b><br>
         <table>
         <tr>
         <td><b>Print
@@ -434,7 +434,7 @@ if ($pageaction ==3) {
                         echo "selected=\"selected\"";
 } ?>>Washington-Saratoga-Warren-Hamilton-Essex School Library System</option>
     </select><br><br>
-    <B>Items willing to loan in eForm</b><br>
+    <B>Items willing to loan in Linx</b><br>
       <table>
       <tr>
       <td><b>Print Book</b><td>

@@ -30,7 +30,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
 
 
     //set up email headers
-    $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+    $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
     $headers .= "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -66,7 +66,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
     //IF request was filled mark it as fill and send out email
     if ((!empty($dueDate))&&(strpos($status, 'Shipped') !== false)) {
         //echo "item has been filled\n\n";
-        $sqlupdate2 = "\n UPDATE `$cdlcSTAT` SET `shipMethod`='empire',`DueDate` = '$dueDate',  `Fill` = '1' , `IlliadStatus` = '$status' WHERE `index` = $sqlidnumb\n";
+        $sqlupdate2 = "\n UPDATE `$cdlcSTAT` SET `shipMethod`='',`DueDate` = '$dueDate',  `Fill` = '1' , `IlliadStatus` = '$status' WHERE `index` = $sqlidnumb\n";
         //echo $sqlupdate2;
         //do database update and see if there was an error
         if (mysqli_query($db, $sqlupdate2)) {
@@ -74,8 +74,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
         //if error happen let tech support know
         } else {
             $to = "noc@senylrc.org";
-            $message="eForm was not able to update ILLiad status";
-            $subject = "eForm/ILLiad Database Update Failure  ";
+            $message="Linx was not able to update ILLiad status";
+            $subject = "Linx/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
@@ -105,8 +105,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
         //if error happen let tech support know
         } else {
             $to = "noc@senylrc.org";
-            $message="eForm was not able to update ILLiad status";
-            $subject = "eForm/ILLiad Database Update Failure  ";
+            $message="Linx was not able to update ILLiad status";
+            $subject = "Linx/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
@@ -163,8 +163,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
         //if error happen let tech support know
         } else {
             $to = "spalding@senylrc.org";
-            $message="eForm was not able to update ILLiad status";
-            $subject = "eForm/ILLiad Database Update Failure  ";
+            $message="Linx was not able to update ILLiad status";
+            $subject = "Linx/ILLiad Database Update Failure  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
@@ -174,11 +174,11 @@ while ($row = mysqli_fetch_assoc($retval)) {
 
         $message = "Your ILL request $reqnumb for $title can not be filled by $destlib.<br>".
                 "Reason request can not be filled: $reasontxt".
-                "<br><br> <a href='http://eform.cdlc.org'>Would you like to try a different library</a>?";
+                "<br><br> <a href='http://linx.cdlc.org'>Would you like to try a different library</a>?";
         #######Setup php email headers
         $to=$requesterEMAIL;
         //set up email headers
-        $headers = "From: CDLC eForm <dontreply@CDCL.org>\r\n" ;
+        $headers = "From: CDLC Linx <dontreply@CDCL.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         //$to = "spalding@senylrc.org";

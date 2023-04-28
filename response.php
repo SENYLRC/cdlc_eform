@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $destemailarray = explode(';', $destemail);
           $destemail_to = implode(',', $destemailarray);
 
-        $headers = "From: CDLC eForm <donotreply@cdlc.org>\r\n" ;
+        $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
@@ -114,9 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($nofillreason=='24') {
                 $reasontxt='Poor condition';
             }
+            if ($nofillreason=='25') {
+                $reasontxt='Too New';
+            }
                $message = "Your ILL request $reqnumb for $title can not be filled by $destlib.<br>".
                "Reason request can not be filled: $reasontxt".
-               "<br><br>$respnote<br><br> <a href='http://eform.cdlc.org'>Would you like to try a different library</a>?";
+               "<br><br>$respnote<br><br> <a href='http://linx.cdlc.org'>Would you like to try a different library</a>?";
               // Setup php email headers
                $to=$requesterEMAIL;
                $subject = "ILL Request Not Filled ILL# $reqnumb  ";
@@ -170,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      <option value="22">Non-Circulating Format</option>
      <option value="23">Not on shelf</option>
      <option value="24">Poor condition</option>
+     <option value="25">Too New</option>
    </select><br><br>
       <textarea name='respondnote' rows="4" cols="50"></textarea><br>
       <input type="submit" value="Submit">

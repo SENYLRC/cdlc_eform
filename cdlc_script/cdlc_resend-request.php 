@@ -96,8 +96,8 @@ while ($row = mysqli_fetch_assoc($retval)) {
 						$fname $lname<br>
 						$email<br>
 						<br>
-						Will you fill this request?  <a href='http://eform.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://eform.cdlc.org/
-respond?num=$illnum&a=0' >No</a>
+						Will you fill this request?  <a href='http://linx.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://linx.cdlc.org/re
+spond?num=$illnum&a=0' >No</a>
 						<br>";
 
 						#######Set email subject for request
@@ -119,7 +119,7 @@ respond?num=$illnum&a=0' >No</a>
  
 						 
 						#####SEND a copy of EMAIL to requester with DKIM sig
-                                                $headers = "From: eForm <donotreply@cdlc.org>\r\n" ;
+                                                $headers = "From: Linx <donotreply@cdlc.org>\r\n" ;
                                                 $headers .= "MIME-Version: 1.0\r\n";
                                                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 

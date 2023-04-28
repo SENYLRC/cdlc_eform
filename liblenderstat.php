@@ -94,8 +94,8 @@ $libname =  $row["Name"];
 }
 
     #Stats overall in the time frame chosen
-   echo "<h1><center>eForm Stats from $startdated to $enddated </h1></center>";
-   echo "<h1>Lender request statistics for ".$libname."  </h1>";
+   echo "<h3>From $startdated to $enddated </3>";
+   echo "<h4>Lender request statistics for ".$libname."  </h4>";
    echo "Total Requests received ".$row_cnt." <br>";
    echo "Number of Requests Filled: ".$row_fill." (".$percent_friendly_fill.")<br>";
    echo "Number of Requests Not Filled: ".$row_notfill." (".$percent_friendly_notfill.")<br>";
@@ -106,7 +106,7 @@ $libname =  $row["Name"];
 
 
 
-    echo "<h1>Break down of requests</h1>";
+    echo "<hr><h3>Break down of requests</h3>";
    #Find which systems they sent request to
    $reqsystem=" SELECT distinct (`ReqSystem` )  FROM `$cdlcSTAT` WHERE `Destination` LIKE '$loc'   and `Timestamp` >= '$startdate 00:00:00' and `Timestamp` <= '$enddate 00:00:00'  ";
    $reqsystemq = mysqli_query($db, $reqsystem);

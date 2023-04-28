@@ -107,7 +107,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             }
 
             // Stats overall in the time frame chosen
-            echo "<h1><center>eForm Borrowing Stats from $startdated to $enddated </h1></center>";
+            echo "<h1><center>Linx Borrowing Stats from $startdated to $enddated </h1></center>";
             echo "<h1>Library System ".$libsystemtxt." </h1>";
             echo "Total Request ".$row_cnt." <br>";
             echo "Number of Request Filled: ".$row_fill." (".$percent_friendly_fill.")<br>";
@@ -306,7 +306,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             }
 
             // Stats overall in the time frame chosen
-            echo "<h1><center>eForm Lending Stats from $startdated to $enddated </h1></center>";
+            echo "<h1><center>Linx Lending Stats from $startdated to $enddated </h1></center>";
             echo "<h1>Lender request statistics for ".$libsystemtxt."  </h1>";
             echo "Total Requests received ".$row_cnt." <br>";
             echo "Number of Requests Filled: ".$row_fill." (".$percent_friendly_fill.")<br>";
@@ -481,7 +481,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         $row_cnt = mysqli_num_rows($retval);
 
         // loop through the results of items from that destination
-        echo "<h1><center>eForm Requests that expired from $startdated to $enddated </h1></center>";
+        echo "<h1><center>Linx Requests that expired from $startdated to $enddated </h1></center>";
         echo  "$row_cnt  results"; ?>
      <table><tr><th>ILL #</th><th>LOC</th><th>Destination Library</th><th>Requesting Library</th><th>Note</th><th>Title</th><th>Item Type</th><th>Date</th></tr>
         <?php
@@ -508,7 +508,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
         echo "</table>";
     }
 } else {
-    // eForm Borrowing Stats
+    // Linx Borrowing Stats
 
     ?>
      <h3>Borrowing statistics for <?php echo $field_home_library_system;?>:</h3>
@@ -524,7 +524,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
      <input type="submit" value="Submit">
     </form>
     <br><hr>
-    <!--#eForm Lending Stats-->
+    <!--#Linx Lending Stats-->
      <h3>Lending statistics for <?php echo $field_home_library_system;?>:</h3>
      <form action="/cdlcstats_ls?<?php echo $_SERVER['QUERY_STRING']; ?>" method="post">
      Start Date:
