@@ -198,16 +198,16 @@ if ($renanswer=='1') {
             // In case the ILL email for the destination library is more than one, break it down to a comma for PHP mail
             $destemailarray = explode(';', $destemail);
             $destemail_to = implode(',', $destemailarray);
-            ;
+            
             // Message for the destination library
-            $messagedest = $field_your_institution[0]['value']." has requested a renewal for ILL# ".$reqnumb."<br>Title: ".$title."<br><br>
+            $messagedest = $field_your_institution." has requested a renewal for ILL# ".$reqnumb."<br>Title: ".$title."<br><br>
             <br>
             How do you wish to answer the renewal?  <a href='http://linx.cdlc.org/renew?num=$reqnumb&a=1' >Approved</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='http://linx.cdlc.org/renew?num=$reqnumb&a=2' >Deny</a>
             <Br>
             <hr style='width:200px;text-align:left;margin-left:0'>
             <br>  This is an automated message from the Linx. Responses to this email will be sent back to Capital District Library Council staff. If you would like to contact the other library in this ILL transaction, email ".$reqemail.".";
             // Set email subject for renewal
-            $subject = "Linx Renew Request: from ".$field_your_institution[0]['value']." ILL# $reqnumb";
+            $subject = "Linx Renew Request: from ".$field_your_institution." ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
             $email_to = implode(',', $destemailarray);

@@ -196,7 +196,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     echo "Loaning Print Book: <strong>$book</strong><br>";
     echo "Loaning Print Journal or Article: <strong>$journal</strong><br>";
     echo "Loaning Audio Video Materials: <strong>$av</strong><br>";
-    echo "Loaning Theses: <strong>$reference</strong><br>";
+    echo "Loaning Reference/Microfilm: <strong>$reference</strong><br>";
     echo "Loaning Electronic Book: <strong>$ebook</strong><br>";
     echo "Loaning Electronic Journal: <strong>$ejrnl</strong><br><br>";
     echo "</div>"; #end the illDirTableCell
