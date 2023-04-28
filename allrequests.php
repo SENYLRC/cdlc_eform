@@ -9,7 +9,7 @@
   });
 </script>
 <?php
-###allrequests.php###
+// allrequests.php###
 require '/var/www/cdlc_script/cdlc_function.php';
 
 
@@ -17,78 +17,78 @@ $firstpass = (isset($_REQUEST['firstpass']) ? "no" : "yes");
 $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $filter_illnum = $_REQUEST['filter_illnum'] : "");
 
 if ($firstpass == "no") {
-    #Setting options to user's chosen
-  if ($filter_illnum != "") { #If looking for ILL num then set the other options
-    $filter_startdate = date("m/d/Y");
-      $filter_enddate = date("m/d/Y");
-      $filter_lender = "";
-      $filter_borrower = "";
-      $filter_numresults = "all";
-      $filter_title = "";
-      $filter_yes = "yes";
-      $filter_no = "yes";
-      $filter_noans = "yes";
-      $filter_expire = "yes";
-      $filter_cancel = "yes";
-      $filter_recevied="yes";
-      $filter_return="yes";
-      $filter_checkin="yes";
-      $filter_destination = "";
-      $filter_system = "";
-      $filter_offset = 0;
-  } else {
-      if (isset($_REQUEST['filter_yes'])) {
-          $filter_yes = $_REQUEST['filter_yes'];
-      }
-      if (isset($_REQUEST['filter_no'])) {
-          $filter_no = $_REQUEST['filter_no'];
-      }
-      if (isset($_REQUEST['filter_noans'])) {
-          $filter_noans = $_REQUEST['filter_noans'];
-      }
-      if (isset($_REQUEST['filter_expire'])) {
-          $filter_expire = $_REQUEST['filter_expire'];
-      }
-      if (isset($_REQUEST['filter_cancel'])) {
-          $filter_cancel = $_REQUEST['filter_cancel'];
-      }
-      if (isset($_REQUEST['filter_recevied'])) {
-          $filter_recevied = $_REQUEST['filter_recevied'];
-      }
-      if (isset($_REQUEST['filter_return'])) {
-          $filter_return = $_REQUEST['filter_return'];
-      }
-      if (isset($_REQUEST['filter_checkin'])) {
-          $filter_checkin = $_REQUEST['filter_checkin'];
-      }
+    // Setting options to user's chosen
+    if ($filter_illnum != "") { // If looking for ILL num then set the other options
+        $filter_startdate = date("m/d/Y");
+        $filter_enddate = date("m/d/Y");
+        $filter_lender = "";
+        $filter_borrower = "";
+        $filter_numresults = "all";
+        $filter_title = "";
+        $filter_yes = "yes";
+        $filter_no = "yes";
+        $filter_noans = "yes";
+        $filter_expire = "yes";
+        $filter_cancel = "yes";
+        $filter_recevied="yes";
+        $filter_return="yes";
+        $filter_checkin="yes";
+        $filter_destination = "";
+        $filter_system = "";
+        $filter_offset = 0;
+    } else {
+        if (isset($_REQUEST['filter_yes'])) {
+            $filter_yes = $_REQUEST['filter_yes'];
+        }
+        if (isset($_REQUEST['filter_no'])) {
+            $filter_no = $_REQUEST['filter_no'];
+        }
+        if (isset($_REQUEST['filter_noans'])) {
+            $filter_noans = $_REQUEST['filter_noans'];
+        }
+        if (isset($_REQUEST['filter_expire'])) {
+            $filter_expire = $_REQUEST['filter_expire'];
+        }
+        if (isset($_REQUEST['filter_cancel'])) {
+            $filter_cancel = $_REQUEST['filter_cancel'];
+        }
+        if (isset($_REQUEST['filter_recevied'])) {
+            $filter_recevied = $_REQUEST['filter_recevied'];
+        }
+        if (isset($_REQUEST['filter_return'])) {
+            $filter_return = $_REQUEST['filter_return'];
+        }
+        if (isset($_REQUEST['filter_checkin'])) {
+            $filter_checkin = $_REQUEST['filter_checkin'];
+        }
 
-      if (isset($_REQUEST['filter_system'])) {
-          $filter_system = $_REQUEST['filter_system'];
-      }
-      if (isset($_REQUEST['filter_lender'])) {
-          $filter_lender = $_REQUEST['filter_lender'];
-      }
-      if (isset($_REQUEST['filter_borrower'])) {
-          $filter_borrower = $_REQUEST['filter_borrower'];
-      }
-      if (isset($_REQUEST['filter_title'])) {
-          $filter_title = $_REQUEST['filter_title'];
-      }
-      if (isset($_REQUEST['filter_startdate'])) {
-          $filter_startdate = $_REQUEST['filter_startdate'];
-      }
-      if (isset($_REQUEST['filter_enddate'])) {
-          $filter_enddate = $_REQUEST['filter_enddate'];
-      }
-      if (isset($_REQUEST['filter_numresults'])) {
-          $filter_numresults = $_REQUEST['filter_numresults'];
-      }
-      if (isset($_REQUEST['filter_offset'])) {
-          $filter_offset = $_REQUEST['filter_offset'];
-      }
-  }
+        if (isset($_REQUEST['filter_system'])) {
+            $filter_system = $_REQUEST['filter_system'];
+        }
+        if (isset($_REQUEST['filter_lender'])) {
+            $filter_lender = $_REQUEST['filter_lender'];
+        }
+        if (isset($_REQUEST['filter_borrower'])) {
+            $filter_borrower = $_REQUEST['filter_borrower'];
+        }
+        if (isset($_REQUEST['filter_title'])) {
+            $filter_title = $_REQUEST['filter_title'];
+        }
+        if (isset($_REQUEST['filter_startdate'])) {
+            $filter_startdate = $_REQUEST['filter_startdate'];
+        }
+        if (isset($_REQUEST['filter_enddate'])) {
+            $filter_enddate = $_REQUEST['filter_enddate'];
+        }
+        if (isset($_REQUEST['filter_numresults'])) {
+            $filter_numresults = $_REQUEST['filter_numresults'];
+        }
+        if (isset($_REQUEST['filter_offset'])) {
+            $filter_offset = $_REQUEST['filter_offset'];
+        }
+    }
 } else {
-    #Setting options to default values
+    // Setting options to default values
     $firstpass = "no";
     $filter_illnum = "";
     $filter_startdate = "08/01/2022";
@@ -110,12 +110,12 @@ if ($firstpass == "no") {
     $filter_offset = 0;
 }
 
-#Connect to database
+// Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
 
-#Sanitize data
+// Sanitize data
 $loc = mysqli_real_escape_string($db, $loc);
 
 $SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE ";
@@ -128,46 +128,54 @@ if (strlen($filter_illnum) > 2) {
 if (strlen($filter_lender) > 2) {
     $SQL_Search="SELECT `loc` FROM `$cdlcLIB` where `Name` like '%$filter_lender%'";
     $Possibles=mysqli_query($db, $SQL_Search);
-    while ($rowposs = mysqli_fetch_assoc($Possibles)) {
-        $possloc=$rowposs["loc"];
-        if (strlen($SQL_LENDER) > 2) {
-            $SQL_LENDER = $SQL_LENDER . " OR `destination` = '$possloc'";
-        } else {
-            $SQL_LENDER = " AND (`destination` = '$possloc'";
+    // Return the number of rows in result set
+    $rowcount=mysqli_num_rows($Possibles);
+    if ($rowcount >0) {
+        while ($rowposs = mysqli_fetch_assoc($Possibles)) {
+            $possloc=$rowposs["loc"];
+            if (strlen($SQL_LENDER) > 2) {
+                $SQL_LENDER = $SQL_LENDER . " OR `destination` = '$possloc'";
+            } else {
+                $SQL_LENDER = " AND (`destination` = '$possloc'";
+            }
         }
+        $SQL_LENDER = $SQL_LENDER . ")";
     }
-    $SQL_LENDER = $SQL_LENDER . ")";
 }
 
 if (strlen($filter_borrower) > 2) {
     $SQL_Search="SELECT `loc` FROM `$cdlcLIB` where `Name` like '%$filter_borrower%'";
     $Possibles=mysqli_query($db, $SQL_Search);
-    while ($rowposs = mysqli_fetch_assoc($Possibles)) {
-        $possloc=$rowposs["loc"];
-        if (strlen($SQL_BORROWER) > 2) {
-            $SQL_BORROWER = $SQL_BORROWER . " OR `Requester LOC` = '$possloc'";
-        } else {
-            $SQL_BORROWER = " AND (`Requester LOC` = '$possloc'";
+        // Return the number of rows in result set
+        $rowcount=mysqli_num_rows($Possibles);
+    if ($rowcount >0) {
+        while ($rowposs = mysqli_fetch_assoc($Possibles)) {
+            $possloc=$rowposs["loc"];
+            if (strlen($SQL_BORROWER) > 2) {
+                $SQL_BORROWER = $SQL_BORROWER . " OR `Requester LOC` = '$possloc'";
+            } else {
+                $SQL_BORROWER = " AND (`Requester LOC` = '$possloc'";
+            }
         }
+        $SQL_BORROWER = $SQL_BORROWER . ")";
     }
-    $SQL_BORROWER = $SQL_BORROWER . ")";
 }
 
 if (strlen($filter_title) > 2) {
     $SQLTITLE = " AND `Title` like '%" . $filter_title . "%'";
 }
 
-#Meddling with dates
+// Meddling with dates
 $sql_startdate = convertDate($filter_startdate);
 $sql_enddate = convertDate($filter_enddate);
 $SQLDATES = "`Timestamp` >= '" . $sql_startdate . " 00:00:00' AND `Timestamp` <= '" . $sql_enddate . " 23:59:59' ";
 
-#Adding the system
+// Adding the system
 if ($filter_system != "") {
     $SQLSYSTEM = " AND (`ReqSystem` = '" . $filter_system . "' OR `DestSystem` = '" . $filter_system . "')";
 }
 
-$SQLMIDDLE =''; #This builds the display options for the SQL
+$SQLMIDDLE =''; // This builds the display options for the SQL
 if ($filter_yes == "yes") {
     $SQLMIDDLE = "`fill`= 1 ";
 }
@@ -228,33 +236,34 @@ if ($filter_numresults != "all") {
 $GETFULLSQL = $SQLBASE . $SQLDATES . $SQLTITLE . $SQL_LENDER . $SQL_BORROWER . $SQLILL . $SQLSYSTEM . " AND (" . $SQLMIDDLE . ")" . $SQLEND;
 $GETLISTSQL = $SQLBASE . $SQLDATES . $SQLTITLE . $SQL_LENDER . $SQL_BORROWER . $SQLILL . $SQLSYSTEM . " AND (" . $SQLMIDDLE . ")" . $SQLEND . $SQLLIMIT;
 //for testing
-#echo $GETLISTSQL . "</br>";
+//echo $GETLISTSQL . "</br>";
+
 $GETLIST = mysqli_query($db, $GETLISTSQL);
 $GETCOUNT = mysqli_query($db, $GETFULLSQL);
 $GETLISTCOUNTwhole = mysqli_num_rows($GETCOUNT);
 
-#echo "<p>Diagnostic Block";
-#echo "</br>First Pass:" . $firstpass;
-#echo "</br>Yes: " . $filter_yes;
-#echo "</br>No: " . $filter_no;
-#echo "</br>No Ans: " . $filter_noans;
-#echo "</br>Exp: " . $filter_expire;
-#echo "</br>Cancel: " . $filter_cancel;
-#echo "</br>Recived: " . $filter_recevied;
-#echo "</br>Return: " . $filter_return;
-#echo "</br>Checkin: " . $filter_checkin;
-#echo "</br>Start Date: " . $filter_startdate;
-#echo "</br>End Date: " . $filter_enddate;
-#echo "</br>Library System: " . $filter_system;
-#echo "</br>Results PP: " . $filter_numresults;
-#echo "</br>Lender: " . $filter_lender;
-#echo "</br>Borrower: " . $filter_borrower;
-#echo "</br>Title: " . $filter_title;
-#echo "</br>ILL Num: " . $filter_illnum;
-#echo "</br>Offset: " . $filter_offset;
-#echo "</p>";
+// echo "<p>Diagnostic Block";
+// echo "</br>First Pass:" . $firstpass;
+// echo "</br>Yes: " . $filter_yes;
+// echo "</br>No: " . $filter_no;
+// echo "</br>No Ans: " . $filter_noans;
+// echo "</br>Exp: " . $filter_expire;
+// echo "</br>Cancel: " . $filter_cancel;
+// echo "</br>Recived: " . $filter_recevied;
+// echo "</br>Return: " . $filter_return;
+// echo "</br>Checkin: " . $filter_checkin;
+// echo "</br>Start Date: " . $filter_startdate;
+// echo "</br>End Date: " . $filter_enddate;
+// echo "</br>Library System: " . $filter_system;
+// echo "</br>Results PP: " . $filter_numresults;
+// echo "</br>Lender: " . $filter_lender;
+// echo "</br>Borrower: " . $filter_borrower;
+// echo "</br>Title: " . $filter_title;
+// echo "</br>ILL Num: " . $filter_illnum;
+// echo "</br>Offset: " . $filter_offset;
+// echo "</p>";
 
-#Filter options
+// Filter options
 echo "<form action='".$_SERVER['REDIRECT_URL']."' method='post'>";
 echo "<input type='hidden' name='firstpass' value='no'>";
 echo "<input type='hidden' name='filter_offset' value='" . $filter_offset . "'>";
@@ -345,7 +354,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $dest=trim($dest);
     //for testing
     //echo $dest."<br>";
-    #Get the Destination Name
+    // Get the Destination Name
     if (strlen($dest)>0) {
         $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
         //for testing

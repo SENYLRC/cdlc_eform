@@ -125,29 +125,37 @@ if (strlen($filter_illnum) > 2) {
 if (strlen($filter_lender) > 2) {
     $SQL_Search="SELECT `loc` FROM `$cdlcLIB` where `Name` like '%$filter_lender%'";
     $Possibles=mysqli_query($db, $SQL_Search);
-    while ($rowposs = mysqli_fetch_assoc($Possibles)) {
-        $possloc=$rowposs["loc"];
-        if (strlen($SQL_LENDER) > 2) {
-            $SQL_LENDER = $SQL_LENDER . " OR `destination` = '$possloc'";
-        } else {
-            $SQL_LENDER = " AND (`destination` = '$possloc'";
+        // Return the number of rows in result set
+        $rowcount=mysqli_num_rows($Possibles);
+    if ($rowcount >0) {
+        while ($rowposs = mysqli_fetch_assoc($Possibles)) {
+            $possloc=$rowposs["loc"];
+            if (strlen($SQL_LENDER) > 2) {
+                $SQL_LENDER = $SQL_LENDER . " OR `destination` = '$possloc'";
+            } else {
+                $SQL_LENDER = " AND (`destination` = '$possloc'";
+            }
         }
+        $SQL_LENDER = $SQL_LENDER . ")";
     }
-    $SQL_LENDER = $SQL_LENDER . ")";
 }
 
 if (strlen($filter_borrower) > 2) {
     $SQL_Search="SELECT `loc` FROM `$cdlcLIB` where `Name` like '%$filter_borrower%'";
     $Possibles=mysqli_query($db, $SQL_Search);
-    while ($rowposs = mysqli_fetch_assoc($Possibles)) {
-        $possloc=$rowposs["loc"];
-        if (strlen($SQL_BORROWER) > 2) {
-            $SQL_BORROWER = $SQL_BORROWER . " OR `Requester LOC` = '$possloc'";
-        } else {
-            $SQL_BORROWER = " AND (`Requester LOC` = '$possloc'";
+    // Return the number of rows in result set
+    $rowcount=mysqli_num_rows($Possibles);
+    if ($rowcount >0) {
+        while ($rowposs = mysqli_fetch_assoc($Possibles)) {
+            $possloc=$rowposs["loc"];
+            if (strlen($SQL_BORROWER) > 2) {
+                $SQL_BORROWER = $SQL_BORROWER . " OR `Requester LOC` = '$possloc'";
+            } else {
+                $SQL_BORROWER = " AND (`Requester LOC` = '$possloc'";
+            }
         }
+        $SQL_BORROWER = $SQL_BORROWER . ")";
     }
-    $SQL_BORROWER = $SQL_BORROWER . ")";
 }
 
 if (strlen($filter_title) > 2) {
@@ -329,7 +337,7 @@ while ($row = mysqli_fetch_assoc($GETLIST)) {
     $renewNoteLender = $row["renewNoteLender"];
     $renewAccountRequester = $row["renewAccountRequester"];
     $fill = $row["Fill"];
-    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate,$fillNoFillDate);
+    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate, $fillNoFillDate);
     $shiptxt=shipmtotxt($shipmethod);
     $returnmethodtxt=shipmtotxt($returnmethod);
     $dest=trim($dest);
