@@ -44,7 +44,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     //$GETLISTCOUNT = mysqli_num_rows($GETLIST);
     #echo " $GETLISTCOUNTwhole  results";
     if (isset($_GET{'page'})) {
-        $page = $_GET{'page'} + 1;
+        $page = $_GET['page'] + 1;
         $offset = $rec_limit * $page ;
     } else {
         $page = 0;
@@ -64,7 +64,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     $rec_count = $rowpage[0];
 
     if (isset($_GET{'page'})) {
-        $page = $_GET{'page'} + 1;
+        $page = $_GET['page'] + 1;
         $offset = $rec_limit * $page ;
     } else {
         $page = 0;
