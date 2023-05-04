@@ -164,7 +164,7 @@ foreach ($_POST['libdestination'] as $destination) {
  VALUES ('0','$ititle','$iauthor','$pubdate','$isbn','$issn','$itype','$itemcall','$itemlocation','$itemavail','$article','$needbydate','$reqnote','$patronnote','$destloc','$destsystem','$inst','$reqLOCcode','$reqsystem','$fname $lname','$email','$today','3','','$wphone','$saddress','$saddress2','$caddress')";
         //for testing
         //for testing
-        //  echo $sql."<br>";
+         //echo $sql."<br>";
 
         if (mysqli_query($db, $sql)) {
             //for debuggin
@@ -216,9 +216,9 @@ foreach ($_POST['libdestination'] as $destination) {
                 if (empty($arttile)) {
                     //book request have to be sent as an article or API won't take them
                     //note about being a book loan is set so ILLiad users know to press loan radio button
-                    $jsonstr = array( 'Username' =>'Lending','LendingString'=> $reqnote, 'RequestType'=>Loan,'DueDate'=>$illduedateCAL.'T00:00:00-04:00','ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ISSN'=>$isbn,'ILLNumber'=>$illnum ,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail);
+                    $jsonstr = array( 'Username' =>'Lending','LendingString'=> $reqnote, 'RequestType'=>'Loan','DueDate'=>$illduedateCAL.'T00:00:00-04:00','ProcessType'=>'Lending','LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'ISSN'=>$isbn,'ILLNumber'=>$illnum ,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail);
                 } else {
-                    $jsonstr = array('Username' =>'Lending','LendingString'=> $reqnote, 'ProcessType'=>Lending,'LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail );
+                    $jsonstr = array('Username' =>'Lending','LendingString'=> $reqnote, 'ProcessType'=>'Lending','LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail );
                 }
                 
         
