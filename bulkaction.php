@@ -104,28 +104,12 @@ if (isset($_POST['bulkaction'])) {
                 echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
         } elseif ($action==4) {
-            $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '1'    WHERE `illNUB` = '$id'";
+            // this this is to retun an item
+            $sqlupdate = "UPDATE `$cdlcSTAT` SET `returnTimeStamp` = '$timestamp',`returnMethod` = '$returnmethod',`returnNote` = '$returnnote', `returnAccount` = '" .$wholename."', `returnDate` = '$todaydate', `patronnote` = '' WHERE `illNUB` = '$id'";
             if (mysqli_query($db, $sqlupdate)) {
-                echo "ILL #".$id." has been marked filled<br>";
-                $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n" ;
-                $headers .= "MIME-Version: 1.0\r\n";
-                $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-                $messagedest = preg_replace('/(?<!\r)\n/', "\r\n", $messagedest);
-                $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-
-                $message = "Your ILL request $id for $title will be filled by $destlib ".
-                                     "<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
-                // Setup php email headers
-                $to=$requesterEMAIL;
-                $subject = "ILL Request Filled ILL# $id  ";
-                // SEND requester an email to let them know the request will be filled
-                $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);
-                $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
-                // mail has been sent to meg at CDLC for development
-                //$to="mwakeman@cdlc.org";
-                mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
+                echo "The requests has been marked return   <br>";
             } else {
-                echo "<div style='color: red;'>Bulk System error, request was not updated</div><br>";
+                echo "<div style='color: red;>Bulk System error, request was not updated</div><br>";
             }//end if checking mysql
         } elseif ($action==5) {
             $sqlupdate = "UPDATE `$cdlcSTAT` SET `emailsent` = '1', `Fill` = '0'    WHERE `illNUB` = '$reqnumb'";
