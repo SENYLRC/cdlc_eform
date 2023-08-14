@@ -179,7 +179,7 @@ foreach ($_POST['libdestination'] as $destination) {
             if ($libilliad=='1') {
                 $sqlseloclc = "SELECT loc,Name,`ill_email`,address2,address3,OCLC,`system` FROM `$cdlcLIB` WHERE `loc`='$reqLOCcode'";
                 //for debugging
-                //echo $sqlseloclc ;
+                //echo $sqlseloclc;
                 $sqlseloclcGETLIST = mysqli_query($db, $sqlseloclc);
                 $sqlseloclcGETLISTCOUNT = '1';
                 $sqlseloclcrow = mysqli_fetch_assoc($sqlseloclcGETLIST);
@@ -210,8 +210,10 @@ foreach ($_POST['libdestination'] as $destination) {
                 //Generate the due date, requrired for ILLiad Loans
                 if (ctype_digit($libilliaddate)) {
                     $date = date("Y-m-d");
-                    $illduedateCAL= date('Y-m-d', strtotime($date. ' + '.$illduedate.' days'));
+                    $illduedateCAL= date('Y-m-d', strtotime($date. ' + '.$libilliaddate.' days'));
                 }
+                //for testing
+                //echo $illduedateCAL."part 2".$date."part 3".$libilliaddate."";
                 // Store data for request in array
                 if (empty($arttile)) {
                     //book request have to be sent as an article or API won't take them
@@ -220,7 +222,6 @@ foreach ($_POST['libdestination'] as $destination) {
                 } else {
                     $jsonstr = array('Username' =>'Lending','LendingString'=> $reqnote, 'ProcessType'=>'Lending','LenderAddressNumber'=>$illiadADDnumb,'LendingLibrary'=>$illiadLIBSymbol,'TransactionStatus'=>'Awaiting Lending Request Processing','LoanTitle'=>$ititle,'LoanAuthor'=>$iauthor,'CallNumber'=>$itemcall,'LoanDate'=>$pubdate,'PhotoArticleTitle'=>$arttile,'PhotoArticleAuthor'=>$artauthor,'PhotoJournalVolume'=>$artvolume,'PhotoJournalIssue'=>$artissue,'PhotoJournalYear'=>$artyear,'PhotoJournalInclusivePages'=>$artpage,'ISSN'=>$issn,'ILLNumber'=>$illnum,'TAddress'=>$libreqname,'TAddress2'=>$libreqaddress2,'TCity'=>$libreqcity,'TState'=>$libreqcity,'TZip'=>$libreqzip,'TEMailAddress'=>$libreqemail );
                 }
-                
         
                 // Enocde the array in to json data
                 $json_enc=json_encode($jsonstr);
