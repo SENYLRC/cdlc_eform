@@ -200,7 +200,6 @@ $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
 <select name="bulkaction" id="bulkaction">
   <option value="1">Cancel Requests</option>
   <option value="3">Received Items</option>
-  <option value="2">Renew Requests</option>
   <option value="4">Return Items</option>
 </select>
 <input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">

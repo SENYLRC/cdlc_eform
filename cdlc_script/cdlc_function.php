@@ -238,6 +238,9 @@ function find_catalog($location)
     case "NYS Dept. of Environmental Conservation";
         return "OPALS";
             break;
+    case "NYS Dept. of Transportation";
+        return "OPALS";
+            break;
     case "Maria College":
         return "OPALS";
             break;
@@ -315,6 +318,10 @@ function find_catalog($location)
 }
 function find_locationinfo($locationalias, $locationname)
 {
+    //before they get trimed
+     //echo $locationalias."<br>";
+    // echo $locationname."<br>";
+
     //make sure we tailing white space
     $locationalias=trim($locationalias);
     $locationname=trim($locationname);
@@ -323,9 +330,14 @@ function find_locationinfo($locationalias, $locationname)
     $db = mysqli_connect($dbhost, $dbuser, $dbpass);
     mysqli_select_db($db, $dbname);
     if ($locationname == "MVLS and SALS combined catalog") {
-        $a2= explode(":", $locationalias);
-        $locationalias=strtok($a2[0], ' ');
-        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
+        $parts = explode(":", $locationalias, 2);
+        if (count($parts) === 2) {
+            $locationalias = trim($parts[0]);
+            $category = trim($parts[1]);
+            //for testing
+            //echo "my location alias is ".$locationalias."<br>";
+                $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
+        }
     }elseif ($locationname == "Upper Hudson Library System") {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '".$locationalias."%'  and `system`='UHLS' ";     
     } else {
@@ -356,6 +368,11 @@ function check_itemtype($destill, $itemtype)
             // allow all items for the NY State Library at their request
             return 1;
         }
+
+        if ($itemtype == "other") {
+            return 1;
+        }
+
 
         if (($itemtype == "book")  ||($itemtype == "book (large print)")) {
             // See if  request is for a book
