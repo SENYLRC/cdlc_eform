@@ -114,6 +114,11 @@ if ($renanswer == '1') {
             $subject = "Linx Renewal Denied: for ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
+            // Check if $destemailarray is a string and convert it to an array if needed
+            if (!is_array($destemailarray)) {
+                // Assuming $destemailarray is a comma-separated string, convert it to an array
+                $destemailarray = explode(',', $destemailarray);
+            }
             $email_to = implode(',', $destemailarray);
             $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
@@ -153,6 +158,11 @@ if ($renanswer == '1') {
             $subject = "Linx Due Date Modify: for ILL# $reqnumb";
             $subject = html_entity_decode($subject, ENT_QUOTES, 'UTF-8');
             // SEND EMAIL to Detestation Library
+            // Check if $destemailarray is a string and convert it to an array if needed
+            if (!is_array($destemailarray)) {
+                // Assuming $destemailarray is a comma-separated string, convert it to an array
+                $destemailarray = explode(',', $destemailarray);
+            }
             $email_to = implode(',', $destemailarray);
             $headers = "From: CDLC Linx <donotreply@cdlc.org>\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
