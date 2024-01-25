@@ -4,39 +4,39 @@
 require '/var/www/cdlc_script/cdlc_function.php';
 
 if (isset($_GET['loc'])) {
-    $loc=$field_loc_location_code;
-    $filter_yes="yes";
-    $filter_no="yes";
-    $filter_noans="yes";
-    $filter_expire="";
-    $filter_cancel="";
-    $filter_recevied="";
-    $filter_return="";
-    $filter_checkin="";
-    $filter_renew="";
-    $filter_days="365";
-    $filter_destination="";
-    $filter_illnum="";
+    $loc = $field_loc_location_code;
+    $filter_yes = "yes";
+    $filter_no = "yes";
+    $filter_noans = "yes";
+    $filter_expire = "";
+    $filter_cancel = "";
+    $filter_recevied = "";
+    $filter_return = "";
+    $filter_checkin = "";
+    $filter_renew = "";
+    $filter_days = "365";
+    $filter_destination = "";
+    $filter_illnum = "";
 } else {
     if (isset($_REQUEST['loc'])) {
-        $loc=$field_loc_location_code ;
+        $loc = $field_loc_location_code;
         if (isset($_REQUEST['filter_illnum'])) {
             $filter_illnum = $_REQUEST['filter_illnum'];
         }
         if ($filter_illnum != "") { #resets the other options for the best possible ILL search
-            $filter_yes="yes";
-            $filter_no="yes";
-            $filter_noans="yes";
-            $filter_expire="yes";
-            $filter_cancel="yes";
-            $filter_recevied="yes";
-            $filter_return="yes";
-            $filter_checkin="yes";
-            $filter_renew="yes";
-            $filter_days="all";
-            $filter_destination="";
+            $filter_yes = "yes";
+            $filter_no = "yes";
+            $filter_noans = "yes";
+            $filter_expire = "yes";
+            $filter_cancel = "yes";
+            $filter_recevied = "yes";
+            $filter_return = "yes";
+            $filter_checkin = "yes";
+            $filter_renew = "yes";
+            $filter_days = "all";
+            $filter_destination = "";
         } else {
-            $loc=$field_loc_location_code ;
+            $loc = $field_loc_location_code;
 
             $filter_yes = (isset($_REQUEST['filter_yes']) ? $_REQUEST['filter_yes'] : "");
             $filter_no = (isset($_REQUEST['filter_no']) ? $_REQUEST['filter_no'] : "");
@@ -52,19 +52,19 @@ if (isset($_GET['loc'])) {
             $filter_illnum = (isset($_REQUEST['filter_illnum']) ? $_REQUEST['filter_illnum'] : "");
         }
     } else {
-        $loc=$field_loc_location_code ;
-        $filter_yes="yes";
-        $filter_no="yes";
-        $filter_noans="yes";
-        $filter_expire="yes";
-        $filter_cancel="yes";
-        $filter_recevied="";
-        $filter_return="";
-        $filter_checkin="";
-        $filter_renew="";
-        $filter_days="365";
-        $filter_destination="";
-        $filter_illnum="";
+        $loc = $field_loc_location_code;
+        $filter_yes = "yes";
+        $filter_no = "yes";
+        $filter_noans = "yes";
+        $filter_expire = "yes";
+        $filter_cancel = "yes";
+        $filter_recevied = "";
+        $filter_return = "";
+        $filter_checkin = "";
+        $filter_renew = "";
+        $filter_days = "365";
+        $filter_destination = "";
+        $filter_illnum = "";
     }
 }
 
@@ -106,8 +106,8 @@ mysqli_select_db($db, $dbname);
 #Sanitize data
 $loc = mysqli_real_escape_string($db, $loc);
 
-$SQLBASE="SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE `Destination` = '$loc'";
-$SQLEND=" ORDER BY `Timestamp`  DESC";
+$SQLBASE = "SELECT *, DATE_FORMAT(`Timestamp`, '%Y/%m/%d') FROM `$cdlcSTAT` WHERE `Destination` = '$loc'";
+$SQLEND = " ORDER BY `Timestamp`  DESC";
 
 if ($filter_days == "all") {
     $SQL_DAYS = "";
@@ -122,12 +122,12 @@ if (strlen($filter_illnum) > 2) {
 }
 
 if (strlen($filter_destination) > 2) {
-    $SQL_Dest_Search="SELECT `loc` FROM `$cdlcLIB`  where `Name` like '%$filter_destination%'";
+    $SQL_Dest_Search = "SELECT `loc` FROM `$cdlcLIB`  where `Name` like '%$filter_destination%'";
     #for testing
     //echo $SQL_Dest_Search."<br>";
-    $PossibleDests=mysqli_query($db, $SQL_Dest_Search);
+    $PossibleDests = mysqli_query($db, $SQL_Dest_Search);
     while ($rowdest = mysqli_fetch_assoc($PossibleDests)) {
-        $destloc=$rowdest["loc"];
+        $destloc = $rowdest["loc"];
         if (strlen($SQL_DESTINATION) > 2) {
             $SQL_DESTINATION = $SQL_DESTINATION . " OR `Requester LOC` = '$destloc'";
         } else {
@@ -139,7 +139,7 @@ if (strlen($filter_destination) > 2) {
     $SQL_DESTINATION = "";
 }
 
-$SQLMIDDLE ='';
+$SQLMIDDLE = '';
 if ($filter_yes == "yes") {
     $SQLMIDDLE = "`fill`= 1 ";
 }
@@ -177,19 +177,22 @@ if ($filter_checkin == "yes") {
     } else {
         $SQLMIDDLE = "`checkinAccount` IS NOT NULL ";
     }
-} if ($filter_recevied == "yes") {
+}
+if ($filter_recevied == "yes") {
     if (strlen($SQLMIDDLE) > 2) {
         $SQLMIDDLE = $SQLMIDDLE . "OR `receiveAccount` IS NOT NULL AND `returnAccount` IS NULL ";
     } else {
         $SQLMIDDLE = "`receiveAccount` IS NOT NULL AND `returnAccount` IS NULL ";
     }
-} if ($filter_return == "yes") {
+}
+if ($filter_return == "yes") {
     if (strlen($SQLMIDDLE) > 2) {
         $SQLMIDDLE = $SQLMIDDLE . "OR `returnAccount` IS NOT NULL AND `checkinAccount` IS NULL ";
     } else {
         $SQLMIDDLE = " `returnAccount` IS NOT NULL AND `checkinAccount` IS NULL ";
     }
-} if ($filter_renew == "yes") {
+}
+if ($filter_renew == "yes") {
     if (strlen($SQLMIDDLE) > 2) {
         $SQLMIDDLE = $SQLMIDDLE . "OR `renewAnswer` >1";
     } else {
@@ -205,130 +208,131 @@ $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
 <hr>
 <h4>Perform Bulk Action</h4>
 <form action=bulkaction method='post'>
-<select name="bulkaction" id="bulkaction">
-  <option value="5">Request Not Filled</option>
-  <option value="6">Check Item Back In</option>
-</select>
-<input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">
-<br><br>
-<?php
-echo "$GETLISTCOUNTwhole results<bR>";
+    <select name="bulkaction" id="bulkaction">
+        <option value="5">Request Not Filled</option>
+        <option value="6">Check Item Back In</option>
+    </select>
+    <input type="submit" name="Submit Bulk Action" value="Submit" onclick="return confirm('Confirm, you want to continue with bulk update.');">
+    <br><br>
+    <?php
+    echo "$GETLISTCOUNTwhole results<bR>";
 
-echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower / Contact</TH><TH>Due Date / Shipping</TH><TH>Timestamp / Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
-$rowtype=1;
-while ($row = mysqli_fetch_assoc($GETLIST)) {
-    $illNUB = $row["illNUB"];
-    $title = $row["Title"];
-    $author = $row["Author"];
-    $itype = $row["Itype"];
-    $reqnote = $row["reqnote"];
-    $lendnote = $row["responderNOTE"];
-    $needby = $row["needbydate"];
-    $dest = $row["Destination"];
-    $reqp = $row["Requester person"];
-    $reql = $row["Requester lib"];
-    $reqemail = $row["requesterEMAIL"];
-    $timestamp = $row["Timestamp"];
-    $shipmethod = $row["shipMethod"];
-    $receiveAccount=$row['receiveAccount'];
-    $returnAccount=$row['returnAccount'];
-    $returnnote=$row['returnNote'];
-    $returnmethod=$row['returnMethod'];
-    $returndate=$row['returnDate'];
-    $receivedate=$row['receiveDate'];
-    $fillNoFillDate=$row['fillNofillDate'];
+    echo "<table><TR><TH>Bulk Action</TH><TH width='5%'>ILL #</TH><TH width='25%'>Title / Author</TH><TH>Type</TH><TH>Need By</TH><TH>Borrower / Contact</TH><TH>Due Date / Shipping</TH><TH>Timestamp / Status</TH><TH>ILLiad ID</TH><TH>Action</TH></TR>";
+    $rowtype = 1;
+    while ($row = mysqli_fetch_assoc($GETLIST)) {
+        $illNUB = $row["illNUB"];
+        $title = $row["Title"];
+        $author = $row["Author"];
+        $itype = $row["Itype"];
+        $reqnote = $row["reqnote"];
+        $lendnote = $row["responderNOTE"];
+        $needby = $row["needbydate"];
+        $dest = $row["Destination"];
+        $reqp = $row["Requester person"];
+        $reql = $row["Requester lib"];
+        $reqemail = $row["requesterEMAIL"];
+        $timestamp = $row["Timestamp"];
+        $shipmethod = $row["shipMethod"];
+        $receiveAccount = $row['receiveAccount'];
+        $returnAccount = $row['returnAccount'];
+        $returnnote = $row['returnNote'];
+        $returnmethod = $row['returnMethod'];
+        $returndate = $row['returnDate'];
+        $receivedate = $row['receiveDate'];
+        $fillNoFillDate = $row['fillNofillDate'];
 
-    $checkinAccount=$row['checkinAccount'];
-    $checkindate=$row['checkinTimeStamp'];
-    $duedate = $row["DueDate"];
-    $illiadnumb= $row["IlliadTransID"];
-    $renewNote= $row["renewNote"];
-    $renewNoteLender = $row["renewNoteLender"];
-    $renewAccountRequester = $row["renewAccountRequester"];
-    $renewAnswer=$row["renewAnswer"];
-    $now = date("Y-m-d");
+        $checkinAccount = $row['checkinAccount'];
+        $checkindate = $row['checkinTimeStamp'];
+        $duedate = $row["DueDate"];
+        $illiadnumb = $row["IlliadTransID"];
+        $renewNote = $row["renewNote"];
+        $renewNoteLender = $row["renewNoteLender"];
+        $renewAccountRequester = $row["renewAccountRequester"];
+        $renewAnswer = $row["renewAnswer"];
+        $now = date("Y-m-d");
 
 
-    $fill = $row["Fill"];
-    $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate,$fillNoFillDate);
-    $shiptxt=shipmtotxt($shipmethod);
-    $returnmethodtxt=shipmtotxt($returnmethod);
+        $fill = $row["Fill"];
+        $statustxt = itemstatus($fill, $receiveAccount, $returnAccount, $returndate, $receivedate, $checkinAccount, $checkindate, $fillNoFillDate);
+        $shiptxt = shipmtotxt($shipmethod);
+        $returnmethodtxt = shipmtotxt($returnmethod);
 
-    $dest=trim($dest);
-    #Get the Destination Name
-    if (strlen($dest)>2) {
-        $GETLISTSQLDEST="SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
-        $resultdest=mysqli_query($db, $GETLISTSQLDEST);
-        while ($rowdest = mysqli_fetch_assoc($resultdest)) {
-            $dest=$rowdest["Name"];
-            $destemail=$rowdest["ill_email"];
+        $dest = trim($dest);
+        #Get the Destination Name
+        if (strlen($dest) > 2) {
+            $GETLISTSQLDEST = "SELECT`Name`,`ill_email` FROM `$cdlcLIB` where loc like '$dest'  limit 1";
+            $resultdest = mysqli_query($db, $GETLISTSQLDEST);
+            while ($rowdest = mysqli_fetch_assoc($resultdest)) {
+                $dest = $rowdest["Name"];
+                $destemail = $rowdest["ill_email"];
+            }
+        } else {
+            $dest = "Error No Library Selected";
         }
-    } else {
-        $dest="Error No Library Selected";
-    }
-    if ($rowtype & 1) {
-        $rowclass="odd";
-    } else {
-        $rowclass="even";
-    }
-    $displaynotes=build_notes($reqnote, $lendnote);
-    $dispalyreturnnotes=build_return_notes($returnnote, $returnmethodtxt);
-    $displayrenewnotes= build_renewnotes($renewNote, $renewNoteLender);
-    $timestamp =     date("Y-m-d", strtotime($timestamp));
-    $daysdiff = round(abs(strtotime($now)-strtotime($timestamp))/86400);
-
-    echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
-    if (($fill == 3) || (strlen($receiveAccount)<1)&&($daysdiff < '30')&&($fill != 0)) {
-        #Only show cancel button if request has not been answered and not received.
-        echo "<TD><a href='/respond?num=$illNUB&a=1'>Yes, Will Fill</a><hr><a href='/respond?num=$illNUB&a=0'>No, Can't Fill</a></TD></TR> ";
-    } elseif ((strlen($returnAccount)<2)&&($fill== 1)&&($renewAnswer==0)&&(strlen($renewAccountRequester)>1)&&(strlen($checkinAccount)<2)) {
-        #Only show renew if someon requested a renwall
-        echo"<td><a href ='/renew?num=".$illNUB."&a=1'>Approve Renewal</a><br><br><a href ='/renew?num=".$illNUB."&a=2'>Deny Renewal</a><br> ";
-        echo "</td></tr>";
-    } elseif (($daysdiff > '14')&&(strlen($checkinAccount)<2)&&($fill != 4)&&($fill != 6)) {
-        echo"<td><a  href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
-        echo "</td></tr>";
-    } elseif ((strlen($returnAccount)<2)&&(strlen($renewAccountRequester)<1)&&(strlen($receiveAccount)>1)&&(strlen($checkinAccount)<2)) {
-        #Give the option for lender to change due date as long as it has been recived and not returned or renewed
-        echo "<td><a href ='/renew?num=".$illNUB."&a=4'>Edit Due Date</a>";
+        if ($rowtype & 1) {
+            $rowclass = "odd";
+        } else {
+            $rowclass = "even";
+        }
+        $displaynotes = build_notes($reqnote, $lendnote);
+        $dispalyreturnnotes = build_return_notes($returnnote, $returnmethodtxt);
+        $displayrenewnotes = build_renewnotes($renewNote, $renewNoteLender);
         $timestamp =     date("Y-m-d", strtotime($timestamp));
-        $daysdiff = round(abs(strtotime($now)-strtotime($timestamp))/86400);
-        if ($daysdiff > '14') {
-            echo"<br><br><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
+        $daysdiff = round(abs(strtotime($now) - strtotime($timestamp)) / 86400);
+
+        echo "<TR class='$rowclass'><td><input type='checkbox' name='check_list[]'' value=$illNUB></td><TD>$illNUB</TD><TD>$title</br><i>$author</i></TD><TD>$itype</TD><TD>$needby</TD><TD>$reqp</br><a href='mailto:$reqemail?Subject=NOTE Request ILL# $illNUB' target='_blank'>$reql</a></TD><TD>$duedate<br>$shiptxt</TD><TD>$timestamp<br>$statustxt</TD><TD>$illiadnumb</TD>";
+        if (($fill == 3) || (strlen($receiveAccount) < 1) && ($daysdiff < '30') && ($fill != 0) && ($fill != 6)) {
+            #Only show cancel button if request has not been answered and not received.
+            echo "<TD><a href='/respond?num=$illNUB&a=1'>Yes, Will Fill</a><hr><a href='/respond?num=$illNUB&a=0'>No, Can't Fill</a></TD></TR> ";
+        } elseif ((strlen($returnAccount) < 2) && ($fill == 1) && ($renewAnswer == 0) && (strlen($renewAccountRequester) > 1) && (strlen($checkinAccount) < 2)) {
+            #Only show renew if someon requested a renwall
+            echo "<td><a href ='/renew?num=" . $illNUB . "&a=1'>Approve Renewal</a><br><br><a href ='/renew?num=" . $illNUB . "&a=2'>Deny Renewal</a><br> ";
+            echo "</td></tr>";
+        } elseif (($daysdiff > '14') && (strlen($checkinAccount) < 2) && ($fill != 4) && ($fill != 6)) {
+            echo "<td><a  href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
+            echo "</td></tr>";
+        } elseif ((strlen($returnAccount) < 2) && (strlen($renewAccountRequester) < 1) && (strlen($receiveAccount) > 1) && (strlen($checkinAccount) < 2)) {
+            #Give the option for lender to change due date as long as it has been recived and not returned or renewed
+            echo "<td><a href ='/renew?num=" . $illNUB . "&a=4'>Edit Due Date</a>";
+            $timestamp =     date("Y-m-d", strtotime($timestamp));
+            $daysdiff = round(abs(strtotime($now) - strtotime($timestamp)) / 86400);
+            if ($daysdiff > '14') {
+                echo "<br><br><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a> ";
+            }
+            echo "</td></tr>";
+        } elseif ((strlen($checkinAccount) < 2) && (strlen($receiveAccount) > 1)) {
+            #Give the option for lender to check the item back in
+            echo "<td><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a></td></tr> ";
+        } else {
+            echo "<td>&nbsp</td>";
         }
-        echo "</td></tr>";
-    } elseif ((strlen($checkinAccount)<2)&&(strlen($receiveAccount)>1)) {
-        #Give the option for lender to check the item back in
-        echo"<td><a href ='/status?num=$illNUB&a=3'>Check Item Back In</a></td></tr> ";
-    } else {
-        echo "<td>&nbsp</td>";
-    }
 
 
-    if ((strlen($reqnote) > 2) || (strlen($lendnote) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR>";
-    }
-    if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$dispalyreturnnotes</TD></TR>";
-    }
-    if ((strlen($renewNote) > 2) || (strlen($renewNoteLender) > 2)) {
-        echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displayrenewnotes</TD></TR>";
-    }
+        if ((strlen($reqnote) > 2) || (strlen($lendnote) > 2)) {
+            echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR>";
+        }
+        if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
+            echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$dispalyreturnnotes</TD></TR>";
+        }
+        if ((strlen($renewNote) > 2) || (strlen($renewNoteLender) > 2)) {
+            echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displayrenewnotes</TD></TR>";
+        }
 
 
-    $rowtype = $rowtype + 1;
-}
-echo "</table>";
-?>
-
-</from>
-<?php //end for to process bulk action?>
-<script type="text/javascript">
-    var elems = document.getElementsByClassName('confirmation');
-    var confirmIt = function (e) {
-        if (!confirm('Are you sure?')) e.preventDefault();
-    };
-    for (var i = 0, l = elems.length; i < l; i++) {
-        elems[i].addEventListener('click', confirmIt, false);
+        $rowtype = $rowtype + 1;
     }
-</script>
+    echo "</table>";
+    ?>
+
+    </from>
+    <?php //end for to process bulk action
+    ?>
+    <script type="text/javascript">
+        var elems = document.getElementsByClassName('confirmation');
+        var confirmIt = function(e) {
+            if (!confirm('Are you sure?')) e.preventDefault();
+        };
+        for (var i = 0, l = elems.length; i < l; i++) {
+            elems[i].addEventListener('click', confirmIt, false);
+        }
+    </script>
