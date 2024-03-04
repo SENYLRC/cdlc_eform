@@ -1,35 +1,34 @@
 <script>
+    (function($) {
 
-(function($) {
-
-Drupal.behaviors.DisableInputEnter = {
-  attach: function(context, settings) {
-    $('input', context).once('disable-input-enter', function() {
-      $(this).keypress(function(e) {
-        if (e.keyCode == 13) {
-          e.preventDefault();
+        Drupal.behaviors.DisableInputEnter = {
+            attach: function(context, settings) {
+                $('input', context).once('disable-input-enter', function() {
+                    $(this).keypress(function(e) {
+                        if (e.keyCode == 13) {
+                            e.preventDefault();
+                        }
+                    });
+                });
+            }
         }
-      });
-    });
-  }
-}
 
 
 
-})(jQuery);
+    })(jQuery);
 </script>
 <?php
 require '/var/www/cdlc_script/cdlc_function.php';
 
 
 // Get the IDs needed for curl command
-$jession= $_GET['jsessionid'];
-$windowid= $_GET['windowid'];
-$idc= $_GET['id'];
+$jession = $_GET['jsessionid'];
+$windowid = $_GET['windowid'];
+$idc = $_GET['id'];
 // Define the server to make the CURL request to
-$reqserverurl='https://cdlc.indexdata.com/service-proxy/?command=record\\&windowid=';
+$reqserverurl = 'https://cdlc.indexdata.com/service-proxy/?command=record\\&windowid=';
 // Define the CURL command
-$cmd= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc);
+$cmd = "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=" . urlencode($idc);
 // put in curl command in as html comment for development
 echo "<!-- my cmd is  $cmd \n-->";
 // Run the CURL to get XML data
@@ -39,7 +38,7 @@ $output = shell_exec($cmd);
 //print_r($output);
 //echo "\n-->\n\n";
 
-$backupemail =$field_backup_email;
+$backupemail = $field_backup_email;
 //check if the field_backup_email is a valid Email
 if (filter_var($backupemail, FILTER_VALIDATE_EMAIL)) {
     //valid address do nothing;
@@ -55,7 +54,7 @@ if (isset($backupemail)) {
         //email and backup are the same, do nothing
     } else {
         //email and backup are different add backup to the request
-        $email =$backupemail.','.$email;
+        $email = $backupemail . ',' . $email;
     }
 }
 
@@ -63,21 +62,21 @@ if (isset($backupemail)) {
 echo "<p>Please review the details of your request and then select a library to send your request to.</p>";
 echo "<form action='sent' method='post'>";
 echo "<h3>Requester Details</h3>";
-echo "<b>Name:</b>  " .$field_first_name. " ".$field_last_name. "<br>";
-echo "<b>E-mail:</b> ".$email. "<br>";
-echo  "<b>Institution:</b>  ".$field_your_institution ."<br>";
-echo  "<b>Work Phone:</b> ".$field_work_phone ."<br>";
-echo  "<b>Mailing Address:</b> <br> ".$field_street_address."<br> ".$field_city_state_zip."<br><br>";
-echo "<input type='hidden' name='fname' value= ' ".$field_first_name ." '>";
-echo "<input type='hidden' name='lname' value= ' ".$field_last_name ." '>";
-echo "<input type='hidden' name='email' value= ' ".$email ."'>";
-$field_your_institution_clean=htmlspecialchars($field_your_institution, ENT_QUOTES);
-echo "<input type='hidden' name='inst' value= ' ".$field_your_institution_clean." '>";
-echo "<input type='hidden' name='address' value= ' ".$field_street_address ." '>";
-echo "<input type='hidden' name='address2' value= ' ".$field_street_address2 ." '>";
-echo "<input type='hidden' name='caddress' value= ' ".$field_city_state_zip ." '>";
-echo "<input type='hidden' name='wphone' value= ' ".$field_work_phone ." '>";
-echo "<input type='hidden' name='reqLOCcode' value= ' ".$field_loc_location_code ." '>";
+echo "<b>Name:</b>  " . $field_first_name . " " . $field_last_name . "<br>";
+echo "<b>E-mail:</b> " . $email . "<br>";
+echo  "<b>Institution:</b>  " . $field_your_institution . "<br>";
+echo  "<b>Work Phone:</b> " . $field_work_phone . "<br>";
+echo  "<b>Mailing Address:</b> <br> " . $field_street_address . "<br> " . $field_city_state_zip . "<br><br>";
+echo "<input type='hidden' name='fname' value= ' " . $field_first_name . " '>";
+echo "<input type='hidden' name='lname' value= ' " . $field_last_name . " '>";
+echo "<input type='hidden' name='email' value= ' " . $email . "'>";
+$field_your_institution_clean = htmlspecialchars($field_your_institution, ENT_QUOTES);
+echo "<input type='hidden' name='inst' value= ' " . $field_your_institution_clean . " '>";
+echo "<input type='hidden' name='address' value= ' " . $field_street_address . " '>";
+echo "<input type='hidden' name='address2' value= ' " . $field_street_address2 . " '>";
+echo "<input type='hidden' name='caddress' value= ' " . $field_city_state_zip . " '>";
+echo "<input type='hidden' name='wphone' value= ' " . $field_work_phone . " '>";
+echo "<input type='hidden' name='reqLOCcode' value= ' " . $field_loc_location_code . " '>";
 echo "<h3>Request Details</h3>";
 echo "<b>Need by date</b> <input type='text' size='100' name='needbydate'><br><br>";
 echo "<b>Note</b> <input type='text' size='100' name='reqnote'><br><br>";
@@ -102,40 +101,40 @@ echo "<option value='ccg'>CCG</option></select></div><br>";
 
 // Now we process the xml for Indexdata
 $records = new SimpleXMLElement($output); // for production
-$requestedtitle=$records->{'md-title-complete'};
-$requestedtitle2=$records->{'md-title-number-section'};
-$requestedauthor=$records->{'md-author'};
-$requested=$records->{'md-title'};
-$itemtype=$records->{'md-medium'};
+$requestedtitle = $records->{'md-title-complete'};
+$requestedtitle2 = $records->{'md-title-number-section'};
+$requestedauthor = $records->{'md-author'};
+$requested = $records->{'md-title'};
+$itemtype = $records->{'md-medium'};
 // Remove any white space stored in item type
-$itemtype=trim($itemtype);
-$pubdate=$records->{'md-date'};
-$isbn=$records->{'md-isbn'};
-$issn=$records->location->{'md-issn'};
+$itemtype = trim($itemtype);
+$pubdate = $records->{'md-date'};
+$isbn = $records->{'md-isbn'};
+$issn = $records->location->{'md-issn'};
 
-echo "<b>Requested Title: </b>" . $requestedtitle  ."  ". $requestedtitle2 . "</b><br>";
-echo "<b>Requested Author: </b>" . $requestedauthor ."</b><br>";
-echo "<b>Item Type:</b>  " . $itemtype."<br>";
-echo "<b>Publication Date: </b>" . $pubdate."<br>";
-if (strlen($issn)>0) {
-    echo "<b>ISSN: </b>" . $issn."<br>";
+echo "<b>Requested Title: </b>" . $requestedtitle  . "  " . $requestedtitle2 . "</b><br>";
+echo "<b>Requested Author: </b>" . $requestedauthor . "</b><br>";
+echo "<b>Item Type:</b>  " . $itemtype . "<br>";
+echo "<b>Publication Date: </b>" . $pubdate . "<br>";
+if (strlen($issn) > 0) {
+    echo "<b>ISSN: </b>" . $issn . "<br>";
 }
-if (strlen($isbn)>0) {
-    echo "<b>ISBN: </b>" . $isbn."<br>";
+if (strlen($isbn) > 0) {
+    echo "<b>ISBN: </b>" . $isbn . "<br>";
 }
 echo "<br>";
 
 // Covert single quotes to code so they don't get cut off
-$requestedtitle=htmlspecialchars($requestedtitle, ENT_QUOTES);
-$requestedtitle2=htmlspecialchars($requestedtitle2, ENT_QUOTES);
-$requestedauthor =htmlspecialchars($requestedauthor, ENT_QUOTES);
+$requestedtitle = htmlspecialchars($requestedtitle, ENT_QUOTES);
+$requestedtitle2 = htmlspecialchars($requestedtitle2, ENT_QUOTES);
+$requestedauthor = htmlspecialchars($requestedauthor, ENT_QUOTES);
 // echo "<input type='hidden' name='bibtitle' value= ' ".$requestedtitle ." : ". $requestedtitle2 ." '>";
-echo "<input type='hidden' name='bibtitle' value= ' ".$requestedtitle ." ". $requestedtitle2 ." '>";
-echo "<input type='hidden' name='bibauthor' value= ' ".$requestedauthor ." '>";
-echo "<input type='hidden' name='bibtype' value= ' ".$itemtype ." '>";
-echo "<input type='hidden' name='pubdate' value= ' ".$pubdate ." '>";
-echo "<input type='hidden' name='isbn' value= ' ".$isbn ." '>";
-echo "<input type='hidden' name='issn' value= ' ".$issn ." '>";
+echo "<input type='hidden' name='bibtitle' value= ' " . $requestedtitle . " " . $requestedtitle2 . " '>";
+echo "<input type='hidden' name='bibauthor' value= ' " . $requestedauthor . " '>";
+echo "<input type='hidden' name='bibtype' value= ' " . $itemtype . " '>";
+echo "<input type='hidden' name='pubdate' value= ' " . $pubdate . " '>";
+echo "<input type='hidden' name='isbn' value= ' " . $isbn . " '>";
+echo "<input type='hidden' name='issn' value= ' " . $issn . " '>";
 
 echo "<p><b>Select the library you would like to request from.</b><br>";
 echo "Please limit multiple copy requests to classroom sets or book clubs.</p>";
@@ -145,7 +144,7 @@ echo "a single copy <input type='radio' name='singlemulti' id='multiCheck' oncli
 
 
 
-$loccount='0'; // Counts available locations
+$loccount = '0'; // Counts available locations
 $deadlibraries = array(); // Initializes the array which keeps the unavailable libraries.
 foreach ($records->location as $location) { // Locations loop start
     $catalogtype = find_catalog($location['name']);
@@ -154,53 +153,59 @@ foreach ($records->location as $location) { // Locations loop start
     //echo "zack my location is ".$location['name']."<br>";
     //echo "zack my catalog type is ".$catalogtype."<br>";
     foreach ($location->holdings->holding as $holding) { // generic holding loop start
-        $itemavail=$holding->localAvailability;
+        $itemavail = $holding->localAvailability;
         // if ($catalogtype == "OPALS") {
         // $itemavail=$itemavail>0 ? $itemavail="-" : $itemavail="0";
         // echo "the OPALS itemavail is ".$itemavail."<br>";
         // } #OPALS might return (-1 through +X
-        $itemavail=normalize_availability($itemavail); // 0=No, 1=Yes
+        $itemavail = normalize_availability($itemavail); // 0=No, 1=Yes
 
-        $itemavailtext=set_availability($itemavail);
-        $itemcallnum=$holding->callNumber;
-        $itemcallnum=htmlspecialchars($itemcallnum, ENT_QUOTES); // Sanitizes callnumbers with special characters in them
-        $itemlocation=$holding->localLocation; // Gets the alias
+        $itemavailtext = set_availability($itemavail);
+        $itemcallnum = $holding->callNumber;
+        $itemcallnum = htmlspecialchars($itemcallnum, ENT_QUOTES); // Sanitizes callnumbers with special characters in them
+        $itemlocation = $holding->localLocation; // Gets the alias
         if ($catalogtype == "Worldcat" || $catalogtype == 'cdlc' || $catalogtype == "Millennium") {
-            $itemlocation=$location['name'];
+            $itemlocation = $location['name'];
         }
-        if (($catalogtype == "Alma") ||  ($catalogtype == "Voyager")||($catalogtype == "Folio")|| ($catalogtype == "Symphony")|| ($catalogtype == "SirsiDynix")) {
-            $itemlocation=$location['name'];
+        if (($catalogtype == "Alma") ||  ($catalogtype == "Voyager") || ($catalogtype == "Folio") || ($catalogtype == "Symphony") || ($catalogtype == "SirsiDynix")) {
+            $itemlocation = $location['name'];
         }
         if (($catalogtype == "OPALS") || ($catalogtype == "Polaris")) {
-            $itemlocation=  $holding->localLocation;
+            $itemlocation =  $holding->localLocation;
         }
         if ($catalogtype == "InnovativeUHLS") {
-            $itemlocation=$holding->localLocation; // Gets the alias
+            $itemlocation = $holding->localLocation; // Gets the alias
+            //echo "zack my uhls location is " . $itemlocation . "<br>";
+
             if (str_contains($itemlocation, 'Albany')) {
                 $itemlocation = substr($itemlocation, 0, strrpos($itemlocation, '-'));
-            }else{
+            } elseif ($itemlocation == 'UHLS') {
+                //this is for UHLS don't have to do anything
+            } else {
                 $itemlocation = substr($itemlocation, 0, strpos($itemlocation, "-"));
             }
-        }
-        $locationinfo=find_locationinfo($itemlocation, $location['name']);
-        $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
-        $destill=$locationinfo[0]; // Destination ILL Code
-        $destpart=$locationinfo[1]; // 0=No, 1=Yes
 
-        $destemail=$locationinfo[2]; // Destination emails
-        $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
-        $destlibsystem=$locationinfo[4]; // Destination library system
-        $destlibname=$locationinfo[5]; // Destination library name
-        $destAlias=$locationinfo[6]; // Destination Alias
-        $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+            //echo "zack my uhls location is " . $itemlocation . "<br>";
+        }
+        $locationinfo = find_locationinfo($itemlocation, $location['name']);
+        $itemlocation = htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+        $destill = $locationinfo[0]; // Destination ILL Code
+        $destpart = $locationinfo[1]; // 0=No, 1=Yes
+
+        $destemail = $locationinfo[2]; // Destination emails
+        $destsuspend = $locationinfo[3]; // 0=No, 1=Yes
+        $destlibsystem = $locationinfo[4]; // Destination library system
+        $destlibname = $locationinfo[5]; // Destination library name
+        $destAlias = $locationinfo[6]; // Destination Alias
+        $destlibname = htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
         //only check item type if they are active in the ILL program
-        if ($destpart==1) {
-            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
+        if ($destpart == 1) {
+            $desttypeloan = check_itemtype($destill, $itemtype); // 0=No, 1=Yes
         }
         if (($catalogtype == "Innovative") && ($itemlocation == "ODY Folio")) {
-            $desttypeloan=1;
+            $desttypeloan = 1;
         }
-        $itemlocallocation=$itemlocation; // Needed in sent.php
+        $itemlocallocation = $itemlocation; // Needed in sent.php
         echo "<!-- \n";
         echo "catalogtype: $catalogtype \n";
         echo "itemavail: $itemavail (1) \n";
@@ -216,7 +221,7 @@ foreach ($records->location as $location) { // Locations loop start
         echo "desttypeloan: $desttypeloan (1)\n";
         echo "failmessage: $failmessage\n";
         echo "--> \n\n";
-        $destfail=0; // 0=No, 1=Yes
+        $destfail = 0; // 0=No, 1=Yes
         if ($itemavail == 0) {
             $destfail = 1;
             $failmessage = "Material unavailable, see source ILS/LMS for details";
@@ -229,7 +234,7 @@ foreach ($records->location as $location) { // Locations loop start
             $destfail = 1;
             $failmessage = "Library has no ILL email configured";
         }
-        if (($destsuspend == 1)&&($destill!='ntr')) {
+        if (($destsuspend == 1) && ($destill != 'ntr')) {
             $destfail = 2;
             $failmessage = "Library not loaning / Linx ILL Suspend";
         }
@@ -248,13 +253,13 @@ foreach ($records->location as $location) { // Locations loop start
             $failmessage = "No alias match in Linx directory";
         }
         if ($destfail == 0) {
-            $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
-            $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
-            $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
+            $itemcallnum = preg_replace('/[:]/', ' ', $itemcallnum);
+            $itemlocation = preg_replace('/[:]/', ' ', $itemlocation);
+            $itemlocallocation = preg_replace('/[:]/', ' ', $itemlocallocation);
             //note in html.html.twig I set the body tag to   <body onload="multiRequest()"; {{ attributes }}>
-            echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-            echo"<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-            $loccount=$loccount+1;
+            echo "<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+            echo "<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+            $loccount = $loccount + 1;
         } elseif ($destfail == 1) {
             //only showing error code 2
         } else {
@@ -263,32 +268,32 @@ foreach ($records->location as $location) { // Locations loop start
         }
     } // Generic holding loop end
     //do a loop for Albany Law School
-    if ($location['name']== 'Albany Law School') {
-        $itemtype=$records->{'md-medium'};
+    if ($location['name'] == 'Albany Law School') {
+        $itemtype = $records->{'md-medium'};
 
         // Pull the checksum for the location
-        $seslcchecksum=$location['checksum'];
+        $seslcchecksum = $location['checksum'];
         // redo the curl statement to includes the checksum
-        $cmdseslc= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc)."\&checksum=$seslcchecksum\&offset=1";
+        $cmdseslc = "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=" . urlencode($idc) . "\&checksum=$seslcchecksum\&offset=1";
         $outputseslc = shell_exec($cmdseslc);
         // This echo will show the CURL statment as an HTML comment
         // echo "\n<br><!-- my cmd albay law cmd is $cmdseslc \n-->";
-        $recordssSESLC= new SimpleXMLElement($outputseslc); // for production
-        $itemcallnum=$recordssSESLC->d050->sa;
+        $recordssSESLC = new SimpleXMLElement($outputseslc); // for production
+        $itemcallnum = $recordssSESLC->d050->sa;
         // Go through the holding records
         foreach ($recordssSESLC->d994 as $d994) {
-            $itemlocation=$d994->sb;
-            $locationinfo=find_locationinfo($itemlocation, $location['name']);
-            $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
-            $destill=$locationinfo[0]; // Destination ILL Code
-            $destpart=$locationinfo[1]; // 0=No, 1=Yes
-            $destemail=$locationinfo[2]; // Destination emails
-            $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
-            $destlibsystem=$locationinfo[4]; // Destination library system
-            $destlibname=$locationinfo[5]; // Destination library name
-            $destAlias=$locationinfo[6]; // Destination Alias
-            $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
-            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
+            $itemlocation = $d994->sb;
+            $locationinfo = find_locationinfo($itemlocation, $location['name']);
+            $itemlocation = htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+            $destill = $locationinfo[0]; // Destination ILL Code
+            $destpart = $locationinfo[1]; // 0=No, 1=Yes
+            $destemail = $locationinfo[2]; // Destination emails
+            $destsuspend = $locationinfo[3]; // 0=No, 1=Yes
+            $destlibsystem = $locationinfo[4]; // Destination library system
+            $destlibname = $locationinfo[5]; // Destination library name
+            $destAlias = $locationinfo[6]; // Destination Alias
+            $destlibname = htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+            $desttypeloan = check_itemtype($destill, $itemtype); // 0=No, 1=Yes
 
             echo "<!-- \n";
             echo "catalogtype: $catalogtype \n";
@@ -305,7 +310,7 @@ foreach ($records->location as $location) { // Locations loop start
             echo "desttypeloan: $desttypeloan (1)\n";
             echo "failmessage: $failmessage\n";
             echo "--> \n\n";
-            $destfail=0; // 0=No, 1=Yes
+            $destfail = 0; // 0=No, 1=Yes
             if ($itemavail == 1) {
                 $destfail = 1;
                 $failmessage = "Material unavailable, see source ILS/LMS for details";
@@ -337,12 +342,12 @@ foreach ($records->location as $location) { // Locations loop start
             echo "destfail: $destfail\n";
             echo "--> \n\n";
             if ($destfail == 0) {
-                $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
-                $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
-                $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
-                echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-                echo"<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-                $loccount=$loccount+1;
+                $itemcallnum = preg_replace('/[:]/', ' ', $itemcallnum);
+                $itemlocation = preg_replace('/[:]/', ' ', $itemlocation);
+                $itemlocallocation = preg_replace('/[:]/', ' ', $itemlocallocation);
+                echo "<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                echo "<div class='singlereq'><input type='radio' class='librarycheck' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                $loccount = $loccount + 1;
             } elseif ($destfail == 1) {
                 //not showing fail code 1 to end user
                 $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
@@ -351,41 +356,41 @@ foreach ($records->location as $location) { // Locations loop start
                 $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
                 echo "<!-- Holding location failed checks. --> \n";
             }
-        }//end foreach loop for albany law school 994
-    }//end if check for albany law school
+        } //end foreach loop for albany law school 994
+    } //end if check for albany law school
 
 
     //want to add Koha locations to selection
-    if (($catalogtype == "Koha")|| ($catalogtype == "Alexandria")) {
+    if (($catalogtype == "Koha") || ($catalogtype == "Alexandria")) {
         // Pull the checksum for the location
-        $seslcchecksum=$location['checksum'];
+        $seslcchecksum = $location['checksum'];
         // redo the curl statement to includes the checksum
-        $cmdseslc= "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=". urlencode($idc)."\&checksum=$seslcchecksum\&offset=1";
+        $cmdseslc = "curl -b JSESSIONID=$jession $reqserverurl$windowid\\&id=" . urlencode($idc) . "\&checksum=$seslcchecksum\&offset=1";
         $outputseslc = shell_exec($cmdseslc);
         // This echo will show the CURL statment as an HTML comment
         // echo "\n<br><!-- my cmd koha is $cmdseslc \n-->";
-        $recordssSESLC= new SimpleXMLElement($outputseslc); // for production
+        $recordssSESLC = new SimpleXMLElement($outputseslc); // for production
         // Go through the holding records
         foreach ($recordssSESLC->d952 as $d952) {
             //$itemavai=$d952['i1'];
-            $itemlocation=$d952->sb;
-            $itemcallnum=$d952->so;
-            $itemavail=$d952->s7;
+            $itemlocation = $d952->sb;
+            $itemcallnum = $d952->so;
+            $itemavail = $d952->s7;
             // Remove colon from call numbers
-            $seslccall= str_replace(':', '.', $seslccall);
-            $itemavailtext=set_koha_availability($itemavail);
-            $locationinfo=find_locationinfo($itemlocation, $location['name']);
-            $itemlocation=htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
-            $destill=$locationinfo[0]; // Destination ILL Code
-            $destpart=$locationinfo[1]; // 0=No, 1=Yes
-            $destemail=$locationinfo[2]; // Destination emails
-            $destsuspend=$locationinfo[3]; // 0=No, 1=Yes
-            $destlibsystem=$locationinfo[4]; // Destination library system
-            $destlibname=$locationinfo[5]; // Destination library name
-            $destAlias=$locationinfo[6]; // Destination Alias
-            $destlibname=htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
-            $desttypeloan=check_itemtype($destill, $itemtype); // 0=No, 1=Yes
-            $itemlocallocation=$itemlocation; // Needed in sent.php
+            $seslccall = str_replace(':', '.', $seslccall);
+            $itemavailtext = set_koha_availability($itemavail);
+            $locationinfo = find_locationinfo($itemlocation, $location['name']);
+            $itemlocation = htmlspecialchars($itemlocation, ENT_QUOTES); // Sanitizes locations with special characters in them
+            $destill = $locationinfo[0]; // Destination ILL Code
+            $destpart = $locationinfo[1]; // 0=No, 1=Yes
+            $destemail = $locationinfo[2]; // Destination emails
+            $destsuspend = $locationinfo[3]; // 0=No, 1=Yes
+            $destlibsystem = $locationinfo[4]; // Destination library system
+            $destlibname = $locationinfo[5]; // Destination library name
+            $destAlias = $locationinfo[6]; // Destination Alias
+            $destlibname = htmlspecialchars($destlibname, ENT_QUOTES); // Sanitizes library names with special characters in them
+            $desttypeloan = check_itemtype($destill, $itemtype); // 0=No, 1=Yes
+            $itemlocallocation = $itemlocation; // Needed in sent.php
             echo "<!-- \n";
             echo "catalogtype: $catalogtype \n";
             echo "itemavail: $itemavail (1) \n";
@@ -401,7 +406,7 @@ foreach ($records->location as $location) { // Locations loop start
             echo "desttypeloan: $desttypeloan (1)\n";
             echo "failmessage: $failmessage\n";
             echo "--> \n\n";
-            $destfail=0; // 0=No, 1=Yes
+            $destfail = 0; // 0=No, 1=Yes
             if ($destpart == 0) {
                 $destfail = 1;
                 $failmessage = "Library not particpating in CaDiLaC";
@@ -436,12 +441,12 @@ foreach ($records->location as $location) { // Locations loop start
             echo "destfail: $destfail\n";
             echo "--> \n\n";
             if ($destfail == 0) {
-                $itemcallnum= preg_replace('/[:]/', ' ', $itemcallnum);
-                $itemlocation= preg_replace('/[:]/', ' ', $itemlocation);
-                $itemlocallocation= preg_replace('/[:]/', ' ', $itemlocallocation);
-                echo"<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-                echo"<div class='singlereq'><input type='radio' class='librarycheck[]' name='libdestination[]' value='". $itemlocation .":".$destlibname.":".$destlibsystem.":".$itemavailtext.":".$itemcallnum.":".$itemlocallocation.":".$destemail.":".$destill."'><strong>".$destlibname."</strong> (".$destlibsystem."), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
-                $loccount=$loccount+1;
+                $itemcallnum = preg_replace('/[:]/', ' ', $itemcallnum);
+                $itemlocation = preg_replace('/[:]/', ' ', $itemlocation);
+                $itemlocallocation = preg_replace('/[:]/', ' ', $itemlocallocation);
+                echo "<div class='multiplereq'><input type='checkbox' class='librarycheck' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                echo "<div class='singlereq'><input type='radio' class='librarycheck[]' name='libdestination[]' value='" . $itemlocation . ":" . $destlibname . ":" . $destlibsystem . ":" . $itemavailtext . ":" . $itemcallnum . ":" . $itemlocallocation . ":" . $destemail . ":" . $destill . "'><strong>" . $destlibname . "</strong> (" . $destlibsystem . "), Availability: $itemavailtext, Call Number:$itemcallnum  </br></div>";
+                $loccount = $loccount + 1;
             } elseif ($destfail == 1) {
                 //not showing fail code 1 to end user
                 $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
@@ -450,8 +455,8 @@ foreach ($records->location as $location) { // Locations loop start
                 $deadlibraries[] = "<div class='grayout'>$destlibname ($destlibsystem), $failmessage</div>";
                 echo "<!-- Holding location failed checks. --> \n";
             }
-        }//end foreach $recordssSESLC
-    }//end if cat type koha
+        } //end foreach $recordssSESLC
+    } //end if cat type koha
 } // End generic handler
 echo "</select>";
 foreach ($deadlibraries as $line) {
