@@ -9,7 +9,7 @@ mysqli_select_db($db,$dbname);
 
 
 
-$sqlselect= "SELECT * FROM `CDLC-EFORM-STATS` WHERE `index` = 10905";
+$sqlselect= "SELECT * FROM `CDLC-EFORM-STATS` WHERE `index` = 15651";
 $retval = mysqli_query($db,$sqlselect);
 $GETLISTCOUNT = mysqli_num_rows ($retval);
 
@@ -96,8 +96,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
 						$fname $lname<br>
 						$email<br>
 						<br>
-						Will you fill this request?  <a href='http://linx.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://linx.cdlc.org/re
-spond?num=$illnum&a=0' >No</a>
+						Will you fill this request?  <a href='http://linx.cdlc.org/respond?num=$illnum&a=1' >Yes</a> &nbsp&nbsp&nbsp&nbsp                  <a href='http://linx.cdlc.org/respond?num=$illnum&a=0' >No</a>
 						<br>";
 
 						#######Set email subject for request

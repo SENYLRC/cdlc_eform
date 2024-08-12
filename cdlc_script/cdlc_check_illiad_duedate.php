@@ -69,8 +69,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $to=$requesterEMAIL;
             // $to = "spalding@senylrc.org";
             $message="eFrom Request ".$reqnumb." ".$reqnumbRequest." from ".$destlib." has a new due date which is ".$dueDate."<br>";
-            $message.="This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the othe
-r library in this ILL transaction";
+            $message.="This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in this ILL transaction";
             $subject = "Request ".$reqnumb." has a new due date  ";
             #####SEND requester an email to let them know the request will be filled
             $message = preg_replace('/(?<!\r)\n/', "\r\n", $message);

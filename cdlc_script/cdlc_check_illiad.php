@@ -5,7 +5,23 @@ $db = mysqli_connect($dbhost, $dbuser, $dbpass);
 mysqli_select_db($db, $dbname);
 
 //Get data about requests from database
-$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Awaiting%' or `IlliadStatus` LIKE '%Review%' or `IlliadStatus` LIKE '%Switch%'";
+//$sqlselect = "SELECT *  FROM `$cdlcSTAT` WHERE `IlliadStatus` LIKE '%Awaiting%' or `IlliadStatus` LIKE '%Review%' or `IlliadStatus` LIKE '%Switch%'";
+
+$sqlselect = "
+SELECT * 
+ FROM `$cdlcSTAT` 
+WHERE (
+        (`IlliadStatus` LIKE '%Awaiting%' 
+        OR `IlliadStatus` LIKE '%Review%' 
+        OR `IlliadStatus` LIKE '%Switch%')
+        AND `IlliadStatus` NOT LIKE '%Cancelled by ILL Staff%'
+        AND `Title` != ''
+    )
+AND `TimeStamp` >= DATE_SUB(CURDATE(), INTERVAL 10 MONTH);
+
+";
+
+
 $retval = mysqli_query($db, $sqlselect);
 $GETLISTCOUNT = mysqli_num_rows($retval);
 
@@ -112,8 +128,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
             $headers = preg_replace('/(?<!\r)\n/', "\r\n", $headers);
             mail($to, $subject, $message, $headers, "-f donotreply@cdlc.org");
         }//end check for database update
-        $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$articlePASS."".
-"<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
+        $message = "Your ILL request $reqnumb for $title will be filled by $destlib <br><br>Shipped via: OCLC Article Exchange<br><br>Access at the follwoing URL: ".$articleURL."<br> Password: ".$articlePASS.""."<br><br>Please email <b>".$destemail_to."</b> for future communications regarding this request ";
         #######Setup php email headers
         $to=$requesterEMAIL;
         $subject = "ILL Request Filled ILL# $reqnumb  ";

@@ -238,7 +238,7 @@ function find_catalog($location)
     case "NYS Dept. of Environmental Conservation";
         return "OPALS";
             break;
-    case "NYS Dept. of Transportation";
+   case "NYS Dept. of Transportation";
         return "OPALS";
             break;
     case "Maria College":
@@ -313,13 +313,21 @@ function find_catalog($location)
     case "New York State Library":
         return "SirsiDynix";
             break;
+    case "Albany Institute of History and Art":
+        return "OPALS";
+            break;
+   case "Hart Cluet Museum Library":
+        return "OPALS";
+            break;
+
+
 
     }
 }
 function find_locationinfo($locationalias, $locationname)
 {
     //before they get trimed
-     //echo $locationalias."<br>";
+    // echo $locationalias."<br>";
     // echo $locationname."<br>";
 
     //make sure we tailing white space
@@ -330,14 +338,14 @@ function find_locationinfo($locationalias, $locationname)
     $db = mysqli_connect($dbhost, $dbuser, $dbpass);
     mysqli_select_db($db, $dbname);
     if ($locationname == "MVLS and SALS combined catalog") {
-        $parts = explode(":", $locationalias, 2);
-        if (count($parts) === 2) {
-            $locationalias = trim($parts[0]);
-            $category = trim($parts[1]);
-            //for testing
-            //echo "my location alias is ".$locationalias."<br>";
-                $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
-        }
+	 $parts = explode(":", $locationalias, 2);
+	if (count($parts) === 2) {
+    	$locationalias = trim($parts[0]);
+    	$category = trim($parts[1]);
+        //for testing
+	//echo "my location alias is ".$locationalias."<br>";
+        $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
+   	}
     }elseif ($locationname == "Upper Hudson Library System") {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '".$locationalias."%'  and `system`='UHLS' ";     
     } else {
@@ -369,9 +377,9 @@ function check_itemtype($destill, $itemtype)
             return 1;
         }
 
-        if ($itemtype == "other") {
+        if ($itemtype == "other"){
             return 1;
-        }
+         }
 
 
         if (($itemtype == "book")  ||($itemtype == "book (large print)")) {
@@ -395,7 +403,7 @@ function check_itemtype($destill, $itemtype)
                 return 1;
             }
         }
-        if (($itemtype == 'recording')  || ($itemtype == 'video')  || ($itemtype == 'audio')) {
+        if (($itemtype == 'recording')  || ($itemtype == 'video')|| ($itemtype == 'video-dvd')  || ($itemtype == 'audio')) {
             // See if  request is  audio video related
             if ($row['av_loan']=="Yes") {
                 // Checking if AV is allowed

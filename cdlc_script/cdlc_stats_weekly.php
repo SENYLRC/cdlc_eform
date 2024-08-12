@@ -1,64 +1,64 @@
 <?php
 
 
-// Connect to database
+#####Connect to database
 require '/var/www/cdlc_script/cdlc_db.inc';
 
 $db = mysqli_connect($dbhost, $dbuser, $dbpass);
-mysqli_select_db($db, $dbname);
+mysqli_select_db($db,$dbname);
 
 $startdate = date('Y-m-d', strtotime('-7 days'));
 $curdate = date('Y-m-d');
-// use this to get stats from start of service
-// $startdate  = "2016-07-01";
-// Find the number of request created in the last seven days excluding CDLC
+#use this to get stats from start of service
+#$startdate  = "2016-07-01";
+#Find the number of request created in the last seven days excluding CDLC
 $GETREQUESTCOUNTSQL= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' ";
 $retval = mysqli_query($db, $GETREQUESTCOUNTSQL);
 $row_cnt = mysqli_num_rows($retval);
 
-// Find the number of request that were filled
+#Find the number of request that were filled
 $FINDFILL= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' and Fill =1 ";
 $retfilled =   mysqli_query($db, $FINDFILL);
 $row_fill = mysqli_num_rows($retfilled);
 
-// Find the number of request that were not filled
+#Find the number of request that were not filled
 $FINDNOTFILL= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' and Fill =0 ";
 $retnotfilled =   mysqli_query($db, $FINDNOTFILL);
 $row_notfill = mysqli_num_rows($retnotfilled);
 
-// Find the number not answered yet
+#Find the number not answered yet
 $FINDNOANSW= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' and Fill =3 ";
 $retnoansw =   mysqli_query($db, $FINDNOANSW);
 $row_noansw = mysqli_num_rows($retnoansw);
 
-// Find the number of canceled
+#Find the number of canceled
 $FINDCANCEL= "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' and Fill =6 ";
 $retcancel =   mysqli_query($db, $FINDCANCEL);
 $row_cancel = mysqli_num_rows($retcancel);
 
-// Find the number not answered yet
+#Find the number not answered yet
 $FINDEXPIRE = "SELECT * FROM `$cdlcSTAT` WHERE `Timestamp` > '$startdate 00:00:00' and Fill =4 ";
 $retexpire =   mysqli_query($db, $FINDEXPIRE);
 $row_expire = mysqli_num_rows($retexpire);
 
-// Find the number of libraryies that are active
+#Find the number of libraryies that are active
 $actlib = "SELECT * FROM `$cdlcLIB` WHERE `participant`=1 and `suspend`=0";
 $retactlib =   mysqli_query($db, $actlib);
 $row_actlib = mysqli_num_rows($retactlib);
 
-// Find the number of libraryies that are suspended
+#Find the number of libraryies that are suspended
 $actlib3 = "SELECT * FROM `$cdlcLIB` WHERE `participant`=1 and `suspend`=1";
 $retactlib3 =   mysqli_query($db, $actlib3);
 $row_actlib3 = mysqli_num_rows($retactlib3);
 
 
-// Find the number of libraries who donot particpate 
+#Find the number of libraries who donot particpate 
 $actlib2 = "SELECT * FROM `$cdlcLIB` WHERE `participant`=0 and `suspend`=0";
 $retactlib2 =   mysqli_query($db, $actlib2);
 $row_actlib2 = mysqli_num_rows($retactlib2);
 
 
-// Message for SENYLRC Staff
+######Message for SENYLRC Staff
 
 $messagedest = "
 Linx stats from ". $startdate ." to  ".$curdate." <br>
@@ -76,11 +76,11 @@ Number of Libraries who do not participate  ".$row_actlib2."<br>
 
 <br>";
 
-// Set email subject for stats
+#######Set email subject for stats
 
 $subject = "Linx Stats for the week of ".$startdate." to ".$curdate."";
 
-// SEND EMAIL to CDLC ILL
+#####SEND EMAIL to CDLC ILL
 
 $email_to = "spalding@senylrc.org;ill@cdlc.org";
 

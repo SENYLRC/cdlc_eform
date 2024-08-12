@@ -67,8 +67,7 @@ function getWorkingDays($startDate, $endDate, $holidays)
 }
 
 
-$holidays=array("2023-01-01","2023-01-16","2023-02-20","2023-05-29","2023-06-19","2023-07-04","2023-09-04","2023-10-9","2022-11-11","2022-11-24","2021-11-25","2022-12-26","2022-12-27","2022-12-28","2022-12-29","
-2022-12-30");
+require 'holiday.txt';
 
 
 #####Connect to database
@@ -169,8 +168,7 @@ while ($row = mysqli_fetch_assoc($retval)) {
 						$email<br>
 						$wphone<br>
             <br><hr style='width:200px;text-align:left;margin-left:0'><Br>
-            This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in this 
-ILL transaction, email ".$destemailarray.".";
+            This is an automated message from the eForm ILL System. Responses to this email will be sent back to staff at Capital District Library Council. If you would like to contact the other library in this ILL transaction, email ".$destemailarray.".";
 
 
         ######Message for the destination library
