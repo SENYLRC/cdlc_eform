@@ -338,8 +338,9 @@ function find_locationinfo($locationalias, $locationname)
     $db = mysqli_connect($dbhost, $dbuser, $dbpass);
     mysqli_select_db($db, $dbname);
     if ($locationname == "MVLS and SALS combined catalog") {
-	 $parts = explode(":", $locationalias, 2);
-	if (count($parts) === 2) {
+    // Split by colon or dash, whichever comes first
+    $parts = preg_split('/[:\-]/', $locationalias, 2);
+    if (count($parts) === 2) {
     	$locationalias = trim($parts[0]);
     	$category = trim($parts[1]);
         //for testing
