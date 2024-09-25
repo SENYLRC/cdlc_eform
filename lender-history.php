@@ -307,16 +307,18 @@ $GETLISTCOUNTwhole = mysqli_num_rows($GETLIST);
             echo "<td>&nbsp</td>";
         }
 
-
-        if ((strlen($reqnote) > 2) || (strlen($lendnote) > 2)) {
+        if ((isset($reqnote) && strlen($reqnote) > 2) || (isset($lendnote) && strlen($lendnote) > 2)) {
             echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displaynotes</TD></TR>";
         }
-        if ((strlen($returnnote) > 2) || (strlen($returnmethod) > 2)) {
+        
+        if ((isset($returnnote) && strlen($returnnote) > 2) || (isset($returnmethod) && strlen($returnmethod) > 2)) {
             echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$dispalyreturnnotes</TD></TR>";
         }
-        if ((strlen($renewNote) > 2) || (strlen($renewNoteLender) > 2)) {
+        
+        if ((isset($renewNote) && strlen($renewNote) > 2) || (isset($renewNoteLender) && strlen($renewNoteLender) > 2)) {
             echo "<TR class='$rowclass'><TD></TD><TD></TD><TD colspan=8>$displayrenewnotes</TD></TR>";
         }
+        
 
 
         $rowtype = $rowtype + 1;
