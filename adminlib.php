@@ -38,6 +38,7 @@ if ($firstpass == "no") {
     $filter_aliasblank = "";
     $filter_illemail = "";
     $filter_illemailblank = "";
+    $filter_illpart = "";
     $filter_suspend = "";
     $filter_all_libs = "";
     $filter_system = "";
