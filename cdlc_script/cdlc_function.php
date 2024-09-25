@@ -296,7 +296,7 @@ function find_catalog($location)
         return "InnovativeUHLS";
             break;
     case "WSWHE BOCES School Library System":
-        return "OPALS";
+        return "TLC";
             break;
     case "Scotia Glenville School District":
         return "OPALS";
@@ -337,6 +337,8 @@ function find_locationinfo($locationalias, $locationname)
     include '/var/www/cdlc_script/cdlc_db.inc';
     $db = mysqli_connect($dbhost, $dbuser, $dbpass);
     mysqli_select_db($db, $dbname);
+    //for testing
+    //echo $locationname;
     if ($locationname == "MVLS and SALS combined catalog") {
     // Split by colon or dash, whichever comes first
     $parts = preg_split('/[:\-]/', $locationalias, 2);
@@ -346,9 +348,21 @@ function find_locationinfo($locationalias, $locationname)
         //for testing
 	//echo "my location alias is ".$locationalias."<br>";
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '%".$locationalias."%'  and (`system`='mvls' or `system`='sals')";
-   	}
+   	} //end if count
     }elseif ($locationname == "Upper Hudson Library System") {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias LIKE '".$locationalias."%'  and `system`='UHLS' ";     
+
+
+  } elseif ($locationname == "WSWHE BOCES School Library System") {
+      // Split by colon or dash, whichever comes first
+       $parts = preg_split('/[:\-]/', $locationalias, 2);
+     if (count($parts) === 2) {
+        $locationalias = trim($parts[0]);
+        $category = trim($parts[1]);
+        // Check if $locationalias is not empty before creating the query
+        $GETLISTSQL = "SELECT `loc`, `participant`, `ill_email`, `suspend`, `system`, `Name`, `alias` FROM `$cdlcLIB` WHERE alias LIKE '" . $locationalias . "%' AND `system`='WSWHE'";
+    } //end if count'
+
     } else {
         $GETLISTSQL="SELECT `loc`,`participant`,`ill_email`,`suspend`,`system`,`Name`,`alias` FROM `$cdlcLIB` where alias = '$locationalias' ";
     }
@@ -357,9 +371,37 @@ function find_locationinfo($locationalias, $locationname)
     // echo $locationalias."<br>";
     // echo $locationname."<br>";
 
-    $result=mysqli_query($db, $GETLISTSQL);
-    $row = mysqli_fetch_row($result);
-    $libparticipant = $row;
+//    $result=mysqli_query($db, $GETLISTSQL);
+//    $row = mysqli_fetch_row($result);
+//    $libparticipant = $row;
+
+if (!empty($GETLISTSQL)) {
+    // Execute the query if it's not empty
+    $result = mysqli_query($db, $GETLISTSQL);
+    
+    if ($result) {
+        // Fetch the row if the query was successful
+        $row = mysqli_fetch_row($result);
+        
+        if ($row) {
+            $libparticipant = $row;
+            return $libparticipant;
+        } else {
+            // Handle case where no rows were returned
+            echo "No rows found for the query.";
+            return null;
+        }
+    } else {
+        // Handle query failure and log the error
+        echo "Query failed: " . mysqli_error($db);
+        return null;
+    }
+} else {
+    // Handle the case where the query is empty
+    echo "The query is empty. Please check the logic for generating the SQL query.";
+    return null;
+}
+
     return $libparticipant;
 }
 
