@@ -178,6 +178,7 @@ if ($pageaction ==3) {
    <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
    <option value="MVLS">Mohawk Valley Library System</option>
    <option value="Q3S">Questar III SLS</option>
+   <option value="SCPL">Schenectady County Public Library</option>
    <option value="SALS">Southern Adirondack Library System</option>
    <option value="UHLS">Upper Hudson Library System</option>
    <option value="WSWHE">WSWHE BOCES</option>
@@ -246,6 +247,7 @@ if ($pageaction ==3) {
     <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
     <option value="MVLS">Mohawk Valley Library System</option>
     <option value="Q3S">Questar III SLS</option>
+    <option value="SCPL">Schenectady County Public Library</option>
     <option value="SALS">Southern Adirondack Library System</option>
     <option value="UHLS">Upper Hudson Library System</option>
     <option value="WSWHE">WSWHE BOCES</option>
@@ -453,6 +455,9 @@ if ($pageaction ==3) {
                     <option value="Q3S" <?php if ($system=="Q3S") {
                         echo "selected=\"selected\"";
 } ?>>Questar III SLS</option>
+                    <option value="SCPL" <?php if ($system=="SCPL") {
+                        echo "selected=\"selected\"";
+} ?>>Schenectady County Public Library</option>
                     <option value="SALS" <?php if ($system=="SALS") {
                         echo "selected=\"selected\"";
 } ?>>Southern Adirondack Library System</option>
@@ -600,6 +605,7 @@ if ($pageaction ==3) {
     echo "<option value = 'HFM' " . selected("HFM", $filter_system) . ">Hamilton-Fulton-Montgomery BOCES</option>";
     echo "<option value = 'MVLS' " . selected("MVLS", $filter_system) . ">Mohawk Valley Library System</option>";
     echo "<option value = 'Q3S' " . selected("Q3S", $filter_system) . ">Questar III SLS</option>";
+    echo "<option value = 'SCPL' " . selected("SCPL", $filter_system) . ">Schenectady County Public Library</option>";
     echo "<option value = 'SALS' " . selected("SALS", $filter_system) . ">Southern Adirondack Library System</option>";
     echo "<option value = 'UHLS' " . selected("UHLS", $filter_system) . ">Upper Hudson Library System</option>";
     echo "<option value = 'WSWHE' " . selected("WSWHE", $filter_system) . ">WSWHE BOCES</option>";

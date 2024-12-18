@@ -132,6 +132,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 $dessysvartxt = "Mohawk Valley Library System";
             } elseif (strcmp($dessysvar, 'Q3S')==0) {
                 $dessysvartxt = "Questar III SLS";
+            } elseif (strcmp($dessysvar, 'SCPL')==0) {
+                $dessysvartxt = "Schenectady County Public Library";
             } elseif (strcmp($dessysvar, 'SALS')==0) {
                 $dessysvartxt = "Southern Adirondack Library System";
             } elseif (strcmp($dessysvar, 'UHLS')==0) {

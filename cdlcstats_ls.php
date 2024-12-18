@@ -94,6 +94,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 $libsystemtxt = "Mohawk Valley Library System";
             } elseif (strcmp($libsystem, 'Q3S')==0) {
                 $libsystemtxt = "Questar III SLS";
+            } elseif (strcmp($libsystem, 'SCPL')==0) {
+                $libsystemtxt = "Schenectady County Public Library";
             } elseif (strcmp($libsystem, 'SALS')==0) {
                 $libsystemtxt = "Southern Adirondack Library System";
             } elseif (strcmp($libsystem, 'UHLS')==0) {
@@ -142,6 +144,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                         $dessysvartxt = "Mohawk Valley Library System";
                     } elseif (strcmp($dessysvar, 'Q3S')==0) {
                         $dessysvartxt = "Questar III SLS";
+                    } elseif (strcmp($dessysvar, 'SCPL')==0) {
+                        $dessysvartxt = "Schenectady County Public Library";
                     } elseif (strcmp($dessysvar, 'SALS')==0) {
                         $dessysvartxt = "Southern Adirondack Library System";
                     } elseif (strcmp($dessysvar, 'UHLS')==0) {
@@ -293,6 +297,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                 $libsystemtxt = "Mohawk Valley Library System";
             } elseif (strcmp($libsystem, 'Q3S')==0) {
                 $libsystemtxt = "Questar III SLS";
+            } elseif (strcmp($libsystem, 'SCPL')==0) {
+                $libsystemtxt = "Schenectady County Public Library";
             } elseif (strcmp($libsystem, 'SALS')==0) {
                 $libsystemtxt = "Southern Adirondack Library System";
             } elseif (strcmp($libsystem, 'UHLS')==0) {
@@ -343,6 +349,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                         $dessysvartxt = "Mohawk Valley Library System";
                     } elseif (strcmp($dessysvar, 'Q3S')==0) {
                         $dessysvartxt = "Questar III SLS";
+                    } elseif (strcmp($dessysvar, 'SCPL')==0) {
+                        $dessysvartxt = "Schenectady County Public Library";
                     } elseif (strcmp($dessysvar, 'SALS')==0) {
                         $dessysvartxt = "Southern Adirondack Library System";
                     } elseif (strcmp($dessysvar, 'UHLS')==0) {
@@ -541,7 +549,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
 
     <?php
     // Generate the drop down for borrower stats
-    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1 and System = '".$field_home_library_system."' order by `Name` ";
+    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1 and `System` = '".$field_home_library_system."' order by `Name` ";
     $libnameq =   mysqli_query($db, $libnames);
     echo "<form action='/libstats'   method='post2' >";
     echo "<h3>Borrowing statistics for a specific library:</h3><br>";
@@ -555,7 +563,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
     echo "</select></form>";
     echo "<hr>";
     // Generating the links for borrowing stats
-    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1  and System = '".$field_home_library_system."' order by `Name` ";
+    $libnames= "SELECT loc,Name FROM `$cdlcLIB` WHERE `participant`=1  and `System` = '".$field_home_library_system."' order by `Name` ";
     $libnameq =   mysqli_query($db, $libnames);
     echo "<form action='/liblenderstat'   method='post2' >";
     echo "<h3>Lending statistics for a specific library:</h3><br>";

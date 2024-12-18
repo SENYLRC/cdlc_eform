@@ -48,6 +48,9 @@ if ($action == "go") {
     if ($system == "Q3S") {
         $displaysystem="Questar III SLS";
     }
+    if ($system == "SCPL") {
+        $displaysystem="Schenectady County Public Library";
+    }
     if ($system == "SALS") {
         $displaysystem="Southern Adirondack Library System";
     }

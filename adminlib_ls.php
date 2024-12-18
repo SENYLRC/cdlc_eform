@@ -424,6 +424,9 @@ if ($pageaction ==3) {
                     <option value="Q3S" <?php if ($system=="Q3S") {
                         echo "selected=\"selected\"";
 } ?>>Questar III SLS</option>
+                    <option value="SCPL" <?php if ($system=="SCPL") {
+                        echo "selected=\"selected\"";
+} ?>>Schenectady County Public Library</option>
                     <option value="SALS" <?php if ($system=="SALS") {
                         echo "selected=\"selected\"";
 } ?>>Southern Adirondack Library System</option>

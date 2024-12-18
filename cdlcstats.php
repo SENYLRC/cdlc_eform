@@ -90,6 +90,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             $libsystemtxt = "Mohawk Valley Library System";
         } elseif (strcmp($libsystem, 'Q3S')==0) {
             $libsystemtxt = "Questar III SLS";
+        } elseif (strcmp($libsystem, 'SCPL')==0) {
+            $libsystemtxt = "Schenectady County Public Library";
         } elseif (strcmp($libsystem, 'SALS')==0) {
             $libsystemtxt = "Southern Adirondack Library System";
         } elseif (strcmp($libsystem, 'UHLS')==0) {
@@ -138,6 +140,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                     $dessysvartxt = "Mohawk Valley Library System";
                 } elseif (strcmp($dessysvar, 'Q3S')==0) {
                     $dessysvartxt = "Questar III SLS";
+                } elseif (strcmp($dessysvar, 'SCPL')==0) {
+                    $dessysvartxt = "Schenectady County Public Library";
                 } elseif (strcmp($dessysvar, 'SALS')==0) {
                     $dessysvartxt = "Southern Adirondack Library System";
                 } elseif (strcmp($dessysvar, 'UHLS')==0) {
@@ -286,6 +290,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
             $libsystemtxt = "Mohawk Valley Library System";
         } elseif (strcmp($libsystem, 'Q3S')==0) {
             $libsystemtxt = "Questar III SLS";
+        } elseif (strcmp($libsystem, 'SCPL')==0) {
+            $libsystemtxt = "Schenectady County Public Library";
         } elseif (strcmp($libsystem, 'SALS')==0) {
             $libsystemtxt = "Southern Adirondack Library System";
         } elseif (strcmp($libsystem, 'UHLS')==0) {
@@ -336,6 +342,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                     $dessysvartxt = "Mohawk Valley Library System";
                 } elseif (strcmp($dessysvar, 'Q3S')==0) {
                     $dessysvartxt = "Questar III SLS";
+                } elseif (strcmp($dessysvar, 'SCPL')==0) {
+                    $dessysvartxt = "Schenectady County Public Library";
                 } elseif (strcmp($dessysvar, 'SALS')==0) {
                     $dessysvartxt = "Southern Adirondack Library System";
                 } elseif (strcmp($dessysvar, 'UHLS')==0) {
@@ -516,6 +524,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                     <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
                     <option value="MVLS">Mohawk Valley Library System</option>
                     <option value="Q3S">Questar III SLS</option>
+                    <option value="SCPL">Schenectady County Public Library</option>
                     <option value="SALS">Southern Adirondack Library System</option>
                     <option value="UHLS">Upper Hudson Library System</option>
                     <option value="WSWHE">WSWHE BOCES</option>                  </select>
@@ -538,6 +547,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST')   || (isset($_GET{'page'}))) {
                     <option value="HFM">Hamilton-Fulton-Montgomery BOCES</option>
                     <option value="MVLS">Mohawk Valley Library System</option>
                     <option value="Q3S">Questar III SLS</option>
+                    <option value="SCPL">>Schenectady County Public Library</option>
                     <option value="SALS">Southern Adirondack Library System</option>
                     <option value="UHLS">Upper Hudson Library System</option>
                     <option value="WSWHE">WSWHE BOCES</option>

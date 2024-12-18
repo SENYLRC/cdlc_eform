@@ -132,6 +132,8 @@ if (strcmp($reqsysvar,'CRB')==0){
     $reqsysvartxt = "Mohawk Valley Library System";
 }else if (strcmp($reqsysvar,'Q3S')==0){
     $reqsysvartxt = "Questar III SLS";
+  }else if (strcmp($reqsysvar,'SCPL')==0){
+    $reqsysvartxt = "Schenectady County Public Library";
 }else if (strcmp($reqsysvar,'SALS')==0){
     $reqsysvartxt = "Southern Adirondack Library System";
 }else if (strcmp($reqsysvar,'UHLS')==0){
